@@ -1,0 +1,71 @@
+.navbar{
+    -fx-background-color: #003C43;
+    -fx-background-radius: 10px;
+}
+
+.card{
+    -fx-background-radius: 6px;
+    -fx-border-color: #135D66;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 6px;
+    -fx-border-style: solid;
+    -fx-background-color: #E3FEF7;
+}
+
+.root{
+    -fx-background-color: #EAEEF4;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 20px;
+}
+
+.drop_down{
+    -fx-background-color: #77B0AA;
+    -fx-background-radius: 6px;
+    -fx-padding: 3px 7px 3px 7px;
+    -fx-text-alignment: center;
+}
+
+.secondary_color{
+    -fx-background-color: #77B0AA;
+}
+
+.tertiary_color{
+    -fx-background-color: #135D66;
+}
+
+.light_color{
+    -fx-background-color:#E3FEF7
+}
+
+.primary_color{
+    -fx-background-color: #003C43;
+}
+
+.sm_button{
+    -fx-padding: 5px 8px 5px 8px;
+    -fx-background-radius: 6px;
+    -fx-text-alignment: center;
+}
+
+.base_button{
+    -fx-padding: 8px 10px 8px 10px;
+    -fx-background-radius: 8px;
+    -fx-text-alignment: center;
+}
+
+.lg_button{
+    -fx-padding: 8px 16px 8px 16px;
+    -fx-text-alignment: center;
+    -fx-background-radius: 10px;
+}
+
+.tab{
+    -fx-padding: 8px 10px 8px 10px;
+    -fx-background-color: #135D66;
+}
+
+.refresh_button{
+    -fx-border-radius: 99999px;
+    -fx-background-radius: 999999px;
+    -fx-background-color: #E3FEF7;
+}

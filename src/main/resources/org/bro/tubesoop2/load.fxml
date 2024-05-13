@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="318.0" prefWidth="602.0" styleClass="root" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bro.tubesoop2.LoadController">
+   <top>
+      <VBox prefHeight="57.0" prefWidth="602.0" styleClass="navbar" stylesheets="@style.css" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="61.0" prefWidth="602.0" stylesheets="@style.css">
+               <children>
+                  <Button fx:id="backButton" layoutX="35.0" layoutY="12.0" mnemonicParsing="false" onAction="#onBack" stylesheets="@style.css" text="Back">
+                     <font>
+                        <Font name="Poppins Bold" size="16.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="light_color" />
+                        <String fx:value="sm_button" />
+                     </styleClass>
+                  </Button>
+                  <Label layoutX="235.0" layoutY="11.0" text="Load State" textFill="WHITE">
+                     <font>
+                        <Font name="Poppins Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </top>
+   <left>
+      <VBox prefHeight="563.0" prefWidth="1041.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </BorderPane.margin>
+         <children>
+            <Pane prefHeight="56.0" prefWidth="1016.0">
+               <children>
+                  <Label layoutX="40.0" layoutY="7.0" text="Format">
+                     <font>
+                        <Font name="Poppins Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <ChoiceBox fx:id="dropDown" layoutX="147.0" layoutY="5.0" prefWidth="150.0" styleClass="drop_down" stylesheets="@style.css" />
+               </children>
+            </Pane>
+            <Pane prefHeight="56.0" prefWidth="484.0">
+               <children>
+                  <Label layoutX="40.0" layoutY="8.0" text="Folder">
+                     <font>
+                        <Font name="Poppins Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="loadButton" layoutX="146.0" layoutY="5.0" mnemonicParsing="false" onAction="#onLoad" stylesheets="@style.css" text="Open Folder...">
+                     <font>
+                        <Font name="Poppins Regular" size="12.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="secondary_color" />
+                        <String fx:value="base_button" />
+                     </styleClass></Button>
+                  <Label fx:id="toastMessageFile" layoutX="257.0" layoutY="12.0" prefHeight="19.0" prefWidth="285.0" textFill="#32a85a">
+                     <font>
+                        <Font name="Poppins SemiBold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Pane>
+            <Pane prefHeight="42.0" prefWidth="562.0">
+               <children>
+                  <Label fx:id="toastMessage" layoutX="40.0" layoutY="3.0" prefHeight="5.0" prefWidth="483.0" textFill="#32a85a">
+                     <font>
+                        <Font name="Poppins SemiBold" size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Pane>
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <Button fx:id="buttonLoad" mnemonicParsing="false" onAction="#onSubmit" stylesheets="@style.css" text="Load" textFill="WHITE" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Poppins Bold" size="15.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets bottom="20.0" />
+         </BorderPane.margin>
+         <styleClass>
+            <String fx:value="primary_color" />
+            <String fx:value="lg_button" />
+         </styleClass>
+      </Button>
+   </bottom>
+</BorderPane>

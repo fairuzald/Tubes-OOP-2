@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="274.0" styleClass="tertiary_color" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bro.tubesoop2.RandomController">
+   <center>
+      <TilePane hgap="30.0" prefHeight="400.0" prefWidth="416.0" styleClass="se" vgap="30.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="view" fitHeight="136.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/test.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="view1" fitHeight="136.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/test.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="view2" fitHeight="136.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/test.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="view3" fitHeight="136.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/test.png" />
+               </image>
+            </ImageView>
+         </children>
+         <BorderPane.margin>
+            <Insets left="30.0" right="30.0" top="30.0" />
+         </BorderPane.margin>
+      </TilePane>
+   </center>
+   <padding>
+      <Insets top="20.0" />
+   </padding>
+   <bottom>
+      <VBox prefHeight="76.0" prefWidth="192.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="192.0">
+               <children>
+                  <Button fx:id="refreshButton" layoutX="82.0" mnemonicParsing="false" onAction="#onRefresh" prefHeight="28.0" prefWidth="24.0" styleClass="refresh_button" stylesheets="@style.css">
+                     <graphic>
+                        <ImageView fitHeight="27.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" styleClass="refresh_button">
+                           <image>
+                              <Image url="@assets/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="192.0">
+               <children>
+                  <Button fx:id="selectButton" layoutX="48.0" layoutY="-1.0" mnemonicParsing="false" onAction="#onSelect" prefHeight="36.0" prefWidth="98.0" text="Select">
+                     <styleClass>
+                        <String fx:value="lg_button" />
+                        <String fx:value="light_color" />
+                     </styleClass>
+                     <font>
+                        <Font name="Poppins Bold" size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Pane>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
+         </BorderPane.margin>
+      </VBox>
+   </bottom>
+   <top>
+      <Label text="Select Your Deck" textFill="WHITE" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Poppins Bold" size="20.0" />
+         </font>
+      </Label>
+   </top>
+</BorderPane>
