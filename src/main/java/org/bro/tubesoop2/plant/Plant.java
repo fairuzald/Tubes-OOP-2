@@ -1,4 +1,4 @@
-package org.bro.tubesoop2.Plant;
+package org.bro.tubesoop2.plant;
 
 public class Plant {
     private Integer durationToHarvest;

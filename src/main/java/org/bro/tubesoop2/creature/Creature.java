@@ -1,9 +1,8 @@
-package org.bro.tubesoop2.Creature;
+package org.bro.tubesoop2.creature;
 
-import org.bro.tubesoop2.Item.Item;
-import org.bro.tubesoop2.Product.Product;
+import org.bro.tubesoop2.item.Item;
+import org.bro.tubesoop2.product.Product;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 

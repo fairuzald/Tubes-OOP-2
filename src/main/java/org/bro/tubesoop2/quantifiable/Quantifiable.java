@@ -1,4 +1,4 @@
-package org.bro.tubesoop2.Quantifiable;
+package org.bro.tubesoop2.quantifiable;
 
 
 public class Quantifiable<T> {

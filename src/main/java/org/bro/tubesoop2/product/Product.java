@@ -1,4 +1,4 @@
-package org.bro.tubesoop2.Product;
+package org.bro.tubesoop2.product;
 
 public class Product {
     private Integer addedWeight;

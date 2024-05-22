@@ -1,4 +1,4 @@
-package org.bro.tubesoop2.Resource;
+package org.bro.tubesoop2.resource;
 
 public class Resource {
     private String name;

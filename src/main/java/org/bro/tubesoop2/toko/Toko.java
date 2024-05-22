@@ -1,7 +1,7 @@
-package org.bro.tubesoop2.Toko;
+package org.bro.tubesoop2.toko;
 
-import org.bro.tubesoop2.Quantifiable.Quantifiable;
-import org.bro.tubesoop2.Resource.Resource;
+import org.bro.tubesoop2.quantifiable.Quantifiable;
+import org.bro.tubesoop2.resource.Resource;
 
 public class Toko {
     private Quantifiable<Resource> stock;
