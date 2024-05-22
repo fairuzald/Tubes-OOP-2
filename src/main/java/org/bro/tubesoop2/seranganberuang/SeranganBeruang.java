@@ -10,7 +10,10 @@ import java.util.Random;
 
 public class SeranganBeruang implements ITimerSubscriber {
     List<Pair<Integer,Integer>> area_serangan;
-
+    int startRow;
+    int startCol;
+    int subCols;
+    int subRows;
 
     public SeranganBeruang() {
         this.area_serangan = new ArrayList<>();
@@ -19,23 +22,18 @@ public class SeranganBeruang implements ITimerSubscriber {
 
         Random random = new Random();
 
-        int subRows = random.nextInt(totalRows) + 1;
-        int subCols = random.nextInt(totalCols) + 1;
+        this.subRows = random.nextInt(totalRows) + 1;
+        this.subCols = random.nextInt(totalCols) + 1;
 
 
-        int startRow = random.nextInt(totalRows - subRows + 1);
-        int startCol = random.nextInt(totalCols - subCols + 1);
-
-        for (int i = 0; i < subRows; i++) {
-            for (int j = 0; j < subCols; j++) {
-                this.area_serangan.add(new Pair<>(startRow + i, startCol + j));
-            }
-        }
+        this.startRow = random.nextInt(totalRows - subRows + 1);
+        this.startCol = random.nextInt(totalCols - subCols + 1);
     }
 
     // TODO: Tungguin implementasi grid
     @Override
     public void update(int count) {
+        // Nanti iterasinya diganti
         for(Pair<Integer,Integer> item: this.area_serangan) {
             return;
         }
