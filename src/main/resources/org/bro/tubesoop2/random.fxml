@@ -14,29 +14,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="274.0" styleClass="tertiary_color" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.bro.tubesoop2.RandomController">
    <center>
-      <TilePane hgap="30.0" prefHeight="400.0" prefWidth="416.0" styleClass="se" vgap="30.0" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fx:id="view" fitHeight="136.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/test.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="view1" fitHeight="136.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/test.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="view2" fitHeight="136.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/test.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="view3" fitHeight="136.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/test.png" />
-               </image>
-            </ImageView>
-         </children>
+      <TilePane fx:id="deck_selection" hgap="30.0" prefHeight="400.0" prefWidth="416.0" styleClass="se" vgap="30.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets left="30.0" right="30.0" top="30.0" />
          </BorderPane.margin>
