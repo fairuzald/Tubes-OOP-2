@@ -7,8 +7,8 @@ import java.util.TimerTask;
 
 public class CountdownTimer {
     private int counter;
-    private Timer timer;
-    private List<ITimerSubscriber> subscriber;
+    private final Timer timer;
+    private final List<ITimerSubscriber> subscriber;
 
     public CountdownTimer(int seconds) {
         this.counter = seconds;
