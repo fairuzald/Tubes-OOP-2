@@ -44,4 +44,11 @@ public class Location {
 
         this.col = col-1;
     }
+
+    public String toString() {
+        Icosihexastring rowString = new Icosihexastring(row);
+        Integer col1Indexed = col + 1;
+        String colRow = col1Indexed.toString();
+        return rowString.getStr() + col1Indexed;
+    }
 }

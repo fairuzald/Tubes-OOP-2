@@ -8,6 +8,7 @@ import org.bro.tubesoop2.resource.Resource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -91,6 +92,28 @@ public class StateLoader {
         }
 
         return state;
+    }
+
+
+    public void saveState(GameState state) {
+        String gameStatePath = path + "/" + gameStateFileName;
+        String player1Path   = path + "/" + player1FileName;
+        String player2Path   = path + "/" + player2FileName;
+
+        try {
+            FileWriter gameStateFile = new FileWriter(gameStatePath);
+            FileWriter player1File = new FileWriter(player1Path);
+            FileWriter player2File = new FileWriter(player2Path);
+            plugin.Save(gameStateFile, player1File, player2File, state);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error when reading state/gamestate.txt.");
+            System.out.println(e.getMessage());
+            // e.printStackTrace();
+        } catch (Exception e){
+            System.out.println("Error when reading state/gamestate.txt.");
+            System.out.println(e.getMessage());
+            // e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

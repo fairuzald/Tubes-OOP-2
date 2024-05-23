@@ -9,8 +9,8 @@ import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.toko.Toko;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class TextLoader implements StatePlugin {
@@ -24,8 +24,20 @@ public class TextLoader implements StatePlugin {
             loadPlayer(player1File, state.getPlayer1());
             loadPlayer(player2File, state.getPlayer2());
 
-        } catch (NoSuchElementException e) {
-            System.out.println("No more lines.");
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public void Save(FileWriter gameStateFile, FileWriter player1File, FileWriter player2File, GameState state) throws Exception {
+        this.state = state;
+        try{
+            // GameState
+            saveGame(gameStateFile);
+            savePlayer(player1File, state.getPlayer1());
+            savePlayer(player2File, state.getPlayer2());
+
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
@@ -124,5 +136,61 @@ public class TextLoader implements StatePlugin {
         scanner.close();
     }
 
+
+
+
+
+    void savePlayer(FileWriter f, Player p) throws Exception {
+        System.out.println(p.getGulden());
+        System.out.println(p.getDeckLeft());
+        System.out.println(p.getActiveDeck().size());
+        f.write(p.getGulden()+"\n");
+        f.write(p.getDeckLeft()+"\n");
+        f.write(p.getActiveDeck().size()+"\n");
+
+
+        for(int i = 0; i < p.getActiveDeck().size(); i++){
+            Resource r = p.getActiveDeck().get(i);
+            if(r != null){
+                Location loc = new Location(0, i);
+                System.out.println(loc.toString() + " " + r.getName());
+                f.write(loc.toString() + " " + r.getName());
+                f.write(loc.toString() + r.getName());
+            }
+        }
+        System.out.println(p.getLadang().getCountFilled());
+        f.write(p.getLadang().getCountFilled() + "\n");
+        p.getLadang().forEachActive(l -> {
+            try{
+                Creature c = (Creature) p.getLadang().getElement(l);
+                System.out.print(l.toString() + " " + c.getName() + " " + c.getUmurOrBerat() + " " + c.getItemsActive().size());
+                f.write(l.toString() + " " + c.getName() + " " + c.getUmurOrBerat() + " " + c.getItemsActive().size());
+
+                for(Item item : c.getItemsActive()){
+                    System.out.print(" "+item.getClass().getSimpleName().toUpperCase());
+                    String className = item.getClass().getSimpleName().toUpperCase();
+                    f.write(" "+className);
+                }
+                System.out.println("\n");
+
+            } catch (Exception e){}
+
+        });
+
+        f.close();
+    }
+
+    void saveGame(FileWriter f) throws Exception{
+        System.out.println(state.getTurn());
+        f.write(state.getTurn() + "\n");
+
+        System.out.println(state.getToko().getStock().size());
+        f.write(state.getToko().getStock().size() + "\n");
+        for(Quantifiable<Resource> item : state.getToko().getStock()){
+            System.out.print(item.getValue().getName() + " " + item.getQuantity() + "\n");
+            f.write(item.getValue().getName() + " " + item.getQuantity() + "\n");
+        }
+        f.close();
+    }
 
 }

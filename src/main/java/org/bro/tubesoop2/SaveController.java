@@ -10,6 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.DirectoryChooser;
+import org.bro.tubesoop2.action.Action;
+
 import java.io.File;
 
 public class SaveController {
@@ -23,9 +25,12 @@ public class SaveController {
     @FXML
     private Label toastMessage,toastMessageFile;
 
+    public static Action<String> onSaveValid = new Action<String>();
+
     @FXML
     void initialize() {
-        ObservableList<String> formats = FXCollections.observableArrayList("txt", "xml", "yaml", "json");
+//        ObservableList<String> formats = FXCollections.observableArrayList("txt", "xml", "yaml", "json");
+        ObservableList<String> formats = FXCollections.observableArrayList("txt");
         dropDown.setItems(formats);
         dropDown.setValue("txt");
     }
@@ -64,18 +69,17 @@ public class SaveController {
 
     @FXML
     void onSubmit(ActionEvent event) {
-        String selectedFormat = dropDown.getValue();
-
         String fileName = toastMessageFile.getText();
-        String fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
 
-        if (selectedFormat.equalsIgnoreCase(fileExtension)) {
-            toastMessage.setTextFill(Color.GREEN);
-            toastMessage.setText("Format matched successfully.");
-        } else {
+        if(fileName.equals("")){
             toastMessage.setTextFill(Color.RED);
-            toastMessage.setText("Format does not match.");
+            toastMessage.setText("Please select folder.");
+            return;
         }
+
+        toastMessage.setTextFill(Color.GREEN);
+        toastMessage.setText("File saved successfully.");
+        onSaveValid.Notify(fileName);
     }
 
     public static boolean isSaveWindowOpen() {

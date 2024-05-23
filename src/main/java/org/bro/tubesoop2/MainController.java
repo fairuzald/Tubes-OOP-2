@@ -73,16 +73,29 @@ public class MainController {
 
 
         StateLoader loader = new StateLoader();
-        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
-                .setPlugin(new TextLoader())
+//        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
 //                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
-                .loadState();
+//                .setPlugin(new TextLoader())
+//                .loadState();
+        state = new GameState();
 
-        RandomController.onNextDone.AddListener((r) -> {
+        updateGUI(state);
+        RandomController.onNextDone.AddListener(r -> {
             state.NextTurn();
             updateGUI(state);
         });
-        updateGUI(state);
+        SaveController.onSaveValid.AddListener(folderDir -> {
+            loader.setPath(folderDir, "gamestate_.txt", "player1_.txt", "player2_.txt")
+                    .setPlugin(new TextLoader())
+                    .saveState(state);
+            updateGUI(state);
+        });
+        LoadController.onLoadValid.AddListener(folderDir -> {
+            state = loader.setPath(folderDir, "gamestate.txt", "player1.txt", "player2.txt")
+                    .setPlugin(new TextLoader())
+                    .loadState();
+            updateGUI(state);
+        });
     }
 
     void updateGUI(GameState state){

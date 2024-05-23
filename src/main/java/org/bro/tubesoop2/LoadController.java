@@ -11,6 +11,7 @@ import java.io.File;
 import javafx.scene.control.ChoiceBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.bro.tubesoop2.action.Action;
 
 public class LoadController {
 
@@ -23,9 +24,12 @@ public class LoadController {
     @FXML
     private Label toastMessage,toastMessageFile;
 
+
+    public static Action<String> onLoadValid = new Action<String>();
+
     @FXML
     void initialize() {
-        ObservableList<String> formats = FXCollections.observableArrayList("txt", "xml", "yaml", "json");
+        ObservableList<String> formats = FXCollections.observableArrayList("txt");
         dropDown.setItems(formats);
         dropDown.setValue("txt");
     }
@@ -64,18 +68,17 @@ public class LoadController {
 
     @FXML
     void onSubmit(ActionEvent event) {
-        String selectedFormat = dropDown.getValue();
-
         String fileName = toastMessageFile.getText();
-        String fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
 
-        if (selectedFormat.equalsIgnoreCase(fileExtension)) {
-            toastMessage.setTextFill(Color.GREEN);
-            toastMessage.setText("Format matched successfully.");
-        } else {
+        if(fileName.equals("")){
             toastMessage.setTextFill(Color.RED);
-            toastMessage.setText("Format does not match.");
+            toastMessage.setText("Please select folder.");
+            return;
         }
+
+        toastMessage.setTextFill(Color.GREEN);
+        toastMessage.setText("State Loaded successfully.");
+        onLoadValid.Notify(fileName);
     }
 
     public static boolean isLoadWindowOpen() {
