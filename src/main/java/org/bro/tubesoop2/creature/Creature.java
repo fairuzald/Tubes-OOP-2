@@ -2,15 +2,19 @@ package org.bro.tubesoop2.creature;
 
 import org.bro.tubesoop2.item.Item;
 import org.bro.tubesoop2.product.Product;
+import org.bro.tubesoop2.resource.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Creature {
+public class Creature extends Resource {
     private List<Product> drops;
     private List<Item> itemsActive;
 
-    public Creature(List<Product> drops) {
+
+
+    public Creature(String name, List<Product> drops) {
+        super(name);
         this.drops = drops;
         itemsActive = new ArrayList<>();
     }

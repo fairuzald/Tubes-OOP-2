@@ -1,9 +1,16 @@
 package org.bro.tubesoop2.product;
 
-public class Product {
+import org.bro.tubesoop2.resource.Resource;
+
+public class Product extends Resource {
     private Integer addedWeight;
     private Integer price;
-    private Integer tipe;
+
+    Product(String name, int addedWeight, int price){
+        super(name);
+        this.addedWeight = addedWeight;
+        this.price = price;
+    }
 
     public Integer getAddedWeight() {
         return addedWeight;
@@ -21,11 +28,5 @@ public class Product {
         this.price = price;
     }
 
-    public Integer getTipe() {
-        return tipe;
-    }
-
-    public void setTipe(Integer tipe) {
-        this.tipe = tipe;
-    }
 }
+
