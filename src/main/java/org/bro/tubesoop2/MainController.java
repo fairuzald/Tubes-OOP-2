@@ -108,11 +108,7 @@ public class MainController {
             int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
             destinationViews[gridIDX] = new CreatureCard(imagePath);
 
-        StateLoader loader = new StateLoader();
-        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
-                .setPlugin(new TextLoader())
-//                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
-                .loadState();
+
 
         RandomController.onNextDone.AddListener((r) -> {
             state.NextTurn();
