@@ -54,7 +54,7 @@
                                     <Font name="Poppins Bold" size="26.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="turn" layoutX="121.0" text="0" textFill="WHITE">
+                              <Label fx:id="turn" layoutX="121.0" text="1" textFill="WHITE">
                                  <font>
                                     <Font name="Poppins Bold" size="26.0" />
                                  </font>

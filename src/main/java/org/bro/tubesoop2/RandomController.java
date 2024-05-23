@@ -11,6 +11,7 @@ import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import org.bro.tubesoop2.action.Action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,8 @@ public class RandomController {
     private static boolean randomWindowOpen = false;
 
     private static final String DEFAULT_IMAGE_PATH = "assets/basic.png";
+
+    public static Action<RandomController> onNextDone = new Action<RandomController>();
 
     @FXML
     void initialize() {
@@ -67,6 +70,7 @@ public class RandomController {
             setRandomWindowOpen(false);
             Stage stage = (Stage) selectButton.getScene().getWindow();
             stage.close();
+            onNextDone.Notify(this);
         } else {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Alert");
@@ -97,11 +101,11 @@ public class RandomController {
         imageView.setEffect(null);
     }
 
-    public static boolean isRandomWindowOpen() {
+    public boolean isRandomWindowOpen() {
         return randomWindowOpen;
     }
 
-    public static void setRandomWindowOpen(boolean open) {
+    public void setRandomWindowOpen(boolean open) {
         randomWindowOpen = open;
     }
 }
