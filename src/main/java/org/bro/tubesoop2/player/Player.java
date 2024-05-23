@@ -51,6 +51,11 @@ public class Player {
         ladang.put(l, r);
     }
 
+    public void addToDeck(Resource resource) {
+        deck.add(resource);
+    }
+
+
     public void setDeckLeft(int deckLeft){
         this.deckLeft = deckLeft;
     }

@@ -9,6 +9,7 @@ import org.bro.tubesoop2.product.ProductPlant;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 
@@ -61,4 +62,7 @@ public class ResourceFactory {
         return s.get();
     }
 
+    public Set<String> getAllResourceKeys() {
+        return resourceMap.keySet();
+    }
 }
