@@ -1,5 +1,5 @@
 package org.bro.tubesoop2;
-
+import javafx.scene.layout.TilePane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,7 @@ import javafx.scene.input.*;
 import javafx.stage.StageStyle;
 import javafx.scene.image.Image;
 import java.io.IOException;
-
+import javafx.scene.layout.TilePane;
 public class MainController {
     private int activeDeckNum = 6;
 
@@ -27,35 +27,42 @@ public class MainController {
     @FXML
     private Button shopButton, loadButton, myFieldButton, enemyFieldButton, saveButton, pluginButton;
 
+
     @FXML
-    private DraggableItem[] sourceViews = new DraggableItem[6];
+    private DraggableItem[] sourceViews = new ProductCard[6];
+
     @FXML
-    private DraggableItem[] destinationViews = new DraggableItem[20];
+    private DraggableItem[] destinationViews = new ProductCard[20];
+
+    @FXML
+    private TilePane leftDeck, ladangDeck;
 
     @FXML
     public void initialize() {
         for (int i = 0; i < sourceViews.length; i++) {
-            sourceViews[i] = new DraggableItem();
+            sourceViews[i] = new ProductCard();
             addDragHandlers(sourceViews[i]);
+            leftDeck.getChildren().add(sourceViews[i]);
         }
 
         for (int i = 0; i < destinationViews.length; i++) {
-            destinationViews[i] = new DraggableItem();
+            destinationViews[i] = new ProductCard();
             addDropHandlers(destinationViews[i]);
-            addDetailHandlers(destinationViews[i]);
+            ladangDeck.getChildren().add(destinationViews[i]);
         }
     }
 
+
     @FXML
     private void addDragHandlers(DraggableItem imageView) {
-        imageView.setOnDragDetected(this::dragDetected);
-        imageView.setOnDragDone(this::dragDone);
+        imageView.setOnDragDetected(imageView::dragDetected);
+        imageView.setOnDragDone(imageView::dragDone);
     }
 
     @FXML
     private void addDropHandlers(DraggableItem imageView) {
-        imageView.setOnDragOver(this::dragOver);
-        imageView.setOnDragDropped(this::dragDropped);
+        imageView.setOnDragOver(imageView::dragOver);
+        imageView.setOnDragDropped(imageView::dragDropped);
     }
 
     @FXML
@@ -90,18 +97,6 @@ public class MainController {
             event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
         }
         event.consume();
-    }
-
-    @FXML
-    private void dragDropped(DragEvent event) {
-        ImageView destinationView = (ImageView) event.getSource();
-        Dragboard dragboard = event.getDragboard();
-        if (dragboard.hasImage()) {
-            destinationView.setImage(dragboard.getImage());
-        }
-        event.setDropCompleted(true);
-        event.consume();
-        this.activeDeckNum -= 1;
     }
 
     @FXML
