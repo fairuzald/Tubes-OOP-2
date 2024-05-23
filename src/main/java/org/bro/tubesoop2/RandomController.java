@@ -13,6 +13,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import org.bro.tubesoop2.action.Action;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +32,7 @@ public class RandomController {
     private List<ImageView> selectedViews = new ArrayList<>();
     private static boolean randomWindowOpen = false;
 
+    private static List<Image> imagesShown = new ArrayList<>();
     private static final String DEFAULT_IMAGE_PATH = "assets/basic.png";
 
     public static Action<RandomController> onNextDone = new Action<RandomController>();
@@ -43,6 +47,7 @@ public class RandomController {
             deck_selection.getChildren().add(view);
         }
 
+        setImages();
         onRefresh(null);
     }
 
@@ -56,12 +61,21 @@ public class RandomController {
         }
     }
 
+    private void clearAllSelectionEffect() {
+        for (ImageView image : selectedViews) {
+            selectedViews.remove(image);
+            resetSelectionEffect(image);
+        }
+    }
+
     @FXML
     void onRefresh(ActionEvent event) {
         for (ImageView view : imageViews) {
             setImage(view, getRandomImage());
         }
         selectedViews.clear();
+
+        clearAllSelectionEffect();
     }
 
     @FXML
@@ -80,10 +94,68 @@ public class RandomController {
         }
     }
 
+    public void setImages() {
+        imagesShown = new ArrayList<>();
+        try {
+            Path path = Paths.get(getClass().getResource("assets/Hewan/").toURI());
+            Files.walk(path)
+                .filter(Files::isRegularFile)
+                .forEach(filePath -> {
+                    try {
+                        Image image = new Image(filePath.toUri().toString());
+                        imagesShown.add(image);
+                    } catch (Exception e) {
+
+                    }
+                });
+
+
+            path = Paths.get(getClass().getResource("assets/Item/").toURI());
+            Files.walk(path)
+                .filter(Files::isRegularFile)
+                .forEach(filePath -> {
+                    try {
+                        Image image = new Image(filePath.toUri().toString());
+                        imagesShown.add(image);
+                    } catch (Exception e) {
+
+                    }
+            });
+
+            path = Paths.get(getClass().getResource("assets/Produk/").toURI());
+            Files.walk(path)
+                .filter(Files::isRegularFile)
+                .forEach(filePath -> {
+                    try {
+                        Image image = new Image(filePath.toUri().toString());
+                        imagesShown.add(image);
+                    } catch (Exception e) {
+
+                    }
+            });
+
+            path = Paths.get(getClass().getResource("assets/Tanaman/").toURI());
+            Files.walk(path)
+                .filter(Files::isRegularFile)
+                .forEach(filePath -> {
+                    try {
+                        Image image = new Image(filePath.toUri().toString());
+                        imagesShown.add(image);
+                    } catch (Exception e) {
+
+                    }
+            });
+        } catch (Exception e) {
+
+        }
+    }
+
     private Image getRandomImage() {
         Random random = new Random();
-        int randomIndex = random.nextInt(4) + 1;
-        Image testImage = new Image(getClass().getResourceAsStream("assets/test.png"));
+        int randomIndex = random.nextInt(imagesShown.size());
+
+        Image testImage = imagesShown.get(randomIndex);
+        System.out.println(testImage.getUrl());
         return testImage;
     }
 

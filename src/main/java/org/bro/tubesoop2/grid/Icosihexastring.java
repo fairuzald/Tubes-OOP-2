@@ -7,17 +7,20 @@ public class Icosihexastring {
     public Icosihexastring(Integer value) {
         this.value = value;
 
+        this.value = value;
+
         String reversed = "";
-        reversed += (value % 26) + 'A';
+        reversed += String.valueOf(Character.toChars((value % 26) + 65));
         while (value/26 > 0) {
             value /= 26;
-            reversed += ((--value) % 26) + 'A';
+            reversed += String.valueOf(Character.toChars((--value % 26) + 65));
         }
 
         str = "";
         for (int i = reversed.length() - 1; i >= 0; i--) {
             str += reversed.charAt(i);
         }
+
     }
 
     public Icosihexastring(String str) {
