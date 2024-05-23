@@ -198,97 +198,97 @@
                            <image>
                               <Image url="@assets/basic.png" />
                            </image></ImageView>
-                        <ImageView fx:id="destinationView1" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView1" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView2" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView2" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView3" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView3" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView4" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView4" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView5" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView5" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView6" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView6" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView7" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView7" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView8" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView8" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView9" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView9" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView10" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView10" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView11" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView11" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView12" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView12" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView13" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView13" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView14" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView14" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView15" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView15" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView16" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView16" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView17" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView17" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView18" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView18" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView19" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView19" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>

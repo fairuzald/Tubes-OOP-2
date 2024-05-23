@@ -143,7 +143,8 @@ public class ShopController {
             imageView.setFitWidth(77.0);
             imageView.setPickOnBounds(true);
             imageView.setPreserveRatio(true);
-            imageView.setImage(new Image("file:/assets/test.png"));
+            Image myImage = new Image(getClass().getResourceAsStream("assets/test.png"));
+            imageView.setImage(myImage);
 
             VBox labelsVBox = new VBox();
             labelsVBox.setPrefHeight(200.0);

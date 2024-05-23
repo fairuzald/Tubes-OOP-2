@@ -78,7 +78,8 @@ public class MainController {
     private void dragDone(DragEvent event) {
         if (event.getTransferMode() == TransferMode.MOVE) {
             ImageView sourceView = (ImageView) event.getSource();
-            sourceView.setImage(new Image("file:/assets/basic.png"));
+            Image myImage = new Image(getClass().getResourceAsStream("assets/basic.png"));
+            sourceView.setImage(myImage);
         }
         event.consume();
     }
