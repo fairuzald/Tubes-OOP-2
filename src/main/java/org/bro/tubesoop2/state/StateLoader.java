@@ -117,7 +117,7 @@ public class StateLoader {
     }
     private static void debugPlayer(Player p){
         System.out.println(p.getGulden());
-        System.out.println(0);
+        System.out.println(p.getDeckLeft());
         System.out.println(p.getActiveDeck().size());
         for(int i = 0; i < p.getActiveDeck().size(); i++){
             Resource r = p.getActiveDeck().get(i);

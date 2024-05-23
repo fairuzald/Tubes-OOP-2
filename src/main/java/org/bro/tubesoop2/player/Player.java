@@ -12,6 +12,7 @@ public class Player {
     private List<Resource> deck;
     private List<Resource> activeDeck;
     private int gulden = 0;
+    private int deckLeft = 40;
 
     public Player() {
         ladang = new Grid<>(4, 5);
@@ -37,6 +38,8 @@ public class Player {
         return activeDeck;
     }
 
+    public int getDeckLeft(){return deckLeft;}
+
     public void setGulden(int gulden){this.gulden = gulden;}
     public int getGulden(){return gulden;}
 
@@ -46,5 +49,9 @@ public class Player {
 
     public void addLadang(Resource r, Location l){
         ladang.put(l, r);
+    }
+
+    public void setDeckLeft(int deckLeft){
+        this.deckLeft = deckLeft;
     }
 }

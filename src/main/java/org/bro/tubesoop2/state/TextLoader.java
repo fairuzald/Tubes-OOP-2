@@ -39,6 +39,7 @@ public class TextLoader implements StatePlugin {
 
         int deckAmount = Integer.parseInt(scanner.nextLine());
         System.out.println(deckAmount);
+        player.setDeckLeft(deckAmount);
         // set active deck amount
 
         int deckActiveAmount = Integer.parseInt(scanner.nextLine());

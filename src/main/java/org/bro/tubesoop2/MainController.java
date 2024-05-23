@@ -18,7 +18,12 @@ import javafx.stage.StageStyle;
 import javafx.scene.image.Image;
 import java.io.IOException;
 import javafx.scene.layout.TilePane;
+import org.bro.tubesoop2.state.GameState;
+import org.bro.tubesoop2.state.StateLoader;
+import org.bro.tubesoop2.state.TextLoader;
+
 public class MainController {
+    GameState state;
     private int activeDeckNum = 6;
 
     @FXML
@@ -50,6 +55,14 @@ public class MainController {
             addDropHandlers(destinationViews[i]);
             ladangDeck.getChildren().add(destinationViews[i]);
         }
+
+
+
+        StateLoader loader = new StateLoader();
+        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
+                .setPlugin(new TextLoader())
+//                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
+                .loadState();
     }
 
 

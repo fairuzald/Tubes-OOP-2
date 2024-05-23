@@ -22,14 +22,6 @@ public class MainApplication extends Application {
         stage.setMinWidth(1248);
         stage.setMinHeight(835);
 
-        StateLoader loader = new StateLoader();
-        GameState state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
-                .setPlugin(new TextLoader())
-//                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
-                .loadState();
-
-        System.out.println("===========================");
-
         stage.show();
     }
 
