@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public abstract class Animal extends Creature {
     protected int weightToHarvest;
     protected int weight;
-    Animal(String name, int weightToHarvest, ArrayList <Product> products) {
-        super(name, products);
+    Animal(String name, int weightToHarvest, ArrayList <Product> drops) {
+        super(name, drops);
         this.weightToHarvest = weightToHarvest;
         this.weight = 0;
     }

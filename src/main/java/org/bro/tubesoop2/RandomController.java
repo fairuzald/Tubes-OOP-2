@@ -7,29 +7,40 @@ import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+
 public class RandomController {
-    @FXML
-    private Button selectButton,refreshButton;
 
     @FXML
-    private ImageView view, view1, view2, view3;
+    private Button selectButton, refreshButton;
 
+    @FXML
+    private TilePane deck_selection;
 
+    private List<ImageView> imageViews = new ArrayList<>();
     private List<ImageView> selectedViews = new ArrayList<>();
+    private static boolean randomWindowOpen = false;
+
+    private static final String DEFAULT_IMAGE_PATH = "assets/basic.png";
 
     @FXML
     void initialize() {
-        view.setOnMouseClicked(event -> handleImageViewClick(view));
-        view1.setOnMouseClicked(event -> handleImageViewClick(view1));
-        view2.setOnMouseClicked(event -> handleImageViewClick(view2));
-        view3.setOnMouseClicked(event -> handleImageViewClick(view3));
+        Image defaultImage = new Image((getClass().getResourceAsStream(DEFAULT_IMAGE_PATH)));
+        for (int i = 0; i < 4; i++) {
+            ImageView view = new ImageView(defaultImage);
+            view.setOnMouseClicked(event -> handleImageViewClick(view));
+            imageViews.add(view);
+            deck_selection.getChildren().add(view);
+        }
+
+        onRefresh(null);
     }
 
     private void handleImageViewClick(ImageView imageView) {
@@ -44,22 +55,14 @@ public class RandomController {
 
     @FXML
     void onRefresh(ActionEvent event) {
-        setImage(view, getRandomImage());
-        setImage(view1, getRandomImage());
-        setImage(view2, getRandomImage());
-        setImage(view3, getRandomImage());
-
+        for (ImageView view : imageViews) {
+            setImage(view, getRandomImage());
+        }
         selectedViews.clear();
     }
 
     @FXML
     void onSelect(ActionEvent event) {
-        for (ImageView imageView : selectedViews) {
-            applyPreferenceEffect(imageView);
-        }
-
-        System.out.println("Selected views: " + selectedViews);
-
         if (selectedViews.size() >= 2) {
             setRandomWindowOpen(false);
             Stage stage = (Stage) selectButton.getScene().getWindow();
@@ -69,16 +72,15 @@ public class RandomController {
             alert.setTitle("Alert");
             alert.setHeaderText(null);
             alert.setContentText("You must choose at least two images");
-
             alert.showAndWait();
         }
-
     }
 
     private Image getRandomImage() {
         Random random = new Random();
         int randomIndex = random.nextInt(4) + 1;
-        return new Image("file:/assets/" + randomIndex + ".png");
+        Image testImage = new Image(getClass().getResourceAsStream("assets/test.png"));
+        return testImage;
     }
 
     private void setImage(ImageView imageView, Image image) {
@@ -88,10 +90,8 @@ public class RandomController {
     private void applyPreferenceEffect(ImageView imageView) {
         Blend blend = new Blend(BlendMode.COLOR_BURN);
         blend.setOpacity(0.8);
-
         imageView.setEffect(blend);
     }
-
 
     private void resetSelectionEffect(ImageView imageView) {
         imageView.setEffect(null);
@@ -104,6 +104,4 @@ public class RandomController {
     public static void setRandomWindowOpen(boolean open) {
         randomWindowOpen = open;
     }
-
-    private static boolean randomWindowOpen = false;
 }
