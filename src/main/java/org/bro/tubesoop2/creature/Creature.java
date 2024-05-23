@@ -7,7 +7,7 @@ import org.bro.tubesoop2.resource.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Creature extends Resource {
+public abstract class Creature extends Resource {
     private List<Product> drops;
     private List<Item> itemsActive;
 
@@ -35,5 +35,6 @@ public class Creature extends Resource {
         return itemsActive;
     }
 
-
+    public abstract void consumeItem(Item item);
+    
 }

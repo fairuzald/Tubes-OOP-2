@@ -15,8 +15,7 @@ public class Carnivore extends Animal{
     public void eat(Product p) throws Exception {
         if(p instanceof ProductAnimal){
             this.weight+= p.getAddedWeight();
-        }
-        else{
+        } else{
             throw new Exception("Cannot eat");
         }
     }

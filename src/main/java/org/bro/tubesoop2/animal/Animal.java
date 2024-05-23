@@ -1,6 +1,9 @@
 package org.bro.tubesoop2.animal;
 
 import org.bro.tubesoop2.creature.Creature;
+import org.bro.tubesoop2.item.Accelerate;
+import org.bro.tubesoop2.item.Delay;
+import org.bro.tubesoop2.item.Item;
 import org.bro.tubesoop2.product.Product;
 
 import java.util.ArrayList;
@@ -25,4 +28,9 @@ public abstract class Animal extends Creature {
         return weight >= weightToHarvest;
     }
     abstract public void eat(Product p) throws Exception;
+
+    @Override
+    public void consumeItem(Item item) {
+        item.consumedBy(this);
+    }
 }
