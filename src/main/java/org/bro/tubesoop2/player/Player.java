@@ -47,4 +47,9 @@ public class Player {
     public void addLadang(Resource r, Location l){
         ladang.put(l, r);
     }
+
+    public void addToDeck(Resource resource) {
+        deck.add(resource);
+    }
+
 }
