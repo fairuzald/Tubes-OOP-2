@@ -2,10 +2,17 @@ package org.bro.tubesoop2.plant;
 
 import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.item.Item;
+import org.bro.tubesoop2.product.Product;
+
+import java.util.ArrayList;
 
 public class Plant extends Creature {
     private Integer durationToHarvest;
     private Integer currentAge;
+
+    public Plant(Integer duration, String name, ArrayList<Product> drops) {
+        super(name, drops);
+    }
 
     public Integer getDurationToHarvest() {
         return durationToHarvest;
