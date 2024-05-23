@@ -19,10 +19,12 @@ import javafx.scene.input.*;
 import javafx.stage.StageStyle;
 import javafx.scene.image.Image;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import javafx.scene.layout.TilePane;
 import org.bro.tubesoop2.grid.Grid;
+import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
@@ -54,16 +56,10 @@ public class MainController {
         StateLoader loader = new StateLoader();
         state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
                 .setPlugin(new TextLoader())
-//                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
                 .loadState();
 
         for (int i = 0; i < sourceViews.length; i++) {
-            if(i%2==0){
-                sourceViews[i] = new ProductCard("assets/test.png");
-
-            }else{
-                sourceViews[i] = new ItemCard("assets/test.png");
-            }
+            sourceViews[i] = new ProductCard("assets/Basic.png");
             addDragHandlers(sourceViews[i]);
             leftDeck.getChildren().add(sourceViews[i]);
         }
@@ -74,50 +70,41 @@ public class MainController {
             ladangDeck.getChildren().add(destinationViews[i]);
         }
 
+        /**
+         * Set Active Deck
+         * */
+        List<Resource> activeDeckPlayer = this.state.getCurrentPlayer().getActiveDeck();
+        for(int i = 0; i < activeDeckPlayer.size(); i++) {
+            Resource resource = activeDeckPlayer.get(i);
+            if(resource != null) {
+                String name = resource.getName();
+                sourceViews[i] = CreatureCard.getCreatureCard(name);
+                leftDeck.getChildren().remove(i);
+                leftDeck.getChildren().add(i,sourceViews[i]);
+            }
+        }
+
+        /**
+         * Set Ladang
+         * */
         // Iterasi grid aktif
         Grid<Resource> ladangPlayer = this.state.getCurrentPlayer().getLadang();
         ladangPlayer.forEachActive((a) -> {
             Resource currentElement = ladangPlayer.getElement(a);
             String name = currentElement.getName();
-            String imagePath;
-            if(Objects.equals(name, "Bear")){
-                imagePath = "assets/Hewan/Bear.png";
-            } else if (Objects.equals(name, "Chicken")){
-                imagePath = "assets/Hewan/Chicken.png";
-            } else if (Objects.equals(name, "Cow")){
-                imagePath = "assets/Hewan/Cow.png";
-            } else if (Objects.equals(name, "Hiu Darat")){
-                imagePath = "assets/Hewan/Hiu_Darat.png";
-            } else if (Objects.equals(name, "Horse")) {
-                imagePath = "assets/Hewan/Horse.png";
-            } else if (Objects.equals(name, "Shark")) {
-                imagePath = "assets/Hewan/Shark.png";
-            } else if (Objects.equals(name, "DOMBA")) {
-                imagePath = "assets/Hewan/Sheep.png";
-            } else if (Objects.equals(name, "Corn Seeds")) {
-                imagePath = "assets/Tanaman/Corn_Seeds.png";
-            } else if (Objects.equals(name, "Pumpkin Seeds")) {
-                imagePath = "assets/Tanaman/Pumpkin_Seeds.png";
-            } else if (Objects.equals(name, "Strawberry Seeds")) {
-                imagePath = "assets/Tanaman/Strawberry_Seeds.png";
-            } else {
-                imagePath = "assets/basic.png";
-            }
 
             // Set Destination Views
             int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
-            destinationViews[gridIDX] = new CreatureCard(imagePath);
+            destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
 
-
+            // Update Deck
+            ladangDeck.getChildren().remove(gridIDX);
+            ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
+        });
 
         RandomController.onNextDone.AddListener((r) -> {
             state.NextTurn();
             updateGUI(state);
-        });
-        updateGUI(state);
-            // Update Deck
-            ladangDeck.getChildren().remove(gridIDX);
-            ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
         });
     }
 
