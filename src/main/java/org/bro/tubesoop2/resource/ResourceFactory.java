@@ -5,6 +5,8 @@ import org.bro.tubesoop2.animal.Omnivore;
 import org.bro.tubesoop2.item.*;
 import org.bro.tubesoop2.plant.Plant;
 import org.bro.tubesoop2.product.ProductAnimal;
+import org.bro.tubesoop2.product.ProductPlant;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -22,9 +24,9 @@ public class ResourceFactory {
         resourceMap.put("DAGING_KUDA", () -> new ProductAnimal("DAGING_KUDA", 8, 150));
         resourceMap.put("TELUR", () -> new ProductAnimal("TELUR", 2, 50));
         resourceMap.put("DAGING_BERUANG", () -> new ProductAnimal("DAGING_BERUANG", 12, 500));
-        resourceMap.put("JAGUNG", () -> new ProductAnimal("JAGUNG", 3, 150));
-        resourceMap.put("LABU", () -> new ProductAnimal("LABU", 10, 500));
-        resourceMap.put("STROBERI", () -> new ProductAnimal("STROBERI", 5, 350));
+        resourceMap.put("JAGUNG", () -> new ProductPlant("JAGUNG", 3, 150));
+        resourceMap.put("LABU", () -> new ProductPlant("LABU", 10, 500));
+        resourceMap.put("STROBERI", () -> new ProductPlant("STROBERI", 5, 350));
 
         // Animal
         resourceMap.put("HIU_DARAT", () -> new Carnivore("HIU_DARAT", 25, null));

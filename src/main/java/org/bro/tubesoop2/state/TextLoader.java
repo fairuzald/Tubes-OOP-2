@@ -39,7 +39,7 @@ public class TextLoader implements StatePlugin {
 
         int deckAmount = Integer.parseInt(scanner.nextLine());
         System.out.println(deckAmount);
-        player.setGulden((deckAmount));
+        // set active deck amount
 
         int deckActiveAmount = Integer.parseInt(scanner.nextLine());
         System.out.println(deckActiveAmount);
@@ -65,12 +65,12 @@ public class TextLoader implements StatePlugin {
             System.out.print(location + " " + typeName + " " + umurORBerat + " " + activeItemAmount);
             Creature c = (Creature) state.createResource(typeName);
             c.setUmurOrBerat(umurORBerat);
-            player.addLadang(state.createResource(typeName), new Location(location));
+            player.addLadang(c, new Location(location));
 
             for(int j = 0; j < activeItemAmount; j++){
                 String itemTypeName = split[4+j];
                 System.out.print(" "+itemTypeName);
-                c.addItem((Item) state.createResource(typeName));
+                c.addItem(state.createItem(itemTypeName));
             }
 
             // Debug

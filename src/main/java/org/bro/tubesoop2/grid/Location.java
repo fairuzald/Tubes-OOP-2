@@ -41,5 +41,7 @@ public class Location {
                 col += c - '0';
             }
         }
+
+        this.col = col-1;
     }
 }

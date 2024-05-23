@@ -37,4 +37,8 @@ public class Plant extends Creature {
 
     @Override
     public void setUmurOrBerat(int u){this.currentAge = u;}
+
+
+    @Override
+    public int getUmurOrBerat(){return this.currentAge;}
 }

@@ -1,5 +1,6 @@
 package org.bro.tubesoop2.state;
 
+import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.item.Item;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
@@ -125,6 +126,15 @@ public class StateLoader {
             }
         }
         System.out.println(p.getLadang().getCountFilled());
+        p.getLadang().forEachActive(l -> {
+            Creature c = (Creature) p.getLadang().getElement(l);
+            System.out.print(c.getName() + " " + c.getUmurOrBerat() + " " + c.getItemsActive().size());
+            for(Item item : c.getItemsActive()){
+                System.out.print(" "+item.getClass().getName().toString());
+            }
+
+            System.out.println("");
+        });
     }
 
 }

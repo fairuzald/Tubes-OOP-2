@@ -36,4 +36,7 @@ public abstract class Animal extends Creature {
 
     @Override
     public void setUmurOrBerat(int u){this.weight = u;}
+
+    @Override
+    public int getUmurOrBerat(){return this.weight;}
 }

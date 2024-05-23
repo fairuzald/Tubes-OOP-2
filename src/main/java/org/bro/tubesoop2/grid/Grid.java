@@ -3,8 +3,11 @@ package org.bro.tubesoop2.grid;
 import org.bro.tubesoop2.resource.Resource;
 
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-    public class Grid<T> {
+public class Grid<T> {
 
         private static final int defaultWidth = 5;
         private static final int defaultHeight = 4;
@@ -89,6 +92,9 @@ import java.util.*;
         public boolean isFilled(int row, int col) {
             return isFilled.get(row).get(col);
         }
+        public boolean isFilled(Location l) {
+        return isFilled.get(l.getRow()).get(l.getCol());
+    }
 
         public int getCountFilled() {
             return countFilled;
@@ -98,4 +104,17 @@ import java.util.*;
             return countNotFilled;
         }
 
+        public void forEachActive(Consumer<Location> callback){
+            try{
+                for (int i = 0; i < elements.size(); i++) {
+                    for (int j = 0; j < elements.get(i).size(); j++) {
+                        if(isFilled.get(i).get(j)){
+                            callback.accept(new Location(i, j));
+                        }
+                    }
+                }
+            } catch (Exception e){
+
+            }
+        }
     }

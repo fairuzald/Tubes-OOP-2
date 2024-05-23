@@ -1,5 +1,6 @@
 package org.bro.tubesoop2.state;
 
+import org.bro.tubesoop2.item.Item;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.resource.ResourceFactory;
@@ -28,6 +29,9 @@ public class GameState {
     ResourceFactory factory = new ResourceFactory();
     public Resource createResource(String key){
         return factory.get(key);
+    }
+    public Item createItem(String key){
+        return factory.getItem(key);
     }
 
     public Player getPlayer1(){return player1;}
