@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.bro.tubesoop2.state.StateLoader;
 
 import java.io.IOException;
 
@@ -18,6 +19,11 @@ public class MainApplication extends Application {
 
         stage.setMinWidth(1248);
         stage.setMinHeight(835);
+
+        StateLoader state = new StateLoader();
+        state.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
+                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
+                .initialize();
 
         stage.show();
     }
