@@ -27,10 +27,6 @@ public class SeranganBeruang implements ITimerSubscriber {
 
         this.startRow = random.nextInt(totalRows-deltaRow+1);
         this.startCol = random.nextInt(totalCols-deltaCol+1);
-
-        System.out.println("Start: "+startRow+" "+startCol);
-        System.out.println("Delta: "+rowBox+" "+colBox);
-
     }
 
     // TODO: Belom handle item Trap
