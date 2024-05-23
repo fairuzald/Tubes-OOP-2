@@ -104,7 +104,7 @@
                <children>
                   <VBox layoutX="9.0" layoutY="131.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" styleClass="vbox_side_left" stylesheets="@style.css">
                      <children>
-                        <Button fx:id="myFieldButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" stylesheets="@style.css" text="My Farm" textAlignment="CENTER">
+                        <Button fx:id="myFieldButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onMyFieldClick" stylesheets="@style.css" text="My Farm" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                            </VBox.margin>
@@ -116,7 +116,7 @@
                         <String fx:value="lg_button" />
                      </styleClass>
                         </Button>
-                        <Button fx:id="enemyFieldButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Enemy's Farm" textAlignment="CENTER">
+                        <Button fx:id="enemyFieldButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onEnemyFieldClick" text="Enemy's Farm" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                            </VBox.margin>

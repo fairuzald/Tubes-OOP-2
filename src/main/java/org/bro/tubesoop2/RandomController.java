@@ -101,11 +101,11 @@ public class RandomController {
         imageView.setEffect(null);
     }
 
-    public boolean isRandomWindowOpen() {
+    public static boolean isRandomWindowOpen() {
         return randomWindowOpen;
     }
 
-    public void setRandomWindowOpen(boolean open) {
+    public static void setRandomWindowOpen(boolean open) {
         randomWindowOpen = open;
     }
 }

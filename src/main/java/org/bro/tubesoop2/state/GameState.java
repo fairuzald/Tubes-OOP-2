@@ -22,6 +22,10 @@ public class GameState {
         if(turn % 2 == 1) return player1;
         else return player2;
     }
+    public Player getNextPlayer(){
+        if(turn % 2 == 1) return player2;
+        else return player1;
+    }
 
     public void setTurn(int turn){this.turn = turn;}
     public int getTurn(){return turn;}

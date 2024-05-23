@@ -19,7 +19,13 @@ import javafx.scene.input.*;
 import javafx.stage.StageStyle;
 import javafx.scene.image.Image;
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
+
 import javafx.scene.layout.TilePane;
+import org.bro.tubesoop2.grid.Grid;
+import org.bro.tubesoop2.player.Player;
+import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
@@ -47,29 +53,54 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        for (int i = 0; i < sourceViews.length; i++) {
-            if(i%2==0){
-                sourceViews[i] = new ProductCard("assets/test.png");
+        StateLoader loader = new StateLoader();
+        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
+                .setPlugin(new TextLoader())
+                .loadState();
 
-            }else{
-                sourceViews[i] = new ItemCard("assets/test.png");
-            }
+        for (int i = 0; i < sourceViews.length; i++) {
+            sourceViews[i] = new ProductCard("assets/Basic.png");
             addDragHandlers(sourceViews[i]);
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
         for (int i = 0; i < destinationViews.length; i++) {
-            if(i%2==0){
-            destinationViews[i] = new ProductCard("assets/Hewan/Bear.png");
-            }else{
-                destinationViews[i] = new ProductCard("assets/Hewan/Chicken.png");
-
-            }
-
+            destinationViews[i] = new ProductCard("assets/Basic.png");
             addDropHandlers(destinationViews[i]);
             ladangDeck.getChildren().add(destinationViews[i]);
         }
 
+        /**
+         * Set Active Deck
+         * */
+        List<Resource> activeDeckPlayer = this.state.getCurrentPlayer().getActiveDeck();
+        for(int i = 0; i < activeDeckPlayer.size(); i++) {
+            Resource resource = activeDeckPlayer.get(i);
+            if(resource != null) {
+                String name = resource.getName();
+                sourceViews[i] = CreatureCard.getCreatureCard(name);
+                leftDeck.getChildren().remove(i);
+                leftDeck.getChildren().add(i,sourceViews[i]);
+            }
+        }
+
+        /**
+         * Set Ladang
+         * */
+        // Iterasi grid aktif
+        Grid<Resource> ladangPlayer = this.state.getCurrentPlayer().getLadang();
+        ladangPlayer.forEachActive((a) -> {
+            Resource currentElement = ladangPlayer.getElement(a);
+            String name = currentElement.getName();
+
+            // Set Destination Views
+            int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
+            destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
+
+            // Update Deck
+            ladangDeck.getChildren().remove(gridIDX);
+            ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
+        });
 
 
         StateLoader loader = new StateLoader();
@@ -94,8 +125,7 @@ public class MainController {
             state = loader.setPath(folderDir, "gamestate.txt", "player1.txt", "player2.txt")
                     .setPlugin(new TextLoader())
                     .loadState();
-            updateGUI(state);
-        });
+            });
     }
 
     void updateGUI(GameState state){
@@ -116,6 +146,9 @@ public class MainController {
 
 
 
+    private int convertGridToListIdx(int i, int j){
+        return i*4 + j;
+    }
 
     @FXML
     private void addDragHandlers(DraggableItem imageView) {
@@ -191,6 +224,80 @@ public class MainController {
         }
     }
 
+    void updateActiveDeck(Player pl){
+        leftDeck.getChildren().clear();
+
+        for (int i = 0; i < sourceViews.length; i++) {
+            sourceViews[i] = new ProductCard("assets/Basic.png");
+            addDragHandlers(sourceViews[i]);
+            leftDeck.getChildren().add(sourceViews[i]);
+        }
+
+        List<Resource> activeDeckPlayer = pl.getActiveDeck();
+        for(int i = 0; i < activeDeckPlayer.size(); i++) {
+            Resource resource = activeDeckPlayer.get(i);
+            if(resource != null) {
+                String name = resource.getName();
+                sourceViews[i] = CreatureCard.getCreatureCard(name);
+                leftDeck.getChildren().remove(i);
+                leftDeck.getChildren().add(i,sourceViews[i]);
+            }
+        }
+    }
+
+    void updateLadang(Player pl) {
+        ladangDeck.getChildren().clear();
+
+        for (int i = 0; i < destinationViews.length; i++) {
+            destinationViews[i] = new ProductCard("assets/Basic.png");
+            addDropHandlers(destinationViews[i]);
+            ladangDeck.getChildren().add(destinationViews[i]);
+        }
+
+        Grid<Resource> ladangPlayer = pl.getLadang();
+        ladangPlayer.forEachActive((a) -> {
+            Resource currentElement = ladangPlayer.getElement(a);
+            String name = currentElement.getName();
+
+            // Set Destination Views
+            int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
+            destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
+
+            // Update Deck
+            ladangDeck.getChildren().remove(gridIDX);
+            ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
+        });
+    }
+
+    @FXML
+    void onMyFieldClick(ActionEvent event){
+        for (int i = 0; i < destinationViews.length; i++) {
+            destinationViews[i] = new ProductCard("assets/Basic.png");
+            addDropHandlers(destinationViews[i]);
+            ladangDeck.getChildren().add(destinationViews[i]);
+        }
+
+        /**
+         * Set Ladang
+         * */
+        updateLadang(this.state.getCurrentPlayer());
+    }
+
+    @FXML
+    void onEnemyFieldClick(ActionEvent event){
+        ladangDeck.getChildren().clear();
+        for (int i = 0; i < destinationViews.length; i++) {
+            destinationViews[i] = new ProductCard("assets/Basic.png");
+            addDropHandlers(destinationViews[i]);
+            ladangDeck.getChildren().add(destinationViews[i]);
+        }
+
+        /**
+         * Set Ladang
+         * */
+        updateLadang(this.state.getNextPlayer());
+    }
+
     @FXML
     void onLoadClick(ActionEvent event) {
         if (!LoadController.isLoadWindowOpen()) {
@@ -262,7 +369,7 @@ public class MainController {
 
     @FXML
     void onNextClick(ActionEvent event) {
-        if (!randomController.isRandomWindowOpen()) {
+        if (!RandomController.isRandomWindowOpen()) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("random.fxml"));
                 Parent root = fxmlLoader.load();
@@ -275,9 +382,10 @@ public class MainController {
 
                 randomStage.initStyle(StageStyle.UNDECORATED);
                 randomStage.show();
-                randomController.setRandomWindowOpen(true);
-                randomStage.setOnCloseRequest(eventClose -> randomController.setRandomWindowOpen(false));
-
+                RandomController.setRandomWindowOpen(true);
+                randomStage.setOnCloseRequest(eventClose -> RandomController.setRandomWindowOpen(false));
+                updateLadang(this.state.getNextPlayer());
+                updateActiveDeck(this.state.getNextPlayer());
                 applyRedBorderToBearAttacks();
             }catch (IOException e) {
                 System.out.println("Error loading random.fxml: " + e.getMessage());
@@ -311,5 +419,10 @@ public class MainController {
                 System.out.println("Error loading shop.fxml: " + e.getMessage());
             }
         }
+    }
+
+    @FXML
+    void enemyFieldButton(ActionEvent event) {
+
     }
 }
