@@ -6,4 +6,6 @@ module org.bro.tubesoop2 {
 
     opens org.bro.tubesoop2 to javafx.fxml;
     exports org.bro.tubesoop2;
+
+    uses org.bro.tubesoop2.state.StatePlugin;
 }
