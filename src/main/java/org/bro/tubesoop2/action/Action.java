@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class Action<T> {
-    ArrayList<Consumer<T>> list = new ArrayList<>();
+    public ArrayList<Consumer<T>> list;
+    public Action(){
+        list = new ArrayList<>();
+    }
     public void AddListener(Consumer<T> r){
         list.add(r);
     }
@@ -13,6 +16,8 @@ public class Action<T> {
     }
 
     public void Notify(T t){
-        list.forEach(c -> c.accept(t));
+        list.forEach(c -> {
+            c.accept(t);
+        });
     }
 }

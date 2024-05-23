@@ -16,10 +16,10 @@ public class GameState {
 
     int turn = 1; // Asumsi turn 1 dan 2 instead of 0 dan 1
     public void NextTurn(){
-        turn++; if(turn == 3) turn = 1;
+        turn++;
     }
     public Player getCurrentPlayer(){
-        if(turn == 1) return player1;
+        if(turn % 2 == 1) return player1;
         else return player2;
     }
 

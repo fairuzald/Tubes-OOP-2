@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +31,7 @@ import org.bro.tubesoop2.state.TextLoader;
 public class MainController {
     GameState state;
     private int activeDeckNum = 6;
+    RandomController randomController = new RandomController();
 
     @FXML
     private Label player1Name, player2Name, player1Gulden, player2Gulden, activeDeck, turn;
@@ -105,11 +108,40 @@ public class MainController {
             int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
             destinationViews[gridIDX] = new CreatureCard(imagePath);
 
+        StateLoader loader = new StateLoader();
+        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
+                .setPlugin(new TextLoader())
+//                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
+                .loadState();
+
+        RandomController.onNextDone.AddListener((r) -> {
+            state.NextTurn();
+            updateGUI(state);
+        });
+        updateGUI(state);
             // Update Deck
             ladangDeck.getChildren().remove(gridIDX);
             ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
         });
     }
+
+    void updateGUI(GameState state){
+        Integer turn = state.getTurn();
+        this.turn.setText(turn.toString());
+        if(turn % 2 == 1){
+            player1Name.setTextFill(Color.WHITE);
+            player2Name.setTextFill(Color.GRAY);
+            player1Gulden.setTextFill(Color.WHITE);
+            player2Gulden.setTextFill(Color.GRAY);
+        } else {
+            player1Name.setTextFill(Color.GRAY);
+            player2Name.setTextFill(Color.WHITE);
+            player1Gulden.setTextFill(Color.GRAY);
+            player2Gulden.setTextFill(Color.WHITE);
+        }
+    }
+
+
 
     private int convertGridToListIdx(int i, int j){
         return i*4 + j;
