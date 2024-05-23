@@ -28,38 +28,38 @@ public class MainController {
     private Button shopButton, loadButton, myFieldButton, enemyFieldButton, saveButton, pluginButton;
 
     @FXML
-    private ImageView[] sourceViews = new ImageView[6];
+    private DraggableItem[] sourceViews = new DraggableItem[6];
     @FXML
-    private ImageView[] destinationViews = new ImageView[20];
+    private DraggableItem[] destinationViews = new DraggableItem[20];
 
     @FXML
     public void initialize() {
         for (int i = 0; i < sourceViews.length; i++) {
-            sourceViews[i] = new ImageView();
+            sourceViews[i] = new DraggableItem();
             addDragHandlers(sourceViews[i]);
         }
 
         for (int i = 0; i < destinationViews.length; i++) {
-            destinationViews[i] = new ImageView();
+            destinationViews[i] = new DraggableItem();
             addDropHandlers(destinationViews[i]);
             addDetailHandlers(destinationViews[i]);
         }
     }
 
     @FXML
-    private void addDragHandlers(ImageView imageView) {
+    private void addDragHandlers(DraggableItem imageView) {
         imageView.setOnDragDetected(this::dragDetected);
         imageView.setOnDragDone(this::dragDone);
     }
 
     @FXML
-    private void addDropHandlers(ImageView imageView) {
+    private void addDropHandlers(DraggableItem imageView) {
         imageView.setOnDragOver(this::dragOver);
         imageView.setOnDragDropped(this::dragDropped);
     }
 
     @FXML
-    private void addDetailHandlers(ImageView imageView) {
+    private void addDetailHandlers(DraggableItem imageView) {
         imageView.setOnMouseClicked(this::onItemClick);
         imageView.setPickOnBounds(true);
     }
@@ -130,7 +130,6 @@ public class MainController {
             }
         }
     }
-
 
     @FXML
     void onLoadClick(ActionEvent event) {

@@ -194,7 +194,7 @@
                <children>
                   <TilePane hgap="30.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="30.0">
                      <children>
-                        <ImageView fx:id="destinationView" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDone="#dragDone" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image></ImageView>
@@ -213,7 +213,7 @@
                               <Image url="@assets/basic.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="destinationView4" fitHeight="150.0" fitWidth="103.0" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="destinationView4" fitHeight="150.0" fitWidth="103.0" onDragDetected="#dragDetected" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onItemClick" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@assets/basic.png" />
                            </image>
