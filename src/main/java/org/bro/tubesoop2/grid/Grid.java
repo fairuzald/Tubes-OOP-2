@@ -117,4 +117,11 @@ public class Grid<T> {
 
             }
         }
+
+        public List<T> getFlattened() {
+            List<T> result = new ArrayList<>();
+            Collections.addAll(elements);
+
+            return result;
+        }
     }

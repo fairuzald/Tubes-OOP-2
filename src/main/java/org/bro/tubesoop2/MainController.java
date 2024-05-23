@@ -37,10 +37,10 @@ public class MainController {
 
 
     @FXML
-    private DraggableItem[] sourceViews = new ProductCard[6];
+    private DraggableItem[] sourceViews = new DraggableItem[6];
 
     @FXML
-    private DraggableItem[] destinationViews = new ProductCard[20];
+    private DraggableItem[] destinationViews = new DraggableItem[20];
 
     @FXML
     private TilePane leftDeck, ladangDeck;
@@ -48,13 +48,24 @@ public class MainController {
     @FXML
     public void initialize() {
         for (int i = 0; i < sourceViews.length; i++) {
-            sourceViews[i] = new ProductCard();
+            if(i%2==0){
+                sourceViews[i] = new ProductCard("assets/test.png");
+
+            }else{
+                sourceViews[i] = new ItemCard("assets/test.png");
+            }
             addDragHandlers(sourceViews[i]);
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
         for (int i = 0; i < destinationViews.length; i++) {
-            destinationViews[i] = new ProductCard();
+            if(i%2==0){
+            destinationViews[i] = new ProductCard("assets/Hewan/Bear.png");
+            }else{
+                destinationViews[i] = new ProductCard("assets/Hewan/Chicken.png");
+
+            }
+
             addDropHandlers(destinationViews[i]);
             ladangDeck.getChildren().add(destinationViews[i]);
         }

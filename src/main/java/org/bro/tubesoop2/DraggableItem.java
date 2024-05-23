@@ -5,20 +5,27 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 
-public class DraggableItem extends ImageView {
-
+public abstract class DraggableItem extends ImageView {
+    private String imagePath;
     protected boolean isDefaultImage; // Change to protected to allow subclass access
 
-    public DraggableItem() {
-        Image testImage = new Image(getClass().getResourceAsStream("assets/test.png"));
-        this.setImage(testImage);
+
+
+    public DraggableItem(String imagePath) {
+
         this.isDefaultImage = false;
+        Image testImage = new Image(getClass().getResourceAsStream(imagePath));
+
+        this.setImage(testImage);
+        this.imagePath = imagePath;
 
         this.setOnDragDetected(this::dragDetected);
         this.setOnDragDone(this::dragDone);
         this.setOnDragOver(this::dragOver);
         this.setOnDragDropped(this::dragDropped)    ;
     }
+
+
 
     public void dragDetected(MouseEvent event) {
         ImageView sourceView = (ImageView) event.getSource();
@@ -41,9 +48,7 @@ public class DraggableItem extends ImageView {
             sourceView.setImage(defaultImage);
             isDefaultImage = true;
             System.out.println("Image set to default.");
-            if (this instanceof ProductCard) {
-                ((ProductCard) this).tes();
-            }
+            dragDoneAction();
         }
         event.consume();
     }
@@ -64,4 +69,6 @@ public class DraggableItem extends ImageView {
         event.setDropCompleted(true);
         event.consume();
     }
+
+    abstract public void dragDoneAction();
 }
