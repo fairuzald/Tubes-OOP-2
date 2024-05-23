@@ -103,7 +103,6 @@ public class MainController {
         });
 
 
-        StateLoader loader = new StateLoader();
 //        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
 //                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
 //                .setPlugin(new TextLoader())
@@ -125,7 +124,8 @@ public class MainController {
             state = loader.setPath(folderDir, "gamestate.txt", "player1.txt", "player2.txt")
                     .setPlugin(new TextLoader())
                     .loadState();
-            });
+            updateGUI(state);
+        });
     }
 
     void updateGUI(GameState state){
