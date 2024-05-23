@@ -204,6 +204,80 @@ public class MainController {
         }
     }
 
+    void updateActiveDeck(Player pl){
+        leftDeck.getChildren().clear();
+
+        for (int i = 0; i < sourceViews.length; i++) {
+            sourceViews[i] = new ProductCard("assets/Basic.png");
+            addDragHandlers(sourceViews[i]);
+            leftDeck.getChildren().add(sourceViews[i]);
+        }
+
+        List<Resource> activeDeckPlayer = pl.getActiveDeck();
+        for(int i = 0; i < activeDeckPlayer.size(); i++) {
+            Resource resource = activeDeckPlayer.get(i);
+            if(resource != null) {
+                String name = resource.getName();
+                sourceViews[i] = CreatureCard.getCreatureCard(name);
+                leftDeck.getChildren().remove(i);
+                leftDeck.getChildren().add(i,sourceViews[i]);
+            }
+        }
+    }
+
+    void updateLadang(Player pl) {
+        ladangDeck.getChildren().clear();
+
+        for (int i = 0; i < destinationViews.length; i++) {
+            destinationViews[i] = new ProductCard("assets/Basic.png");
+            addDropHandlers(destinationViews[i]);
+            ladangDeck.getChildren().add(destinationViews[i]);
+        }
+
+        Grid<Resource> ladangPlayer = pl.getLadang();
+        ladangPlayer.forEachActive((a) -> {
+            Resource currentElement = ladangPlayer.getElement(a);
+            String name = currentElement.getName();
+
+            // Set Destination Views
+            int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
+            destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
+
+            // Update Deck
+            ladangDeck.getChildren().remove(gridIDX);
+            ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
+        });
+    }
+
+    @FXML
+    void onMyFieldClick(ActionEvent event){
+        for (int i = 0; i < destinationViews.length; i++) {
+            destinationViews[i] = new ProductCard("assets/Basic.png");
+            addDropHandlers(destinationViews[i]);
+            ladangDeck.getChildren().add(destinationViews[i]);
+        }
+
+        /**
+         * Set Ladang
+         * */
+        updateLadang(this.state.getCurrentPlayer());
+    }
+
+    @FXML
+    void onEnemyFieldClick(ActionEvent event){
+        ladangDeck.getChildren().clear();
+        for (int i = 0; i < destinationViews.length; i++) {
+            destinationViews[i] = new ProductCard("assets/Basic.png");
+            addDropHandlers(destinationViews[i]);
+            ladangDeck.getChildren().add(destinationViews[i]);
+        }
+
+        /**
+         * Set Ladang
+         * */
+        updateLadang(this.state.getNextPlayer());
+    }
+
     @FXML
     void onLoadClick(ActionEvent event) {
         if (!LoadController.isLoadWindowOpen()) {
@@ -290,7 +364,8 @@ public class MainController {
                 randomStage.show();
                 RandomController.setRandomWindowOpen(true);
                 randomStage.setOnCloseRequest(eventClose -> RandomController.setRandomWindowOpen(false));
-
+                updateLadang(this.state.getNextPlayer());
+                updateActiveDeck(this.state.getNextPlayer());
                 applyRedBorderToBearAttacks();
             }catch (IOException e) {
                 System.out.println("Error loading random.fxml: " + e.getMessage());
