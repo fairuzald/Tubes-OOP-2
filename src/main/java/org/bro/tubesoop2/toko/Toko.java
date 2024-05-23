@@ -2,10 +2,7 @@ package org.bro.tubesoop2.toko;
 
 import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
-import org.bro.tubesoop2.toko.*;
 import org.bro.tubesoop2.player.Player;
-import java.util.ArrayList;
-
 import java.util.ArrayList;
 
 public class Toko {
@@ -65,7 +62,7 @@ public class Toko {
 
     public int getStockCount(Player pl, Quantifiable<Resource> r){
         int count = 0;
-        for (Resource rsc:pl.getDeck()){
+        for (Resource rsc:pl.getActiveDeck()){
             if(rsc.getName().equals(r.getValue().getName())){
                 count++;
             }
@@ -75,7 +72,7 @@ public class Toko {
 
     public int getStockCount(Player pl, Resource r){
         int count = 0;
-        for (Resource rsc:pl.getDeck()){
+        for (Resource rsc:pl.getActiveDeck()){
             if(rsc.getName().equals(r.getName())){
                 count++;
             }
@@ -93,7 +90,7 @@ public class Toko {
             throw new StockTidakCukupShopException();
         }
 
-        if (pl.getDeck().size() + quantity > 40) {
+        if (pl.getActiveDeck().size() + quantity > 40) {
             throw new PenyimpananTidakCukup();
         }
 
@@ -108,8 +105,8 @@ public class Toko {
         }
 
         for (int i = 0; i < quantity; i++) {
-            if (pl.getDeck().contains(rsc)) {
-                pl.getDeck().remove(rsc);
+            if (pl.getActiveDeck().contains(rsc)) {
+                pl.getActiveDeck().remove(rsc);
             } else {
                 throw new ItemShopNotFoundException();
             }

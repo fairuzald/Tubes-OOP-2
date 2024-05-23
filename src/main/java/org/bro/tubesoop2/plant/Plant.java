@@ -34,4 +34,7 @@ public class Plant extends Creature {
     public void consumeItem(Item item) {
         item.consumedBy(this);
     }
+
+    @Override
+    public void setUmurOrBerat(int u){this.currentAge = u;}
 }

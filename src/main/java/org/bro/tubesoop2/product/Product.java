@@ -6,7 +6,7 @@ public class Product extends Resource {
     private Integer addedWeight;
     private Integer price;
 
-    Product(String name, int addedWeight, int price){
+    public Product(String name, int addedWeight, int price){
         super(name);
         this.addedWeight = addedWeight;
         this.price = price;

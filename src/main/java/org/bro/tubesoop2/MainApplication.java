@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
 
@@ -21,11 +22,13 @@ public class MainApplication extends Application {
         stage.setMinWidth(1248);
         stage.setMinHeight(835);
 
-        StateLoader state = new StateLoader();
-        state.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
+        StateLoader loader = new StateLoader();
+        GameState state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
                 .setPlugin(new TextLoader())
 //                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
-                .initialize();
+                .loadState();
+
+        System.out.println("===========================");
 
         stage.show();
     }

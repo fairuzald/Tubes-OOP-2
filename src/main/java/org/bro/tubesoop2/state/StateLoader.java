@@ -1,16 +1,17 @@
 package org.bro.tubesoop2.state;
 
+import org.bro.tubesoop2.item.Item;
+import org.bro.tubesoop2.player.Player;
+import org.bro.tubesoop2.quantifiable.Quantifiable;
+import org.bro.tubesoop2.resource.Resource;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarInputStream;
 
 public class StateLoader {
 
@@ -54,7 +55,6 @@ public class StateLoader {
         try{
             for (StatePlugin plugin : loader) {
                 System.out.println(plugin);
-                plugin.Load(null, null, null);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -68,7 +68,8 @@ public class StateLoader {
     /**
      * Default value is "state/gamestate.txt"
      */
-    public void initialize() {
+    public GameState loadState() {
+        GameState state = new GameState();
         String gameStatePath = path + "/" + gameStateFileName;
         String player1Path   = path + "/" + player1FileName;
         String player2Path   = path + "/" + player2FileName;
@@ -77,7 +78,7 @@ public class StateLoader {
             File gameStateFile = new File(gameStatePath);
             File player1File = new File(player1Path);
             File player2File = new File(player2Path);
-            plugin.Load(gameStateFile, player1File, player2File);
+            plugin.Load(gameStateFile, player1File, player2File, state);
         } catch (FileNotFoundException e) {
             System.out.println("Error when reading state/gamestate.txt.");
             System.out.println(e.getMessage());
@@ -87,6 +88,43 @@ public class StateLoader {
             System.out.println(e.getMessage());
             // e.printStackTrace();
         }
+
+        return state;
+    }
+
+    public static void main(String[] args) {
+        StateLoader loader = new StateLoader();
+        GameState state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
+                .setPlugin(new TextLoader())
+//                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
+                .loadState();
+
+        // gamestate
+        System.out.println("============= [ Result ] ==============");
+        System.out.println(state.getTurn());
+        System.out.println(state.getToko().getStock().size());
+        for(Quantifiable<Resource> item : state.getToko().getStock()){
+            System.out.print(item.getValue().getName() + " " + item.getQuantity() + "\n");
+        }
+
+        // player
+        Player p1 = state.getPlayer1();
+        debugPlayer(p1);
+        Player p2 = state.getPlayer2();
+        debugPlayer(p2);
+
+    }
+    private static void debugPlayer(Player p){
+        System.out.println(p.getGulden());
+        System.out.println(0);
+        System.out.println(p.getActiveDeck().size());
+        for(int i = 0; i < p.getActiveDeck().size(); i++){
+            Resource r = p.getActiveDeck().get(i);
+            if(r != null){
+                System.out.println(i + " " + r.getName());
+            }
+        }
+        System.out.println(p.getLadang().getCountFilled());
     }
 
 }

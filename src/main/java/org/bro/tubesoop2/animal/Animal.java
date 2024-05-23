@@ -33,4 +33,7 @@ public abstract class Animal extends Creature {
     public void consumeItem(Item item) {
         item.consumedBy(this);
     }
+
+    @Override
+    public void setUmurOrBerat(int u){this.weight = u;}
 }

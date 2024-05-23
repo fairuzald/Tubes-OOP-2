@@ -1,5 +1,7 @@
 package org.bro.tubesoop2.grid;
 
+import org.bro.tubesoop2.resource.Resource;
+
 import java.util.*;
 
     public class Grid<T> {
@@ -78,6 +80,10 @@ import java.util.*;
             int col = l.getCol();
 
             return pop(row, col);
+        }
+
+        public void put(Location l, T t){
+            setElement(l.getCol(), l.getRow(), t);
         }
 
         public boolean isFilled(int row, int col) {

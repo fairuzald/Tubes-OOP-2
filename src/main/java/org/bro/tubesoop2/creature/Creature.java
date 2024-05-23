@@ -36,5 +36,6 @@ public abstract class Creature extends Resource {
     }
 
     public abstract void consumeItem(Item item);
-    
+
+    public abstract void setUmurOrBerat(int umurOrBerat);
 }
