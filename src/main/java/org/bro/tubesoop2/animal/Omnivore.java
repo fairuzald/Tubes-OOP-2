@@ -6,8 +6,8 @@ import org.bro.tubesoop2.product.ProductAnimal;
 import java.util.ArrayList;
 
 public class Omnivore extends Animal{
-    Omnivore(String name, int weightToHarvest, ArrayList<Product> products){
-        super(name, weightToHarvest, products);
+    Omnivore(String name, int weightToHarvest, ArrayList<Product> drops){
+        super(name, weightToHarvest, drops);
 
     }
 
