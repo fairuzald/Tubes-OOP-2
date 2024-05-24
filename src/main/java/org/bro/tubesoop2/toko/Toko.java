@@ -121,7 +121,7 @@ public class Toko {
             throw new Exception("Uang tidak cukup");
         }
 
-        if (pl.getActiveDeck().size() + quantity > 6) {
+        if (pl.getActiveDeckCount() + quantity > 6) {
             throw new PenyimpananTidakCukup();
         }
         }
