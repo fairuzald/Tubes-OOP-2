@@ -16,15 +16,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import org.bro.tubesoop2.animal.Animal;
 import org.bro.tubesoop2.creature.Creature;
+import org.bro.tubesoop2.countdowntimer.CountdownTimer;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.resource.Resource;
+import org.bro.tubesoop2.seranganberuang.SeranganBeruang;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
@@ -36,7 +40,7 @@ public class MainController {
     RandomController randomController = new RandomController();
 
     @FXML
-    private Label player1Name, player2Name, player1Gulden, player2Gulden, activeDeck, turn;
+    private Label player1Name, player2Name, player1Gulden, player2Gulden, activeDeck, turn, timerLabel;
 
     @FXML
     private Button shopButton, loadButton, myFieldButton, enemyFieldButton, saveButton, pluginButton;
@@ -131,7 +135,7 @@ public class MainController {
      
         // Show detail
         CreatureCard.onCreatureCardClicked.AddListener(creature -> {
-            onItemClick(null, (Resource)creature.getResource());            
+            onItemClick(null, (Resource)creature.getResource());
         });
     }
 
@@ -427,4 +431,47 @@ public class MainController {
     void enemyFieldButton(ActionEvent event) {
 
     }
+
+    private void applyRedBorder(ImageView imageView) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setHue(1);
+        colorAdjust.setSaturation(1);
+        imageView.setEffect(colorAdjust);
+    }
+
+    @FXML
+    void seranganBeruangHandler(GameState state){
+       Random random = new Random();
+        if(true){
+            Thread timerThread = new Thread(() -> {
+            SeranganBeruang sb = new SeranganBeruang();
+            List <Integer> affected = sb.generateAffectedIndex();
+            for(int i = 0; i < affected.size(); i++){
+                int idx = affected.get(i);
+                System.out.println(idx);
+                applyRedBorder(destinationViews[idx]);
+            }
+            System.out.println("Affected: " + affected);
+            CountdownTimer countdownTimer = new CountdownTimer(10);
+            Platform.runLater(() -> timerLabel.setVisible(true));
+            countdownTimer.start();
+            while (!countdownTimer.isTimeUp()) {
+                try {
+
+                    Thread.sleep(100);
+                    String currtime = Integer.toString(countdownTimer.getTime()/1000) + "," + Integer.toString((countdownTimer.getTime()%1000)/100); ;
+                    Platform.runLater(() -> {timerLabel.setText(currtime);}
+                    );
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Platform.runLater(() -> timerLabel.setVisible(false));
+            System.out.println("test");
+            System.out.println("Affected: " + affected);
+           });
+           timerThread.start();
+       }
+   }
+//}
 }
