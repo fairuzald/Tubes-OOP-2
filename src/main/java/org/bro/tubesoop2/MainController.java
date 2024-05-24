@@ -1,4 +1,6 @@
 package org.bro.tubesoop2;
+import javafx.application.Platform;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.TilePane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -117,6 +119,7 @@ public class MainController {
         RandomController.onNextDone.AddListener(r -> {
             state.NextTurn();
             updateGUI(state);
+            seranganBeruangHandler(state);
         });
 
         SaveController.onSaveValid.AddListener(folderDir -> {
