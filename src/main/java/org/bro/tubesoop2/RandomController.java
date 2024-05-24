@@ -29,11 +29,13 @@ public class RandomController {
     private TilePane deck_selection;
 
     private List<ImageView> imageViews = new ArrayList<>();
-    private List<ImageView> selectedViews = new ArrayList<>();
+    public static List<ImageView> selectedViews = new ArrayList<>();
     private static boolean randomWindowOpen = false;
 
-    private static List<Image> imagesShown = new ArrayList<>();
+    public static List<Image> images = new ArrayList<>();
+    public static List<Image> selectedImages = new ArrayList<>();
     private static final String DEFAULT_IMAGE_PATH = "assets/EMPTYCARD.png";
+    public static Integer maximumCardsCanBeSelected = 0;
 
     public static Action<RandomController> onNextDone = new Action<RandomController>();
 
@@ -59,11 +61,11 @@ public class RandomController {
             selectedViews.remove(imageView);
             resetSelectionEffect(imageView);
         }
+
     }
 
     private void clearAllSelectionEffect() {
         for (ImageView image : selectedViews) {
-            selectedViews.remove(image);
             resetSelectionEffect(image);
         }
     }
@@ -73,14 +75,13 @@ public class RandomController {
         for (ImageView view : imageViews) {
             setImage(view, getRandomImage());
         }
-        selectedViews.clear();
-
         clearAllSelectionEffect();
+        selectedViews.clear();
     }
 
     @FXML
     void onSelect(ActionEvent event) {
-        if (selectedViews.size() >= 2) {
+        if (selectedViews.size() <= maximumCardsCanBeSelected) {
             setRandomWindowOpen(false);
             Stage stage = (Stage) selectButton.getScene().getWindow();
             stage.close();
@@ -89,13 +90,13 @@ public class RandomController {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Alert");
             alert.setHeaderText(null);
-            alert.setContentText("You must choose at least two images");
+            alert.setContentText("You must choose at most " + maximumCardsCanBeSelected + " cards");
             alert.showAndWait();
         }
     }
 
     public void setImages() {
-        imagesShown = new ArrayList<>();
+        images = new ArrayList<>();
         try {
             Path path = Paths.get(getClass().getResource("assets/Animal/").toURI());
             Files.walk(path)
@@ -103,7 +104,7 @@ public class RandomController {
                 .forEach(filePath -> {
                     try {
                         Image image = new Image(filePath.toUri().toString());
-                        imagesShown.add(image);
+                        images.add(image);
                     } catch (Exception e) {
 
                     }
@@ -116,7 +117,7 @@ public class RandomController {
                 .forEach(filePath -> {
                     try {
                         Image image = new Image(filePath.toUri().toString());
-                        imagesShown.add(image);
+                        images.add(image);
                     } catch (Exception e) {
 
                     }
@@ -128,7 +129,7 @@ public class RandomController {
                 .forEach(filePath -> {
                     try {
                         Image image = new Image(filePath.toUri().toString());
-                        imagesShown.add(image);
+                        images.add(image);
                     } catch (Exception e) {
 
                     }
@@ -140,7 +141,7 @@ public class RandomController {
                 .forEach(filePath -> {
                     try {
                         Image image = new Image(filePath.toUri().toString());
-                        imagesShown.add(image);
+                        images.add(image);
                     } catch (Exception e) {
 
                     }
@@ -152,10 +153,11 @@ public class RandomController {
 
     private Image getRandomImage() {
         Random random = new Random();
-        int randomIndex = random.nextInt(imagesShown.size());
+        int randomIndex = random.nextInt(images.size());
 
-        Image testImage = imagesShown.get(randomIndex);
-        System.out.println(testImage.getUrl());
+        Image testImage = images.get(randomIndex);
+
+
         return testImage;
     }
 

@@ -34,6 +34,7 @@ import org.bro.tubesoop2.seranganberuang.SeranganBeruang;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
+import org.bro.tubesoop2.utils.Utils;
 
 public class MainController {
     GameState state = new GameState();
@@ -112,7 +113,18 @@ public class MainController {
 
         });
         RandomController.onNextDone.AddListener(r -> {
-            state.NextTurn();
+
+
+            int length = RandomController.selectedViews.size();
+            for (int i = 0; i < length; i++) {
+                String current_absolute_path = RandomController.selectedViews.get(i).getImage().getUrl();
+                System.out.println(current_absolute_path);
+                String relative_path_from_project = Utils.getRelativePathFromProject(current_absolute_path);
+                System.out.println(relative_path_from_project);
+                String key = Utils.toResourceFactoryKeys(relative_path_from_project);
+                state.getCurrentPlayer().getActiveDeck().add(state.createResource(key));
+            }
+
             updateGUI(state);
             seranganBeruangHandler(state);
         });
@@ -369,6 +381,22 @@ public class MainController {
 
     @FXML
     void onNextClick(ActionEvent event) {
+        RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().getActiveDeck().size();
+        System.out.println("Prev player deck:" + state.getCurrentPlayer().getActiveDeck());
+
+        state.NextTurn();
+        updateGUI(state);
+
+        System.out.println("current player deck:" + state.getCurrentPlayer().getActiveDeck());
+
+
+        if (RandomController.maximumCardsCanBeSelected == 0) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("No new card");
+            alert.setContentText("You have 6 active deck!");
+            return;
+        }
+
         if (!RandomController.isRandomWindowOpen()) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("random.fxml"));
