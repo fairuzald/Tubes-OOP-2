@@ -191,6 +191,15 @@ public class MainController {
 
             updateGUI();
             seranganBeruangHandler(state);
+
+            // win check
+            Player winningPlayer = state.tryGetWinner();
+            if(winningPlayer != null) {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Game Over");
+                alert.setHeaderText(winningPlayer.getName() + " Wins!");
+                alert.showAndWait();
+            }
         });
 
         SaveController.onSaveValid.AddListener(folderDir -> {

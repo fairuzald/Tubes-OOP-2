@@ -10,8 +10,8 @@ import org.bro.tubesoop2.toko.Toko;
 import java.util.*;
 
 public class GameState {
-    Player player1 = new Player();
-    Player player2 = new Player();
+    Player player1 = new Player("Player 1");
+    Player player2 = new Player("Player 2");
 
     Toko toko = new Toko(new ArrayList<Quantifiable<Resource>>());
 
@@ -67,8 +67,14 @@ public class GameState {
         toko.clear();
     }
 
+    public Player tryGetWinner(){
+        if(turn < 21) return null;
+        if(player1.getGulden() > player2.getGulden()) return player1;
+        return player2;
+    }
+
     public static void main(String[] args) {
-        Player p1 =  new Player();
+        Player p1 =  new Player("Player 1");
         GameState newGameState = new GameState();
         newGameState.populateDeckWithRandomResources(p1, 40);
         System.out.println(p1.getActiveDeck().size());
