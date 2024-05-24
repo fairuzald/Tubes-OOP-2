@@ -11,7 +11,7 @@ public class Player {
     private Grid<Resource> ladang;
     private List<Resource> deck;
     private List<Resource> activeDeck;
-    private int gulden = 0;
+    private Integer gulden = 0;
     private int deckLeft = 40;
 
     static final int MAX_ACTIVE_DECK = 6;
@@ -58,8 +58,8 @@ public class Player {
 
     public int getDeckLeft(){return deckLeft;}
 
-    public void setGulden(int gulden){this.gulden = gulden;}
-    public int getGulden(){return gulden;}
+    public void setGulden(Integer gulden){this.gulden = gulden;}
+    public Integer getGulden(){return gulden;}
 
     public void insertDeck(Resource r, Location l){
         activeDeck.add(l.getRow(), r);
@@ -91,14 +91,15 @@ public class Player {
         activeDeck.clear();
         gulden = 0;
         deckLeft = 40;
+    }
 
-        // prefill
-        for (int i = 0; i < 40; i++) {
-            deck.add(null);
+    public boolean isActiveDeckFull(){
+        for(int i = 0; i < activeDeck.size(); i++){
+            if(activeDeck.get(i) == null){
+                return false;
+            }
         }
-        for (int i = 0; i < 6; i++) {
-            activeDeck.add(null);
-        }
+        return true;
     }
 
     public boolean isActiveDeckFull(){
