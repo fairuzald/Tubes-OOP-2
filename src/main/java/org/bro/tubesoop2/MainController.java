@@ -198,6 +198,16 @@ public class MainController {
             ladangDeck.getChildren().remove(gridIDX);
             ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
         });
+
+
+    }
+
+    void resetActiveDeckViews() {
+        sourceViews = new DraggableItem[6];
+        for (int i = 0; i < 6; i++) {
+            sourceViews[i] = new EmptyCard();
+            leftDeck.getChildren().add(sourceViews[i]);
+        }
     }
 
 
@@ -385,6 +395,7 @@ public class MainController {
         System.out.println("Prev player deck:" + state.getCurrentPlayer().getActiveDeck());
 
         state.NextTurn();
+        resetActiveDeckViews();
         updateGUI(state);
 
         System.out.println("current player deck:" + state.getCurrentPlayer().getActiveDeck());
