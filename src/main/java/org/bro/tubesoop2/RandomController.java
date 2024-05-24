@@ -97,7 +97,7 @@ public class RandomController {
     public void setImages() {
         imagesShown = new ArrayList<>();
         try {
-            Path path = Paths.get(getClass().getResource("assets/Hewan/").toURI());
+            Path path = Paths.get(getClass().getResource("assets/Animal/").toURI());
             Files.walk(path)
                 .filter(Files::isRegularFile)
                 .forEach(filePath -> {
