@@ -1,5 +1,6 @@
 package org.bro.tubesoop2;
 
+import javafx.scene.control.Alert;
 import javafx.scene.input.Dragboard;
 import javafx.scene.layout.TilePane;
 import org.bro.tubesoop2.action.Action;
@@ -53,6 +54,11 @@ public class EmptyCard extends DraggableItem {
             }
         } else {
             System.out.println("EmptyCard cannot be replaced by " + source.getClass().getSimpleName());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("EmptyCard cannot be replaced by " + source.getClass().getSimpleName());
+            alert.showAndWait();
+            return;
         }
     }
 

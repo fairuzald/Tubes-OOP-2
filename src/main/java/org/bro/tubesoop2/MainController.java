@@ -394,6 +394,7 @@ public class MainController {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("No new card");
             alert.setContentText("You have 6 active deck!");
+            alert.showAndWait();
             return;
         }
 
