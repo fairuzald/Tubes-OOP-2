@@ -34,6 +34,7 @@ public class GameState {
 
     ResourceFactory factory = new ResourceFactory();
     public Resource createResource(String key){
+        System.out.println(key);
         return factory.get(key);
     }
     public Item createItem(String key){
