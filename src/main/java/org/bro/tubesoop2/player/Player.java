@@ -11,21 +11,13 @@ public class Player {
     private Grid<Resource> ladang;
     private List<Resource> deck;
     private List<Resource> activeDeck;
-    private int gulden = 0;
+    private Integer gulden = 0;
     private int deckLeft = 40;
 
     public Player() {
         ladang = new Grid<>(5, 4);
         deck = new ArrayList<>(40);
-        activeDeck = new ArrayList<>(6);
-
-        // prefill
-        for (int i = 0; i < 40; i++) {
-            deck.add(null);
-        }
-        for (int i = 0; i < 6; i++) {
-            activeDeck.add(null);
-        }
+        activeDeck = new ArrayList<>();
     }
 
     public Grid<Resource> getLadang() {
@@ -55,8 +47,8 @@ public class Player {
 
     public int getDeckLeft(){return deckLeft;}
 
-    public void setGulden(int gulden){this.gulden = gulden;}
-    public int getGulden(){return gulden;}
+    public void setGulden(Integer gulden){this.gulden = gulden;}
+    public Integer getGulden(){return gulden;}
 
     public void insertDeck(Resource r, Location l){
         activeDeck.add(l.getRow(), r);
@@ -81,13 +73,5 @@ public class Player {
         activeDeck.clear();
         gulden = 0;
         deckLeft = 40;
-
-        // prefill
-        for (int i = 0; i < 40; i++) {
-            deck.add(null);
-        }
-        for (int i = 0; i < 6; i++) {
-            activeDeck.add(null);
-        }
     }
 }

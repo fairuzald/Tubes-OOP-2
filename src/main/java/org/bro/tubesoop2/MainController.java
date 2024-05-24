@@ -29,11 +29,14 @@ import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
+import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.seranganberuang.SeranganBeruang;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
+import org.bro.tubesoop2.toko.Toko;
+import org.bro.tubesoop2.toko.TokoException;
 import org.bro.tubesoop2.utils.Utils;
 
 public class MainController {
@@ -59,7 +62,6 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        
         // Remove all
         for (int i = 0; i < destinationViews.length; i++) {
             destinationViews[i] = new EmptyCard();
@@ -69,6 +71,57 @@ public class MainController {
             sourceViews[i] = new EmptyCard();
             leftDeck.getChildren().add(sourceViews[i]);
         }
+
+
+
+        ShopController.onBuy.AddListener(arrToBuy ->{
+            try{
+                Toko toko  = state.getToko();
+
+                for(Tuple<Integer, Integer> src:arrToBuy){
+                    toko.buy(state.getCurrentPlayer(), src.getFirst(), src.getSecond());
+                }
+
+                ShopController.setToko(state.getToko());
+
+            }catch (TokoException e){
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("An error occurred while processing the action.");
+                alert.setContentText("Details: " + e.getMessage());
+                alert.showAndWait();
+            } catch (Exception e){
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("An error occurred while processing the action.");
+                alert.setContentText("Details: " + e.getMessage());
+                alert.showAndWait();
+            }finally {
+                updateGUI(state);
+            }
+        });
+
+        ShopController.onSell.AddListener(arrToSell ->{
+            try{
+                Toko toko  = state.getToko();
+
+                for(Tuple<Integer, Integer> src:arrToSell){
+                    toko.sell(state.getCurrentPlayer(), state.getCurrentPlayer().getActiveDeck().get(src.getFirst()), src.getSecond());
+                }
+
+                ShopController.setToko(state.getToko());
+
+            }catch (TokoException e){
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("An error occurred while processing the action.");
+                alert.setContentText("Details: " + e.getMessage());
+                alert.showAndWait();
+            }finally {
+                updateGUI(state);
+            }
+
+        });
 
 
         EmptyCard.onDrop.AddListener(tup -> {
@@ -113,8 +166,6 @@ public class MainController {
 
         });
         RandomController.onNextDone.AddListener(r -> {
-
-
             int length = RandomController.selectedViews.size();
             for (int i = 0; i < length; i++) {
                 String current_absolute_path = RandomController.selectedViews.get(i).getImage().getUrl();
@@ -141,6 +192,9 @@ public class MainController {
                     .setPlugin(new TextLoader())
                     .loadState(state);
             updateGUI(state);
+            ShopController.setToko(state.getToko());
+            ShopController.setInventory(state.getCurrentPlayer().getActiveDeck());
+
         });
      
         // Show detail
@@ -157,23 +211,24 @@ public class MainController {
             player2Name.setTextFill(Color.GRAY);
             player1Gulden.setTextFill(Color.WHITE);
             player2Gulden.setTextFill(Color.GRAY);
+
         } else {
             player1Name.setTextFill(Color.GRAY);
             player2Name.setTextFill(Color.WHITE);
             player1Gulden.setTextFill(Color.GRAY);
             player2Gulden.setTextFill(Color.WHITE);
         }
-
-        
-        initActiveDeck();
-        initLadang();
+        player1Gulden.setText(state.getPlayer1().getGulden().toString());
+        player2Gulden.setText(state.getPlayer2().getGulden().toString());
+        initActiveDeck(state);
+        initLadang(state);
     }
 
     /**
      * Set Active Deck
      * */
-    void initActiveDeck(){
-        List<Resource> activeDeckPlayer = this.state.getCurrentPlayer().getActiveDeck();
+    void initActiveDeck(GameState state){
+        List<Resource> activeDeckPlayer = state.getCurrentPlayer().getActiveDeck();
         for(int i = 0; i < activeDeckPlayer.size(); i++) {
             Resource resource = activeDeckPlayer.get(i);
             if(resource != null) {
@@ -187,8 +242,8 @@ public class MainController {
      * Set Ladang
      * */
     // Iterasi grid aktif
-    void initLadang(){
-        Grid<Resource> ladangPlayer = this.state.getCurrentPlayer().getLadang();
+    void initLadang(GameState state){
+        Grid<Resource> ladangPlayer = state.getCurrentPlayer().getLadang();
         ladangPlayer.forEachActive((a) -> {
             // Set Destination Views
             int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
@@ -225,7 +280,6 @@ public class MainController {
     }
 
 
-
     @FXML
     private void onItemClick(MouseEvent event, Resource c) {
         if (!DetailController.isDetailOpen()) {
@@ -255,9 +309,8 @@ public class MainController {
 
     void updateActiveDeck(Player pl){
         leftDeck.getChildren().clear();
-
         for (int i = 0; i < sourceViews.length; i++) {
-            // sourceViews[i] = new ProductCard("assets/Basic.png");
+            sourceViews[i] = new EmptyCard();
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
@@ -265,10 +318,8 @@ public class MainController {
         for(int i = 0; i < activeDeckPlayer.size(); i++) {
             Resource resource = activeDeckPlayer.get(i);
             if(resource != null) {
-                String name = resource.getName();
-                // sourceViews[i] = CreatureCard.getCreatureCard(name);
-                leftDeck.getChildren().remove(i);
-                leftDeck.getChildren().add(i,sourceViews[i]);
+                 sourceViews[i] = Card.createCard(resource);
+                leftDeck.getChildren().set(i,sourceViews[i]);
             }
         }
     }
@@ -284,25 +335,18 @@ public class MainController {
         Grid<Resource> ladangPlayer = pl.getLadang();
         ladangPlayer.forEachActive((a) -> {
             Resource currentElement = ladangPlayer.getElement(a);
-            String name = currentElement.getName();
 
             // Set Destination Views
             int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
-            // destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
+             destinationViews[gridIDX] = Card.createCard(currentElement);
 
             // Update Deck
-            ladangDeck.getChildren().remove(gridIDX);
-            ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
+            ladangDeck.getChildren().set(gridIDX,destinationViews[gridIDX]);
         });
     }
 
     @FXML
     void onMyFieldClick(ActionEvent event){
-        for (int i = 0; i < destinationViews.length; i++) {
-            // destinationViews[i] = new ProductCard("assets/Basic.png");
-            ladangDeck.getChildren().add(destinationViews[i]);
-        }
-
         /**
          * Set Ladang
          * */
@@ -311,12 +355,6 @@ public class MainController {
 
     @FXML
     void onEnemyFieldClick(ActionEvent event){
-        ladangDeck.getChildren().clear();
-        for (int i = 0; i < destinationViews.length; i++) {
-            // destinationViews[i] = new ProductCard("assets/Basic.png");
-            ladangDeck.getChildren().add(destinationViews[i]);
-        }
-
         /**
          * Set Ladang
          * */
@@ -425,8 +463,8 @@ public class MainController {
                 randomStage.show();
                 RandomController.setRandomWindowOpen(true);
                 randomStage.setOnCloseRequest(eventClose -> RandomController.setRandomWindowOpen(false));
-                updateLadang(this.state.getNextPlayer());
-                updateActiveDeck(this.state.getNextPlayer());
+                updateLadang(this.state.getCurrentPlayer());
+                updateActiveDeck(this.state.getCurrentPlayer());
                 applyRedBorderToBearAttacks();
             }catch (IOException e) {
                 System.out.println("Error loading random.fxml: " + e.getMessage());
