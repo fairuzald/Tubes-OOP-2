@@ -177,17 +177,17 @@ public class MainController {
 
         });
 
-        CreatureCard.onItemGiven.AddListener(paths -> {
-            String sourcePath = paths.getSecond();
-            Integer index = paths.getFirst();
+        // CreatureCard.onItemGiven.AddListener(paths -> {
+        //     String sourcePath = paths.getSecond();
+        //     Integer index = paths.getFirst();
             
-            int[] gridPosition = convertListIdxToGrid(index);
-            int row = gridPosition[0];
-            int col = gridPosition[1];
+        //     int[] gridPosition = convertListIdxToGrid(index);
+        //     int row = gridPosition[0];
+        //     int col = gridPosition[1];
 
-            List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
-            Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
-        });
+        //     List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
+        //     Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
+        // });
 
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
