@@ -34,6 +34,7 @@ import org.bro.tubesoop2.countdowntimer.CountdownTimer;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
 import org.bro.tubesoop2.plant.Plant;
+import org.bro.tubesoop2.item.Item;
 import org.bro.tubesoop2.item.Protect;
 import org.bro.tubesoop2.item.Trap;
 import org.bro.tubesoop2.player.Player;
@@ -181,13 +182,13 @@ public class MainController {
 
         });
 
-        // CreatureCard.onItemGiven.AddListener(paths -> {
-        //     String sourcePath = paths.getSecond();
-        //     Integer index = paths.getFirst();
-
-        //     int[] gridPosition = convertListIdxToGrid(index);
-        //     int row = gridPosition[0];
-        //     int col = gridPosition[1];
+        CreatureCard.onItemGiven.AddListener(paths -> {
+            Item item = paths.getSecond();
+            Integer index = paths.getFirst();
+            
+            int[] gridPosition = convertListIdxToGrid(index);
+            int row = gridPosition[0];
+            int col = gridPosition[1];
 
             Resource creature = state.getCurrentPlayer().getLadang().getElement(row,col);
             try{
