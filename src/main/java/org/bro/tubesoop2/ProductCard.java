@@ -1,13 +1,21 @@
 package org.bro.tubesoop2;
 
-public class ProductCard extends DraggableItem{
+import javafx.scene.image.Image;
+import javafx.scene.input.Dragboard;
+
+public class ProductCard extends DraggableItem {
+
     public ProductCard(String imagePath) {
         super(imagePath);
     }
 
-    public void dragDoneAction(){
-        System.out.println("masuk");
-
+    @Override
+    public void dragDoneAction() {
+        System.out.println("ProductCard drag done.");
     }
 
+    @Override
+    protected void handleDrop(Dragboard dragboard, Object source) {
+        // Implement specific logic if needed
+    }
 }

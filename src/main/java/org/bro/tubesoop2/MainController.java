@@ -59,13 +59,24 @@ public class MainController {
                 .loadState();
 
         for (int i = 0; i < sourceViews.length; i++) {
-            sourceViews[i] = new ProductCard("assets/Basic.png");
+            if(i%2==0){
+                sourceViews[i] = new ProductCard("assets/Produk/corn.png");
+
+            }
+            else if(i%2==1){
+                sourceViews[i] = new ItemCard("assets/Item/Accelerate.png");
+
+            }
+            else{
+                sourceViews[i] = new CreatureCard("assets/Hewan/Bear.png");
+
+            }
             addDragHandlers(sourceViews[i]);
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
         for (int i = 0; i < destinationViews.length; i++) {
-            destinationViews[i] = new ProductCard("assets/Basic.png");
+            destinationViews[i] = new EmptyCard();
             addDropHandlers(destinationViews[i]);
             ladangDeck.getChildren().add(destinationViews[i]);
         }

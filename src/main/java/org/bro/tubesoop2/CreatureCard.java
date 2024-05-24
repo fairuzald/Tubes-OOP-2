@@ -1,10 +1,17 @@
 package org.bro.tubesoop2;
 
+import javafx.scene.input.Dragboard;
 import java.util.Objects;
 
-public class CreatureCard extends DraggableItem{
+public class CreatureCard extends DraggableItem {
+
     public CreatureCard(String imagePath) {
         super(imagePath);
+    }
+
+    @Override
+    public void dragDoneAction() {
+        System.out.println("CreatureCard drag done.");
     }
 
     public static CreatureCard getCreatureCard(String name) {
@@ -34,8 +41,15 @@ public class CreatureCard extends DraggableItem{
         return new CreatureCard(imagePath);
     }
 
-    public void dragDoneAction(){
-        System.out.println("masuk 2");
+    @Override
+    protected void handleDrop(Dragboard dragboard, Object source) {
+        if (source instanceof CreatureCard) {
+            System.out.println("CreatureCard cannot be replaced by another CreatureCard.");
+        } else if (source instanceof ItemCard || source instanceof ProductCard) {
+            System.out.println("CreatureCard can be replaced by ItemCard or ProductCard.");
+            // No change in image or class
+        } else {
+            System.out.println("CreatureCard cannot be replaced by this type.");
+        }
     }
-
 }
