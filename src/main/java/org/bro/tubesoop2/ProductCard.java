@@ -1,32 +1,13 @@
 package org.bro.tubesoop2;
 
-import javafx.scene.image.Image;
+import org.bro.tubesoop2.product.Product;
+
 import javafx.scene.input.Dragboard;
 
-public class ProductCard extends DraggableItem {
+public class ProductCard extends Card {
 
-    public ProductCard(String imagePath) {
-        super(imagePath);
-    }
-
-    public static String getNameFromImagePath(String imagePath) {
-        String name;
-        switch (imagePath) {
-            case "assets/Produk/corn.png":
-                name = "JAGUNG";
-                break;
-            case "assets/Produk/daging_beruang.png":
-                name = "DAGING BERUANG";
-                break;
-            case "assets/Hewan/daging_kuda.png":
-                name = "DAGING KUDA";
-                break;
-            default:
-                name = "UNKNOWN";
-                break;
-        }
-
-        return name;
+    public ProductCard(Product p) {
+        super(p, "assets/Produk/" + p.getName()+".png");
     }
 
     @Override

@@ -70,8 +70,11 @@ public class StateLoader {
     /**
      * Default value is "state/gamestate.txt"
      */
-    public GameState loadState() {
-        GameState state = new GameState();
+    public void loadState(GameState state) {
+        if(state == null) {
+            System.out.println("State is null, please instantiate it first.");
+            return;
+        }
         String gameStatePath = path + "/" + gameStateFileName;
         String player1Path   = path + "/" + player1FileName;
         String player2Path   = path + "/" + player2FileName;
@@ -90,8 +93,6 @@ public class StateLoader {
             System.out.println(e.getMessage());
             // e.printStackTrace();
         }
-
-        return state;
     }
 
 
@@ -118,10 +119,11 @@ public class StateLoader {
 
     public static void main(String[] args) {
         StateLoader loader = new StateLoader();
-        GameState state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
+        GameState state = new GameState();
+        loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
                 .setPlugin(new TextLoader())
 //                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
-                .loadState();
+                .loadState(state);
 
         // gamestate
         System.out.println("============= [ Result ] ==============");

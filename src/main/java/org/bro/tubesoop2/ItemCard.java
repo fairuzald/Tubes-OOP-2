@@ -1,12 +1,14 @@
 package org.bro.tubesoop2;
 
+import org.bro.tubesoop2.item.Item;
+
 import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 
-public class ItemCard extends DraggableItem {
+public class ItemCard extends Card {
 
-    public ItemCard(String imagePath) {
-        super(imagePath);
+    public ItemCard(Item item) {
+        super(item, "assets/Item/"+item.getName()+".png");
     }
 
     @Override

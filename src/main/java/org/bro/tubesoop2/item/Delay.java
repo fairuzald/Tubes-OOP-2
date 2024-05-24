@@ -4,16 +4,21 @@ import org.bro.tubesoop2.animal.Animal;
 import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.plant.Plant;
 
-public class Delay implements Item {
+public class Delay extends Item {
+    
+
     @Override
     public void consumedBy(Creature creature) {
+        if(hasProtectCard(creature)) return;
+
         if (creature instanceof Animal) {
             Animal animal = (Animal) creature;
-            // Implement logic specific to Animal
-            System.out.println("Animal has consumed the Accelerate item.");
+            animal.reduceWeight(8);
+            System.out.println("Animal has consumed the Delay item.");
         } else if (creature instanceof Plant) {
-            // Logic for other types of Creatures if necessary
-            System.out.println("Creature has consumed the Accelerate item.");
+            Plant plant = (Plant) creature;
+            plant.reduceAge(2);
+            System.out.println("Creature has consumed the Delay item.");
         }
     }
 }

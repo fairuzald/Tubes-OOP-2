@@ -29,7 +29,8 @@ import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
 
 public class MainController {
-    GameState state;
+    GameState state = new GameState();
+    StateLoader loader = new StateLoader();
     private int activeDeckNum = 6;
     RandomController randomController = new RandomController();
 
@@ -50,61 +51,25 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        StateLoader loader = new StateLoader();
-        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
+        loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
                 .setPlugin(new TextLoader())
-                .loadState();
-
-        for (int i = 0; i < sourceViews.length; i++) {
-            if(i%3==0){
-                sourceViews[i] = new ProductCard("assets/Produk/corn.png");
-
-            }
-            else if(i%3==1) {
-                sourceViews[i] = new ItemCard("assets/Item/Accelerate.png");
-
-            } else{
-                sourceViews[i] = new CreatureCard("assets/Hewan/Bear.png");
-
-            }
-            leftDeck.getChildren().add(sourceViews[i]);
-        }
-
+                .loadState(state);
+        
+        // Remove all
         for (int i = 0; i < destinationViews.length; i++) {
             destinationViews[i] = new EmptyCard();
             ladangDeck.getChildren().add(destinationViews[i]);
         }
-
-        /**
-         * Set Active Deck
-         * */
-        List<Resource> activeDeckPlayer = this.state.getCurrentPlayer().getActiveDeck();
-        for(int i = 0; i < activeDeckPlayer.size(); i++) {
-            Resource resource = activeDeckPlayer.get(i);
-            if(resource != null) {
-                String name = resource.getName();
-                sourceViews[i] = CreatureCard.getCreatureCard(name);
-                leftDeck.getChildren().set(i,sourceViews[i]);
-            }
+        for (int i = 0; i < sourceViews.length; i++) {
+            sourceViews[i] = new EmptyCard();
+            leftDeck.getChildren().add(sourceViews[i]);
         }
 
-        /**
-         * Set Ladang
-         * */
-        // Iterasi grid aktif
-        Grid<Resource> ladangPlayer = this.state.getCurrentPlayer().getLadang();
-        ladangPlayer.forEachActive((a) -> {
-            Resource currentElement = ladangPlayer.getElement(a);
-            String name = currentElement.getName();
+        
 
-            // Set Destination Views
-            int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
-            destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
 
-            // Update Deck
-            ladangDeck.getChildren().remove(gridIDX);
-            ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
-        });
+
+
 
         EmptyCard.onDrop.AddListener(tup -> {
             Resource rsc = tup.getFirst();
@@ -147,15 +112,6 @@ public class MainController {
             }
 
         });
-
-
-//        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
-//                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
-//                .setPlugin(new TextLoader())
-//                .loadState();
-        state = new GameState();
-
-        updateGUI(state);
         RandomController.onNextDone.AddListener(r -> {
             state.NextTurn();
             updateGUI(state);
@@ -169,11 +125,13 @@ public class MainController {
         });
 
         LoadController.onLoadValid.AddListener(folderDir -> {
-            state = loader.setPath(folderDir, "gamestate.txt", "player1.txt", "player2.txt")
+            loader.setPath(folderDir, "gamestate.txt", "player1.txt", "player2.txt")
                     .setPlugin(new TextLoader())
-                    .loadState();
+                    .loadState(state);
             updateGUI(state);
         });
+     
+     
     }
 
     void updateGUI(GameState state){
@@ -190,6 +148,41 @@ public class MainController {
             player1Gulden.setTextFill(Color.GRAY);
             player2Gulden.setTextFill(Color.WHITE);
         }
+
+        
+        initActiveDeck();
+        initLadang();
+    }
+
+    /**
+     * Set Active Deck
+     * */
+    void initActiveDeck(){
+        List<Resource> activeDeckPlayer = this.state.getCurrentPlayer().getActiveDeck();
+        for(int i = 0; i < activeDeckPlayer.size(); i++) {
+            Resource resource = activeDeckPlayer.get(i);
+            if(resource != null) {
+                sourceViews[i] = Card.createCard(resource);
+                leftDeck.getChildren().set(i,sourceViews[i]);
+            }
+        }
+    }
+
+    /**
+     * Set Ladang
+     * */
+    // Iterasi grid aktif
+    void initLadang(){
+        Grid<Resource> ladangPlayer = this.state.getCurrentPlayer().getLadang();
+        ladangPlayer.forEachActive((a) -> {
+            // Set Destination Views
+            int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
+            // destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
+
+            // Update Deck
+            ladangDeck.getChildren().remove(gridIDX);
+            ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
+        });
     }
 
 
@@ -227,6 +220,8 @@ public class MainController {
                 DetailController.setDetailOpen(true);
 
                 detailStage.setOnCloseRequest(eventClose -> DetailController.setDetailOpen(false));
+            
+
             } catch (IOException e) {
                 System.out.println("Error loading detail.fxml: " + e.getMessage());
             }
@@ -237,7 +232,7 @@ public class MainController {
         leftDeck.getChildren().clear();
 
         for (int i = 0; i < sourceViews.length; i++) {
-            sourceViews[i] = new ProductCard("assets/Basic.png");
+            // sourceViews[i] = new ProductCard("assets/Basic.png");
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
@@ -246,7 +241,7 @@ public class MainController {
             Resource resource = activeDeckPlayer.get(i);
             if(resource != null) {
                 String name = resource.getName();
-                sourceViews[i] = CreatureCard.getCreatureCard(name);
+                // sourceViews[i] = CreatureCard.getCreatureCard(name);
                 leftDeck.getChildren().remove(i);
                 leftDeck.getChildren().add(i,sourceViews[i]);
             }
@@ -268,7 +263,7 @@ public class MainController {
 
             // Set Destination Views
             int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
-            destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
+            // destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
 
             // Update Deck
             ladangDeck.getChildren().remove(gridIDX);
@@ -279,7 +274,7 @@ public class MainController {
     @FXML
     void onMyFieldClick(ActionEvent event){
         for (int i = 0; i < destinationViews.length; i++) {
-            destinationViews[i] = new ProductCard("assets/Basic.png");
+            // destinationViews[i] = new ProductCard("assets/Basic.png");
             ladangDeck.getChildren().add(destinationViews[i]);
         }
 
@@ -293,7 +288,7 @@ public class MainController {
     void onEnemyFieldClick(ActionEvent event){
         ladangDeck.getChildren().clear();
         for (int i = 0; i < destinationViews.length; i++) {
-            destinationViews[i] = new ProductCard("assets/Basic.png");
+            // destinationViews[i] = new ProductCard("assets/Basic.png");
             ladangDeck.getChildren().add(destinationViews[i]);
         }
 
