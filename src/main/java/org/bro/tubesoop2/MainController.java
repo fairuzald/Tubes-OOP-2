@@ -1,6 +1,12 @@
 package org.bro.tubesoop2;
 import javafx.application.Platform;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,7 +56,7 @@ public class MainController {
     private Label player1Name, player2Name, player1Gulden, player2Gulden, activeDeck, turn, timerLabel;
 
     @FXML
-    private Button shopButton, loadButton, myFieldButton, enemyFieldButton, saveButton, pluginButton;
+    private Button shopButton, loadButton, myFieldButton, enemyFieldButton, saveButton, pluginButton, nextButton;
 
     @FXML
     private DraggableItem[] sourceViews = new DraggableItem[6];
@@ -83,8 +89,6 @@ public class MainController {
                     toko.buy(state.getCurrentPlayer(), src.getFirst(), src.getSecond());
                 }
 
-                ShopController.setToko(state.getToko());
-
             }catch (TokoException e){
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
@@ -106,11 +110,11 @@ public class MainController {
             try{
                 Toko toko  = state.getToko();
 
-                for(Tuple<Integer, Integer> src:arrToSell){
-                    toko.sell(state.getCurrentPlayer(), state.getCurrentPlayer().getActiveDeck().get(src.getFirst()), src.getSecond());
+                for(Tuple<Resource, Integer> src:arrToSell){
+                    toko.sell(state.getCurrentPlayer(), src.getFirst(), src.getSecond());
                 }
 
-                ShopController.setToko(state.getToko());
+                ShopController.setState(state);
 
             }catch (TokoException e){
                 Alert alert = new Alert(AlertType.ERROR);
@@ -123,7 +127,6 @@ public class MainController {
             }
 
         });
-
 
         EmptyCard.onDrop.AddListener(tup -> {
             Integer indexFrom = tup.getFirst();
@@ -148,24 +151,20 @@ public class MainController {
         });
 
         CreatureCard.onMakan.AddListener(paths->{
-            String sourcePath = paths.getSecond();
+            System.out.println("WOY");
+
+            Product p = paths.getSecond();
             Integer index = paths.getFirst();
-            Product p = new Product(sourcePath,0,0);
             int[] gridPosition = convertListIdxToGrid(index);
             int row = gridPosition[0];
             int col = gridPosition[1];
 
-            List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
             Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
-            for (Resource rsc : rscs) {
-                if(rsc instanceof Product){
-                    if(rsc.getName()==p.getName()){
-                        p = (Product) rsc;
-                    }
-                }
-            }
+
             if (animal instanceof Animal) {
                 try {
+                    System.out.println(animal);
+                    System.out.println(p);
                     ((Animal) animal).eat(p);
                 } catch (Exception e) {
                     // Display an error message dialog
@@ -178,6 +177,19 @@ public class MainController {
             }
 
         });
+
+        // CreatureCard.onItemGiven.AddListener(paths -> {
+        //     String sourcePath = paths.getSecond();
+        //     Integer index = paths.getFirst();
+
+        //     int[] gridPosition = convertListIdxToGrid(index);
+        //     int row = gridPosition[0];
+        //     int col = gridPosition[1];
+
+        //     List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
+        //     Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
+        // });
+
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
             for (int i = 0; i < length; i++) {
@@ -191,6 +203,7 @@ public class MainController {
             // Increment plant age
 
             updateGUI();
+            System.out.println(state.getCurrentPlayer().getLadang().getCountFilled());
             seranganBeruangHandler(state);
 
             // win check
@@ -215,9 +228,7 @@ public class MainController {
                     .setPlugin(new TextLoader())
                     .loadState(state);
             updateGUI();
-            ShopController.setToko(state.getToko());
-            ShopController.setInventory(state.getCurrentPlayer().getActiveDeck());
-
+            ShopController.setState(state);
         });
      
         // Show detail
@@ -266,44 +277,11 @@ public class MainController {
         }
         player1Gulden.setText(state.getPlayer1().getGulden().toString());
         player2Gulden.setText(state.getPlayer2().getGulden().toString());
-        updateActiveDeck();
-        updateLadang();
+        updateActiveDeck(state.getCurrentPlayer());
+        updateLadang(state.getCurrentPlayer());
     }
 
-    /**
-     * Set Active Deck
-     * */
-    void updateActiveDeck(){
-        List<Resource> activeDeckPlayer = state.getCurrentPlayer().getActiveDeck();
-        for(int i = 0; i < activeDeckPlayer.size(); i++) {
-            Resource resource = activeDeckPlayer.get(i);
-            if(resource != null) {
-                sourceViews[i] = Card.createCard(resource);
-                leftDeck.getChildren().set(i,sourceViews[i]);
-            }
-        }
-    }
 
-    /**
-     * Set Ladang
-     * */
-    // Iterasi grid aktif
-    void updateLadang(){
-        Grid<Resource> ladangPlayer = state.getCurrentPlayer().getLadang();
-        ladangPlayer.forEach(l -> {
-            int gridIDX = convertGridToListIdx(l.getRow(), l.getCol());
-            if(!ladangPlayer.isFilled(l)) {
-                destinationViews[gridIDX] = new EmptyCard();
-                ladangDeck.getChildren().set(gridIDX, destinationViews[gridIDX]);
-                return;
-            }
-
-            destinationViews[gridIDX] = Card.createCard(ladangPlayer.getElement(l));
-            ladangDeck.getChildren().set(gridIDX, destinationViews[gridIDX]);
-        });
-
-
-    }
 
     void resetActiveDeckViews() {
         state.getCurrentPlayer().compactActiveDeck();
@@ -353,9 +331,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Set Active Deck
+     * */
     void updateActiveDeck(Player pl){
         leftDeck.getChildren().clear();
-        for (int i = 0; i < sourceViews.length; i++) {
+        for (int i = 0; i < 6; i++) {
             sourceViews[i] = new EmptyCard();
             leftDeck.getChildren().add(sourceViews[i]);
         }
@@ -364,12 +345,16 @@ public class MainController {
         for(int i = 0; i < activeDeckPlayer.size(); i++) {
             Resource resource = activeDeckPlayer.get(i);
             if(resource != null) {
-                 sourceViews[i] = Card.createCard(resource);
+                sourceViews[i] = Card.createCard(resource);
                 leftDeck.getChildren().set(i,sourceViews[i]);
             }
         }
     }
 
+
+    /**
+     * Set Ladang
+     * */
     void updateLadang(Player pl) {
         ladangDeck.getChildren().clear();
 
@@ -389,6 +374,7 @@ public class MainController {
             // Update Deck
             ladangDeck.getChildren().set(gridIDX,destinationViews[gridIDX]);
         });
+
     }
 
     @FXML
@@ -529,6 +515,7 @@ public class MainController {
     void onShopClick(ActionEvent event) {
         if (!ShopController.isShopWindowOpen()) {
             try {
+                ShopController.setState(state);
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("shop.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage shopStage = new Stage();
@@ -547,10 +534,6 @@ public class MainController {
         }
     }
 
-    @FXML
-    void enemyFieldButton(ActionEvent event) {
-
-    }
 
     private void applyRedBorder(ImageView imageView) {
         ColorAdjust colorAdjust = new ColorAdjust();
@@ -559,10 +542,25 @@ public class MainController {
         imageView.setEffect(colorAdjust);
     }
 
+    private void disableRedBorder(ImageView imageView) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setHue(0);
+        colorAdjust.setSaturation(0);
+        imageView.setEffect(colorAdjust);
+    }
+
     @FXML
     void seranganBeruangHandler(GameState state){
-       Random random = new Random();
+        Random random = new Random();
         if(true){
+            shopButton.setDisable(true);
+            loadButton.setDisable(true);
+            myFieldButton.setDisable(true);
+            enemyFieldButton.setDisable(true);
+            saveButton.setDisable(true);
+            pluginButton.setDisable(true);
+            nextButton.setDisable(true);
+
             Thread timerThread = new Thread(() -> {
             SeranganBeruang sb = new SeranganBeruang();
             List <Integer> affected = sb.generateAffectedIndex();
@@ -572,7 +570,7 @@ public class MainController {
                 applyRedBorder(destinationViews[idx]);
             }
             System.out.println("Affected: " + affected);
-            CountdownTimer countdownTimer = new CountdownTimer(10);
+            CountdownTimer countdownTimer = new CountdownTimer(5);
             Platform.runLater(() -> timerLabel.setVisible(true));
             countdownTimer.start();
             while (!countdownTimer.isTimeUp()) {
@@ -589,9 +587,43 @@ public class MainController {
             Platform.runLater(() -> timerLabel.setVisible(false));
             System.out.println("test");
             System.out.println("Affected: " + affected);
+
+            for(int i = 0; i < affected.size(); i++){
+                int idx = affected.get(i);
+
+                Platform.runLater(() -> {
+                    killCreatureAt(idx);
+                    updateLadang(state.getCurrentPlayer());
+                });
+            }
+            Platform.runLater(() -> {
+                shopButton.setDisable(false);
+                loadButton.setDisable(false);
+                myFieldButton.setDisable(false);
+                enemyFieldButton.setDisable(false);
+                saveButton.setDisable(false);
+                pluginButton.setDisable(false);
+                nextButton.setDisable(false);
+            });
+
            });
+
+
            timerThread.start();
        }
    }
+    public void killCreatureAt(int i){
+        int[] gridPosition = convertListIdxToGrid(i);
+
+        try{
+            state.getCurrentPlayer().getLadang().pop(gridPosition[0], gridPosition[1]);
+            // ladangDeck.getChildren().remove(i);
+            // ladangDeck.getChildren().add(i,destinationViews[i]);
+
+        }catch(IllegalStateException e){
+            // System.out.println("failed at" + " " + row + " "+ col) ;
+        }
+    }
+
 //}
 }

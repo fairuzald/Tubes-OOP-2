@@ -5,7 +5,9 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.layout.TilePane;
 import org.bro.tubesoop2.action.Action;
 import org.bro.tubesoop2.creature.Creature;
+import org.bro.tubesoop2.item.Item;
 import org.bro.tubesoop2.plant.Plant;
+import org.bro.tubesoop2.product.Product;
 
 public class CreatureCard extends Card {
 
@@ -21,7 +23,8 @@ public class CreatureCard extends Card {
         });
     }
 
-    public static Action<Tuple<Integer, String>> onMakan = new Action<>();
+    public static Action<Tuple<Integer, Product>> onMakan = new Action<>();
+    public static Action<Tuple<Integer, Item>> onItemGiven = new Action<>();
 
     @Override
     public void dragDoneAction() {
@@ -42,17 +45,26 @@ public class CreatureCard extends Card {
         else if(source instanceof ProductCard){
             String imagePath = dragboard.getString();
             if (getParent() instanceof TilePane) {
+                System.out.println("MASOK");
                 TilePane parentContainer = (TilePane) getParent();
                 int index = parentContainer.getChildren().indexOf(this);
-                onMakan.Notify(new Tuple<>(index, imagePath));
+                System.out.println(this.getResource().getClass());
+                if(((ProductCard) source).getResource() instanceof  Product){
+                    System.out.println("MASOK2");
+                    onMakan.Notify(new Tuple<>(index, (Product) ((ProductCard) source).getResource()));
+                }
+
             }
         }
         else if (source instanceof ItemCard) {
-            System.out.println("CreatureCard cannot be replaced by ItemCard or ProductCard.");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Cannot replace CreatureCard with ItemCard or ProductCard.");
-            alert.showAndWait();
+            if(getParent() instanceof TilePane){
+                TilePane parentContainer = (TilePane) getParent();
+                int index = parentContainer.getChildren().indexOf(this);
+                if(((ItemCard) source).getResource() instanceof Item){
+                    System.out.println("MASOK2");
+                    onItemGiven.Notify(new Tuple<>(index, (Item) ((ItemCard) source).getResource()));
+                }
+            }
             return;
             // No change in image or class
         } else {
