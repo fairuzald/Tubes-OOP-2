@@ -15,7 +15,7 @@ public class Player {
     private int deckLeft = 40;
 
     public Player() {
-        ladang = new Grid<>(4, 5);
+        ladang = new Grid<>(5, 4);
         deck = new ArrayList<>(40);
         activeDeck = new ArrayList<>(6);
 
