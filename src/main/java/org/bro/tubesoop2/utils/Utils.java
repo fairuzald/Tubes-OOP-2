@@ -102,6 +102,9 @@ public class Utils {
                 case "assets/Hewan/shark fin.png":
                 key = "HIU_DARAT";
                 break;
+            case "assets/Hewan/shark%20fin.png":
+                key = "HIU_DARAT";
+                break;
             case "assets/Hewan/Sheep.png":
                 key = "DOMBA";
                 break;
@@ -120,10 +123,22 @@ public class Utils {
             case "assets/Tanaman/corn seeds.png":
                 key = "BIJI_JAGUNG";
                 break;
+            case "assets/Tanaman/corn%20seeds.png":
+                key = "BIJI_JAGUNG";
+                break;
             case "assets/Tanaman/pumpkin seeds.png":
                 key = "BIJI_LABU";
                 break;
             case "assets/Tanaman/strawberry seeds.png":
+                key = "BIJI_STROBERI";
+                break;
+            case "assets/Item/bear%20trap.png":
+                key = "TRAP";
+                break;
+            case "assets/Tanaman/pumpkin%20seeds.png":
+                key = "BIJI_LABU";
+                break;
+            case "assets/Tanaman/strawberry%20seeds.png":
                 key = "BIJI_STROBERI";
                 break;
             case "assets/Item/bear trap.png":
@@ -133,14 +148,9 @@ public class Utils {
 
 
             // Handle Item paths
-
-
             case "assets/Item/Instant Harvest.png":
                 key = "INSTANT_HARVEST";
                 break;
-
-
-
             case "assets/Produk/Daging Beruang.png":
                 key = "DAGING_BERUANG";
                 break;
@@ -151,7 +161,23 @@ public class Utils {
                 key = "DAGING_KUDA";
                 break;
 
+            case "assets/Item/Instant%20Harvest.png":
+                key = "INSTANT_HARVEST";
+                break;
+            case "assets/Produk/Daging%20Beruang.png":
+                key = "DAGING_BERUANG";
+                break;
+            case "assets/Produk/Daging%20Domba.png":
+                key = "DAGING_DOMBA";
+                break;
+            case "assets/Produk/Daging%20Kuda.png":
+                key = "DAGING_KUDA";
+                break;
+
             case "assets/Produk/shark fin.png":
+                key = "SIRIP_HIU";
+                break;
+            case "assets/Produk/shark%20fin.png":
                 key = "SIRIP_HIU";
                 break;
 
