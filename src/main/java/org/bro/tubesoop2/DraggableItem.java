@@ -74,8 +74,14 @@ public abstract class DraggableItem extends ImageView {
 
     public void dragDropped(DragEvent event) {
         Dragboard dragboard = event.getDragboard();
-        if (dragboard.hasImage()) {
-            Object source = event.getGestureSource();
+        if (!dragboard.hasImage())  {
+            event.setDropCompleted(true);
+            event.consume();
+            return;
+        }
+
+        Object source = event.getGestureSource();
+        if (isDragable) {
             if (isValidReplacement(source)) {
                 handleDrop(dragboard, source);
                 event.setDropCompleted(true);
@@ -87,13 +93,19 @@ public abstract class DraggableItem extends ImageView {
                 alert.showAndWait();
                 event.setDropCompleted(false);
             }
+
         } else {
-            event.setDropCompleted(false);
+            System.out.println("drop to enemy!");
+            dropEnemy(dragboard, source);
         }
-        event.consume();
+
     }
 
     protected abstract void handleDrop(Dragboard dragboard, Object source);
+
+    protected void dropEnemy(Dragboard dragboard, Object source){
+
+    }
 
     protected boolean isValidReplacement(Object source) {
         if (this instanceof CreatureCard && source instanceof CreatureCard) {

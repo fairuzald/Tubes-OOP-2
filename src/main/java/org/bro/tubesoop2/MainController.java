@@ -237,6 +237,10 @@ public class MainController {
             Creature creature = (Creature) d.getResource();
             onItemClick(null, creature, locationIndex);
         });
+
+        CreatureCard.onItemCancel.AddListener(smth -> {
+            updateGUI();
+        });
         
         DetailController.onHarvestClicked.AddListener(locationIndex -> {
             try{
