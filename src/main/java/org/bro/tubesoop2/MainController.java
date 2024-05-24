@@ -209,7 +209,7 @@ public class MainController {
         sourceViews = new DraggableItem[6];
         for (int i = 0; i < 6; i++) {
             sourceViews[i] = new EmptyCard();
-            leftDeck.getChildren().add(sourceViews[i]);
+            leftDeck.getChildren().set(i, sourceViews[i]);
         }
     }
 
