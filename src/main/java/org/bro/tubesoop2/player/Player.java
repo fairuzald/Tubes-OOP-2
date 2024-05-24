@@ -40,6 +40,19 @@ public class Player {
         return activeDeck;
     }
 
+    public void compactActiveDeck() {
+        List<Resource> activeDeckCopy = new ArrayList<>();
+
+        for (int i = 0; i < activeDeck.size(); i++) {
+            if (activeDeck.get(i) != null) {
+                activeDeckCopy.add(activeDeck.get(i));
+            }
+        }
+
+        activeDeck = activeDeckCopy;
+        System.out.println(activeDeck);
+    }
+
     public int getDeckLeft(){return deckLeft;}
 
     public void setGulden(int gulden){this.gulden = gulden;}

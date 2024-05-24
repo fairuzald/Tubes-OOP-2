@@ -204,6 +204,8 @@ public class MainController {
     }
 
     void resetActiveDeckViews() {
+        state.getCurrentPlayer().compactActiveDeck();
+
         sourceViews = new DraggableItem[6];
         for (int i = 0; i < 6; i++) {
             sourceViews[i] = new EmptyCard();
@@ -392,14 +394,12 @@ public class MainController {
 
     @FXML
     void onNextClick(ActionEvent event) {
-        RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().getActiveDeck().size();
-        System.out.println("Prev player deck:" + state.getCurrentPlayer().getActiveDeck());
 
         state.NextTurn();
         resetActiveDeckViews();
         updateGUI(state);
 
-        System.out.println("current player deck:" + state.getCurrentPlayer().getActiveDeck());
+        RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().getActiveDeck().size();
 
 
         if (RandomController.maximumCardsCanBeSelected == 0) {
