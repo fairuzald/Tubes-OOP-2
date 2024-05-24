@@ -33,7 +33,7 @@ public class RandomController {
     private static boolean randomWindowOpen = false;
 
     private static List<Image> imagesShown = new ArrayList<>();
-    private static final String DEFAULT_IMAGE_PATH = "assets/basic.png";
+    private static final String DEFAULT_IMAGE_PATH = "assets/EMPTYCARD.png";
 
     public static Action<RandomController> onNextDone = new Action<RandomController>();
 
