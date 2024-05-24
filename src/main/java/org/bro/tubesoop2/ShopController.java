@@ -65,8 +65,6 @@ public class ShopController {
     @FXML
     void initialize() {
 
-
-        System.out.println(getInventory());
         for(Resource rsc:getInventory()){
             if(rsc instanceof Product){
                 HBox itemBox = createDummyItemBox(rsc.getName(),((Product) rsc).getPrice(),1, "assets/Produk/"+rsc.getName()+".png");
@@ -101,7 +99,6 @@ public class ShopController {
             itemBox.setOnMouseClicked(event -> {
                 promptForQuantity(temp, "buy");
             });
-
         }
     }
 

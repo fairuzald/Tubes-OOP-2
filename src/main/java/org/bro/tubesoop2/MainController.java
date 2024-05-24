@@ -89,8 +89,15 @@ public class MainController {
                 alert.setHeaderText("An error occurred while processing the action.");
                 alert.setContentText("Details: " + e.getMessage());
                 alert.showAndWait();
+            } catch (Exception e){
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("An error occurred while processing the action.");
+                alert.setContentText("Details: " + e.getMessage());
+                alert.showAndWait();
+            }finally {
+                updateGUI(state);
             }
-
         });
 
         ShopController.onSell.AddListener(arrToSell ->{
@@ -109,6 +116,8 @@ public class MainController {
                 alert.setHeaderText("An error occurred while processing the action.");
                 alert.setContentText("Details: " + e.getMessage());
                 alert.showAndWait();
+            }finally {
+                updateGUI(state);
             }
 
         });
@@ -187,23 +196,24 @@ public class MainController {
             player2Name.setTextFill(Color.GRAY);
             player1Gulden.setTextFill(Color.WHITE);
             player2Gulden.setTextFill(Color.GRAY);
+
         } else {
             player1Name.setTextFill(Color.GRAY);
             player2Name.setTextFill(Color.WHITE);
             player1Gulden.setTextFill(Color.GRAY);
             player2Gulden.setTextFill(Color.WHITE);
         }
-
-        
-        initActiveDeck();
-        initLadang();
+        player1Gulden.setText(state.getPlayer1().getGulden().toString());
+        player2Gulden.setText(state.getPlayer2().getGulden().toString());
+        initActiveDeck(state);
+        initLadang(state);
     }
 
     /**
      * Set Active Deck
      * */
-    void initActiveDeck(){
-        List<Resource> activeDeckPlayer = this.state.getCurrentPlayer().getActiveDeck();
+    void initActiveDeck(GameState state){
+        List<Resource> activeDeckPlayer = state.getCurrentPlayer().getActiveDeck();
         for(int i = 0; i < activeDeckPlayer.size(); i++) {
             Resource resource = activeDeckPlayer.get(i);
             if(resource != null) {
@@ -217,8 +227,8 @@ public class MainController {
      * Set Ladang
      * */
     // Iterasi grid aktif
-    void initLadang(){
-        Grid<Resource> ladangPlayer = this.state.getCurrentPlayer().getLadang();
+    void initLadang(GameState state){
+        Grid<Resource> ladangPlayer = state.getCurrentPlayer().getLadang();
         ladangPlayer.forEachActive((a) -> {
             // Set Destination Views
             int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());

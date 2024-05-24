@@ -1,5 +1,6 @@
 package org.bro.tubesoop2.toko;
 
+import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.player.Player;
@@ -83,21 +84,32 @@ public class Toko {
         return count;
     }
 
-    public void buy(Player pl, int idxItem, int quantity) throws TokoException {
+    public void buy(Player pl, int idxItem, int quantity) throws TokoException, Exception {
         if (idxItem < 0 || idxItem >= stock.size()) {
             throw new BeliOutOfRange();
         }
 
         Quantifiable<Resource> itemShop = stock.get(idxItem);
+        Integer price = ((Product) itemShop.getValue()).getPrice()*quantity;
+
+        if(itemShop.getValue() instanceof Product){
+
         if (itemShop.getQuantity() < quantity) {
             throw new StockTidakCukupShopException();
         }
 
-        if (pl.getActiveDeck().size() + quantity > 40) {
-            throw new PenyimpananTidakCukup();
+        if(pl.getGulden()<price){
+            throw new Exception("Uang tidak cukup");
         }
 
+        if (pl.getActiveDeck().size() + quantity > 6) {
+            throw new PenyimpananTidakCukup();
+        }
+        }
+
+
         itemShop.decrementQuantity(quantity);
+        pl.setGulden(pl.getGulden()-price);
     }
 
 
@@ -106,6 +118,7 @@ public class Toko {
         if (stockCount - quantity < 0) {
             throw new StockTidakCukupPlayer();
         }
+        int price = ((Product) rsc).getPrice()*quantity;
 
         for (int i = 0; i < quantity; i++) {
             if (pl.getActiveDeck().contains(rsc)) {
@@ -114,6 +127,8 @@ public class Toko {
                 throw new ItemShopNotFoundException();
             }
         }
+
+        pl.setGulden(pl.getGulden()+price);
     }
 
 }
