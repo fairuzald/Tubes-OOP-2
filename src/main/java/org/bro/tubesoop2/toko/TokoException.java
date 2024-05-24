@@ -52,27 +52,6 @@ class StockTidakCukupPlayer extends TokoException {
     }
 }
 
-class PetaniShopException extends TokoException {
-    @Override
-    public String getMessage() {
-        return "Petani shop exception.";
-    }
-}
-
-class PeternakShopException extends TokoException {
-    @Override
-    public String getMessage() {
-        return "Peternak shop exception.";
-    }
-}
-
-class WalikotaShopException extends TokoException {
-    @Override
-    public String getMessage() {
-        return "Walikota shop exception.";
-    }
-}
-
 class BeliOutOfRange extends TokoException {
     @Override
     public String getMessage() {
