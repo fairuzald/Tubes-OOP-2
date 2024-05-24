@@ -20,10 +20,12 @@ import javafx.stage.StageStyle;
 import javafx.scene.image.Image;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import javafx.scene.layout.TilePane;
 import org.bro.tubesoop2.grid.Grid;
+import org.bro.tubesoop2.grid.Location;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.state.GameState;
@@ -40,7 +42,6 @@ public class MainController {
 
     @FXML
     private Button shopButton, loadButton, myFieldButton, enemyFieldButton, saveButton, pluginButton;
-
 
     @FXML
     private DraggableItem[] sourceViews = new DraggableItem[6];
@@ -59,25 +60,22 @@ public class MainController {
                 .loadState();
 
         for (int i = 0; i < sourceViews.length; i++) {
-            if(i%2==0){
+            if(i%3==0){
                 sourceViews[i] = new ProductCard("assets/Produk/corn.png");
 
             }
-            else if(i%2==1){
+            else if(i%3==1) {
                 sourceViews[i] = new ItemCard("assets/Item/Accelerate.png");
 
-            }
-            else{
+            } else{
                 sourceViews[i] = new CreatureCard("assets/Hewan/Bear.png");
 
             }
-            addDragHandlers(sourceViews[i]);
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
         for (int i = 0; i < destinationViews.length; i++) {
             destinationViews[i] = new EmptyCard();
-            addDropHandlers(destinationViews[i]);
             ladangDeck.getChildren().add(destinationViews[i]);
         }
 
@@ -90,8 +88,7 @@ public class MainController {
             if(resource != null) {
                 String name = resource.getName();
                 sourceViews[i] = CreatureCard.getCreatureCard(name);
-                leftDeck.getChildren().remove(i);
-                leftDeck.getChildren().add(i,sourceViews[i]);
+                leftDeck.getChildren().set(i,sourceViews[i]);
             }
         }
 
@@ -113,6 +110,16 @@ public class MainController {
             ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
         });
 
+        EmptyCard.onDrop.AddListener(tup -> {
+            Resource rsc = tup.getFirst();
+            Integer index = tup.getSecond();
+            int[] gridPosition = convertListIdxToGrid(index);
+            int row = gridPosition[0];
+            int col = gridPosition[1];
+            Location lct = new Location(row, col);
+            state.getCurrentPlayer().addLadang(rsc, lct);
+        });
+
 
 //        state = loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
 //                .setPluginFromJarPath("src/plugin/jar/JsonLoader.jar")
@@ -125,12 +132,14 @@ public class MainController {
             state.NextTurn();
             updateGUI(state);
         });
+
         SaveController.onSaveValid.AddListener(folderDir -> {
             loader.setPath(folderDir, "gamestate_.txt", "player1_.txt", "player2_.txt")
                     .setPlugin(new TextLoader())
                     .saveState(state);
             updateGUI(state);
         });
+
         LoadController.onLoadValid.AddListener(folderDir -> {
             state = loader.setPath(folderDir, "gamestate.txt", "player1.txt", "player2.txt")
                     .setPlugin(new TextLoader())
@@ -160,52 +169,13 @@ public class MainController {
     private int convertGridToListIdx(int i, int j){
         return i*4 + j;
     }
-
-    @FXML
-    private void addDragHandlers(DraggableItem imageView) {
-        imageView.setOnDragDetected(imageView::dragDetected);
-        imageView.setOnDragDone(imageView::dragDone);
+    private int[] convertListIdxToGrid(int listIndex) {
+        int rowIndex = listIndex / 4;
+        int colIndex = listIndex % 4;
+        return new int[]{rowIndex, colIndex};
     }
 
-    @FXML
-    private void addDropHandlers(DraggableItem imageView) {
-        imageView.setOnDragOver(imageView::dragOver);
-        imageView.setOnDragDropped(imageView::dragDropped);
-    }
 
-    @FXML
-    private void addDetailHandlers(DraggableItem imageView) {
-        imageView.setOnMouseClicked(this::onItemClick);
-        imageView.setPickOnBounds(true);
-    }
-
-    @FXML
-    private void dragDetected(MouseEvent event) {
-        ImageView sourceView = (ImageView) event.getSource();
-        Dragboard dragboard = sourceView.startDragAndDrop(TransferMode.MOVE);
-        ClipboardContent content = new ClipboardContent();
-        content.putImage(sourceView.getImage());
-        dragboard.setContent(content);
-        event.consume();
-    }
-
-    @FXML
-    private void dragDone(DragEvent event) {
-        if (event.getTransferMode() == TransferMode.MOVE) {
-            ImageView sourceView = (ImageView) event.getSource();
-            Image myImage = new Image(getClass().getResourceAsStream("assets/basic.png"));
-            sourceView.setImage(myImage);
-        }
-        event.consume();
-    }
-
-    @FXML
-    private void dragOver(DragEvent event) {
-        if (event.getDragboard().hasImage() || event.getDragboard().hasFiles()) {
-            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-        }
-        event.consume();
-    }
 
     @FXML
     private void onItemClick(MouseEvent event) {
@@ -240,7 +210,6 @@ public class MainController {
 
         for (int i = 0; i < sourceViews.length; i++) {
             sourceViews[i] = new ProductCard("assets/Basic.png");
-            addDragHandlers(sourceViews[i]);
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
@@ -260,8 +229,7 @@ public class MainController {
         ladangDeck.getChildren().clear();
 
         for (int i = 0; i < destinationViews.length; i++) {
-            destinationViews[i] = new ProductCard("assets/Basic.png");
-            addDropHandlers(destinationViews[i]);
+            destinationViews[i] = new EmptyCard();
             ladangDeck.getChildren().add(destinationViews[i]);
         }
 
@@ -284,7 +252,6 @@ public class MainController {
     void onMyFieldClick(ActionEvent event){
         for (int i = 0; i < destinationViews.length; i++) {
             destinationViews[i] = new ProductCard("assets/Basic.png");
-            addDropHandlers(destinationViews[i]);
             ladangDeck.getChildren().add(destinationViews[i]);
         }
 
@@ -299,7 +266,6 @@ public class MainController {
         ladangDeck.getChildren().clear();
         for (int i = 0; i < destinationViews.length; i++) {
             destinationViews[i] = new ProductCard("assets/Basic.png");
-            addDropHandlers(destinationViews[i]);
             ladangDeck.getChildren().add(destinationViews[i]);
         }
 

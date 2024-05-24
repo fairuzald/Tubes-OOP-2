@@ -9,6 +9,26 @@ public class ProductCard extends DraggableItem {
         super(imagePath);
     }
 
+    public static String getNameFromImagePath(String imagePath) {
+        String name;
+        switch (imagePath) {
+            case "assets/Produk/corn.png":
+                name = "JAGUNG";
+                break;
+            case "assets/Produk/daging_beruang.png":
+                name = "DAGING BERUANG";
+                break;
+            case "assets/Hewan/daging_kuda.png":
+                name = "DAGING KUDA";
+                break;
+            default:
+                name = "UNKNOWN";
+                break;
+        }
+
+        return name;
+    }
+
     @Override
     public void dragDoneAction() {
         System.out.println("ProductCard drag done.");

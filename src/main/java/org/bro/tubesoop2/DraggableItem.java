@@ -90,6 +90,9 @@ public abstract class DraggableItem extends ImageView {
         if (source instanceof EmptyCard) {
             return false;
         }
+        if (this instanceof EmptyCard && !(source instanceof CreatureCard)) {
+            return false;
+        }
         return true;
     }
 

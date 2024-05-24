@@ -1,6 +1,10 @@
 package org.bro.tubesoop2;
 
 import javafx.scene.input.Dragboard;
+import org.bro.tubesoop2.action.Action;
+import org.bro.tubesoop2.product.Product;
+import org.bro.tubesoop2.resource.Resource;
+
 import java.util.Objects;
 
 public class CreatureCard extends DraggableItem {
@@ -8,6 +12,8 @@ public class CreatureCard extends DraggableItem {
     public CreatureCard(String imagePath) {
         super(imagePath);
     }
+
+    public static Action<Product> onMakan = new Action<>();
 
     @Override
     public void dragDoneAction() {
@@ -41,11 +47,58 @@ public class CreatureCard extends DraggableItem {
         return new CreatureCard(imagePath);
     }
 
+
+    public static String getNameFromImagePath(String imagePath) {
+        String name;
+        switch (imagePath) {
+            case "assets/Hewan/Bear.png":
+                name = "BERUANG";
+                break;
+            case "assets/Hewan/Chicken.png":
+                name = "AYAM";
+                break;
+            case "assets/Hewan/Cow.png":
+                name = "SAPI";
+                break;
+            case "assets/Hewan/Land_Shark.png":
+                name = "HIU DARAT";
+                break;
+            case "assets/Hewan/Horse.png":
+                name = "KUDA";
+                break;
+            case "assets/Hewan/Sheep.png":
+                name = "DOMBA";
+                break;
+            case "assets/Tanaman/Corn_Seeds.png":
+                name = "BIJI JAGUNG";
+                break;
+            case "assets/Tanaman/Pumpkin_Seeds.png":
+                name = "BIJI LABU";
+                break;
+            case "assets/Tanaman/Strawberry_Seeds.png":
+                name = "BIJI STROBERI";
+                break;
+            default:
+                name = "UNKNOWN";
+                break;
+        }
+
+        return name;
+    }
+
     @Override
     protected void handleDrop(Dragboard dragboard, Object source) {
         if (source instanceof CreatureCard) {
             System.out.println("CreatureCard cannot be replaced by another CreatureCard.");
-        } else if (source instanceof ItemCard || source instanceof ProductCard) {
+        }
+        else if(source instanceof ProductCard){
+            String imgPath = dragboard.getString();
+//            Product p = new Product()
+
+
+
+        }
+        else if (source instanceof ItemCard) {
             System.out.println("CreatureCard can be replaced by ItemCard or ProductCard.");
             // No change in image or class
         } else {
