@@ -13,20 +13,16 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
-import javafx.scene.input.*;
 import javafx.stage.StageStyle;
-import javafx.scene.image.Image;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
-import javafx.scene.layout.TilePane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import org.bro.tubesoop2.animal.Animal;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
 import org.bro.tubesoop2.player.Player;
+import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
@@ -118,6 +114,38 @@ public class MainController {
             int col = gridPosition[1];
             Location lct = new Location(row, col);
             state.getCurrentPlayer().addLadang(rsc, lct);
+        });
+
+        CreatureCard.onMakan.AddListener(paths->{
+            String sourcePath = paths.getSecond();
+            Integer index = paths.getFirst();
+            Product p = new Product(sourcePath,0,0);
+            int[] gridPosition = convertListIdxToGrid(index);
+            int row = gridPosition[0];
+            int col = gridPosition[1];
+
+            List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
+            Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
+            for (Resource rsc : rscs) {
+                if(rsc instanceof Product){
+                    if(rsc.getName()==p.getName()){
+                        p = (Product) rsc;
+                    }
+                }
+            }
+            if (animal instanceof Animal) {
+                try {
+                    ((Animal) animal).eat(p);
+                } catch (Exception e) {
+                    // Display an error message dialog
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("An error occurred while processing the action.");
+                    alert.setContentText("Details: " + e.getMessage());
+                    alert.showAndWait();
+                }
+            }
+
         });
 
 

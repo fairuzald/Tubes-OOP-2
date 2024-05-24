@@ -1,6 +1,7 @@
 package org.bro.tubesoop2;
 
 import javafx.scene.input.Dragboard;
+import javafx.scene.layout.TilePane;
 import org.bro.tubesoop2.action.Action;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.resource.Resource;
@@ -13,7 +14,7 @@ public class CreatureCard extends DraggableItem {
         super(imagePath);
     }
 
-    public static Action<Product> onMakan = new Action<>();
+    public static Action<Tuple<Integer, String>> onMakan = new Action<>();
 
     @Override
     public void dragDoneAction() {
@@ -92,11 +93,12 @@ public class CreatureCard extends DraggableItem {
             System.out.println("CreatureCard cannot be replaced by another CreatureCard.");
         }
         else if(source instanceof ProductCard){
-            String imgPath = dragboard.getString();
-//            Product p = new Product()
-
-
-
+            String imagePath = dragboard.getString();
+            if (getParent() instanceof TilePane) {
+                TilePane parentContainer = (TilePane) getParent();
+                int index = parentContainer.getChildren().indexOf(this);
+                onMakan.Notify(new Tuple<>(index, imagePath));
+            }
         }
         else if (source instanceof ItemCard) {
             System.out.println("CreatureCard can be replaced by ItemCard or ProductCard.");

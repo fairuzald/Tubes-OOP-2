@@ -25,6 +25,10 @@ public abstract class DraggableItem extends ImageView {
         this.setOnDragDropped(this::dragDropped);
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
     public void dragDetected(MouseEvent event) {
         ImageView sourceView = (ImageView) event.getSource();
 

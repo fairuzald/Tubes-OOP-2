@@ -12,7 +12,6 @@ public abstract class Creature extends Resource {
     private List<Item> itemsActive;
 
 
-
     public Creature(String name, List<Product> drops) {
         super(name);
         this.drops = drops;
