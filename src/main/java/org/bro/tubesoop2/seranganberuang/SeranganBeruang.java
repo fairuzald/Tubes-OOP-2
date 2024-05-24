@@ -3,40 +3,40 @@ package org.bro.tubesoop2.seranganberuang;
 import org.bro.tubesoop2.countdowntimer.ITimerSubscriber;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.resource.Resource;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
-public class SeranganBeruang implements ITimerSubscriber {
-    Grid<Resource> areaSerangan;
-    int startRow;
-    int startCol;
-    int deltaRow;
-    int deltaCol;
+public class SeranganBeruang {
 
-    public SeranganBeruang() {
-        this.areaSerangan = new Grid<>();
-        int totalRows = 4;
-        int totalCols = 5;
-
+    public List<Integer> generateAffectedIndex() {
         Random random = new Random();
-        deltaRow = random.nextInt(totalRows)+1;
+        int size;
+        int width;
+        int height;
+
+        // Generate a random size between 1 and 6
         do {
-            deltaCol = random.nextInt(6 / deltaRow) + 1;
-        } while (deltaCol > totalCols);
+            width = random.nextInt(5) + 1; // Generate a random width between 1 and 5
+            height = random.nextInt(4) + 1; // Generate a random height between 1 and 4
+            size = width * height;
+        } while (size > 6);
 
+        int startRow = random.nextInt(4 - height + 1); // Generate a random start row
+        int startCol = random.nextInt(5 - width + 1); // Generate a random start column
 
-        this.startRow = random.nextInt(totalRows-deltaRow+1);
-        this.startCol = random.nextInt(totalCols-deltaCol+1);
-    }
-
-    // TODO: Belom handle item Trap
-    @Override
-    public void update(int count) {
-        if(count > 0) {return;}
-        for(int i = this.startRow; i <= this.startRow + deltaRow; i++) {
-            for(int j = this.startCol; j <= this.startCol + deltaCol; j++) {
-                this.areaSerangan.pop(i,j);
+        List<Integer> numbers = new ArrayList<>();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int index = (startRow + i) * 5 + (startCol + j); // Convert the row and column to an index
+                numbers.add(index);
             }
         }
+
+        return numbers;
     }
+
+
 }

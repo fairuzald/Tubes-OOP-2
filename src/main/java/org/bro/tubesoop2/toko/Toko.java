@@ -24,6 +24,14 @@ public class Toko {
         return stock;
     }
 
+    
+    public void clearAndRepopulateItems(ArrayList<Quantifiable<Resource>> newStock){
+        stock.clear();
+        for(Quantifiable<Resource> item : newStock){
+            stock.add(item);
+        }
+    }
+
     public int getItemIndex(Quantifiable<Resource> otherQuant) throws ItemShopNotFoundException {
         for (int i = 0; i < stock.size(); i++) {
             if (stock.get(i).getValue().equals(otherQuant.getValue())) {
@@ -113,4 +121,8 @@ public class Toko {
         }
     }
 
+
+    public void clear(){
+        stock.clear();
+    }
 }

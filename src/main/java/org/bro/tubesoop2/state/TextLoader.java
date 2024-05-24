@@ -132,7 +132,7 @@ public class TextLoader implements StatePlugin {
 
             items.add(qr);
         }
-        state.setToko(new Toko(items));
+        state.getToko().clearAndRepopulateItems(items);
         scanner.close();
     }
 
