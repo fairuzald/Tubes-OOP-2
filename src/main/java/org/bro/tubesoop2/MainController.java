@@ -34,6 +34,8 @@ import org.bro.tubesoop2.countdowntimer.CountdownTimer;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
 import org.bro.tubesoop2.item.Item;
+import org.bro.tubesoop2.item.Protect;
+import org.bro.tubesoop2.item.Trap;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
@@ -193,6 +195,7 @@ public class MainController {
             try{
                 System.out.println("mmmsskkk");
                 item.consumedBy((Creature)creature);
+                // updateGUI();
             }catch (Exception e) {
                 // Display an error message dialog
                 Alert alert = new Alert(AlertType.ERROR);
@@ -655,8 +658,31 @@ public class MainController {
        }
    }
     public void killCreatureAt(int i){
+        
         int[] gridPosition = convertListIdxToGrid(i);
+        boolean hasProtectCard = false;
+        boolean hasTrap = false;
+        Creature creature = (Creature) state.getCurrentPlayer().getLadang().getElement(gridPosition[0], gridPosition[1]);
+        if(creature == null) return;
+        System.out.println(creature+"uhuy");
+        for (Item item : creature.getItemsActive()) {
+            if (item instanceof Protect) {
+                hasProtectCard = true;
+               
+            }
+            if(item instanceof Trap){
+                hasTrap = true;
+            }
+        }
 
+        if(hasProtectCard){
+            return;
+        }
+        if(hasTrap){
+            state.getCurrentPlayer().addToDeck(state.createResource("BERUANG"));
+//            updateActiveDeck();
+            return;
+        }
         try{
             state.getCurrentPlayer().getLadang().pop(gridPosition[0], gridPosition[1]);
             // ladangDeck.getChildren().remove(i);

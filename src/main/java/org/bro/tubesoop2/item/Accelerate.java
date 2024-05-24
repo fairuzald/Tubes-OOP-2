@@ -7,6 +7,7 @@ import org.bro.tubesoop2.plant.Plant;
 public class Accelerate extends Item {
     @Override
     public void consumedBy(Creature creature) {
+        super.consumedBy(creature);
         if (creature instanceof  Animal) {
             Animal animal = (Animal) creature;
             animal.addWeight((8));

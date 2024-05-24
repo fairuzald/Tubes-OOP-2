@@ -9,10 +9,11 @@ public class InstantHarvest extends Item {
     public void consumedBy(Creature creature) {
         if (creature instanceof Animal) {
             Animal animal = (Animal) creature;
-            System.out.println("Animal has consumed the InstantHarvest item.");
+            animal.addWeight(999);
             // pop from gui
         } else if (creature instanceof Plant) {
-            System.out.println("Creature has consumed the InstantHarvest item.");
+            Plant plant = (Plant) creature;
+            plant.addAge(999);
             // pop from gui
         }
     }
