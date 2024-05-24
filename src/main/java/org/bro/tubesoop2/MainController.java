@@ -19,6 +19,7 @@ import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import org.bro.tubesoop2.animal.Animal;
+import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
 import org.bro.tubesoop2.player.Player;
@@ -51,9 +52,6 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
-                .setPlugin(new TextLoader())
-                .loadState(state);
         
         // Remove all
         for (int i = 0; i < destinationViews.length; i++) {
@@ -131,7 +129,10 @@ public class MainController {
             updateGUI(state);
         });
      
-     
+        // Show detail
+        CreatureCard.onCreatureCardClicked.AddListener(creature -> {
+            onItemClick(null, (Resource)creature.getResource());            
+        });
     }
 
     void updateGUI(GameState state){
@@ -199,22 +200,23 @@ public class MainController {
 
 
     @FXML
-    private void onItemClick(MouseEvent event) {
+    private void onItemClick(MouseEvent event, Resource c) {
         if (!DetailController.isDetailOpen()) {
             try {
-                String itemName = "Corn";
-                String[] activeItems = {"Item1", "Item2", "Item3"};
-                String age = "5";
-                String ageOrWeight = "Age";
+                Creature creature = (Creature) c;
+                String itemName = creature.getFormattedName();
+                String[] activeItems = creature.getItemsActive().stream().map(item -> item.getName()).toArray(String[]::new);
+                String value = Integer.toString(creature.getUmurOrBerat());
+                String label = creature instanceof Animal ? "Berat" : "Umur";
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detail.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage detailStage = new Stage();
 
                 DetailController controller = fxmlLoader.getController();
-                controller.updateDetails(itemName, activeItems, age, ageOrWeight);
+                controller.updateDetails(itemName, activeItems, value, label);
 
-                detailStage.setTitle("Detail");
+                detailStage.setTitle(creature.getName());
                 detailStage.setScene(new Scene(root));
                 detailStage.show();
                 DetailController.setDetailOpen(true);
