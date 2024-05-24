@@ -192,11 +192,12 @@ public class MainController {
         ladangPlayer.forEachActive((a) -> {
             // Set Destination Views
             int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
-            // destinationViews[gridIDX] = CreatureCard.getCreatureCard(name);
+            destinationViews[gridIDX] = Card.createCard(ladangPlayer.getElement(a));
 
             // Update Deck
-            ladangDeck.getChildren().remove(gridIDX);
-            ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
+            ladangDeck.getChildren().set(gridIDX,destinationViews[gridIDX]);
+            
+            System.out.println("gridIDX: "+gridIDX);
         });
 
 
