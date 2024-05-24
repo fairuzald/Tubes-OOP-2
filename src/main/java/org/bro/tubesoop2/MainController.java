@@ -1,6 +1,12 @@
 package org.bro.tubesoop2;
 import javafx.application.Platform;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +33,7 @@ import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.countdowntimer.CountdownTimer;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
+import org.bro.tubesoop2.item.Item;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
@@ -50,7 +57,7 @@ public class MainController {
     private Label player1Name, player2Name, player1Gulden, player2Gulden, activeDeck, turn, timerLabel;
 
     @FXML
-    private Button shopButton, loadButton, myFieldButton, enemyFieldButton, saveButton, pluginButton;
+    private Button shopButton, loadButton, myFieldButton, enemyFieldButton, saveButton, pluginButton, nextButton;
 
     @FXML
     private DraggableItem[] sourceViews = new DraggableItem[6];
@@ -124,7 +131,6 @@ public class MainController {
 
         });
 
-
         EmptyCard.onDrop.AddListener(tup -> {
             Integer indexFrom = tup.getFirst();
             Tuple<Resource, Integer> tup2 = tup.getSecond();
@@ -178,6 +184,19 @@ public class MainController {
             }
 
         });
+
+        CreatureCard.onItemGiven.AddListener(paths -> {
+            String sourcePath = paths.getSecond();
+            Integer index = paths.getFirst();
+            
+            int[] gridPosition = convertListIdxToGrid(index);
+            int row = gridPosition[0];
+            int col = gridPosition[1];
+
+            List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
+            Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
+        });
+
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
             for (int i = 0; i < length; i++) {
@@ -190,6 +209,7 @@ public class MainController {
             }
 
             updateGUI();
+            System.out.println(state.getCurrentPlayer().getLadang().getCountFilled());
             seranganBeruangHandler(state);
         });
 
@@ -549,10 +569,25 @@ public class MainController {
         imageView.setEffect(colorAdjust);
     }
 
+    private void disableRedBorder(ImageView imageView) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setHue(0);
+        colorAdjust.setSaturation(0);
+        imageView.setEffect(colorAdjust);
+    }
+
     @FXML
     void seranganBeruangHandler(GameState state){
-       Random random = new Random();
+        Random random = new Random();
         if(true){
+            shopButton.setDisable(true);
+            loadButton.setDisable(true);
+            myFieldButton.setDisable(true);
+            enemyFieldButton.setDisable(true);
+            saveButton.setDisable(true);
+            pluginButton.setDisable(true);
+            nextButton.setDisable(true);
+            
             Thread timerThread = new Thread(() -> {
             SeranganBeruang sb = new SeranganBeruang();
             List <Integer> affected = sb.generateAffectedIndex();
@@ -562,12 +597,11 @@ public class MainController {
                 applyRedBorder(destinationViews[idx]);
             }
             System.out.println("Affected: " + affected);
-            CountdownTimer countdownTimer = new CountdownTimer(10);
+            CountdownTimer countdownTimer = new CountdownTimer(5);
             Platform.runLater(() -> timerLabel.setVisible(true));
             countdownTimer.start();
             while (!countdownTimer.isTimeUp()) {
                 try {
-
                     Thread.sleep(100);
                     String currtime = Integer.toString(countdownTimer.getTime()/1000) + "," + Integer.toString((countdownTimer.getTime()%1000)/100); ;
                     Platform.runLater(() -> {timerLabel.setText(currtime);}
@@ -579,9 +613,43 @@ public class MainController {
             Platform.runLater(() -> timerLabel.setVisible(false));
             System.out.println("test");
             System.out.println("Affected: " + affected);
+
+            for(int i = 0; i < affected.size(); i++){
+                int idx = affected.get(i);
+            
+                Platform.runLater(() -> {
+                    killCreatureAt(idx);
+                    updateLadang();
+                });
+            }
+            Platform.runLater(() -> {
+                shopButton.setDisable(false);
+                loadButton.setDisable(false);
+                myFieldButton.setDisable(false);
+                enemyFieldButton.setDisable(false);
+                saveButton.setDisable(false);
+                pluginButton.setDisable(false);
+                nextButton.setDisable(false);
+            });
+            
            });
+
+
            timerThread.start();
        }
    }
+    public void killCreatureAt(int i){
+        int[] gridPosition = convertListIdxToGrid(i);
+
+        try{
+            state.getCurrentPlayer().getLadang().pop(gridPosition[0], gridPosition[1]);
+            // ladangDeck.getChildren().remove(i);
+            // ladangDeck.getChildren().add(i,destinationViews[i]);
+
+        }catch(IllegalStateException e){
+            // System.out.println("failed at" + " " + row + " "+ col) ;
+        }
+    }
+
 //}
 }

@@ -6,7 +6,10 @@ import org.bro.tubesoop2.resource.Resource;
 public abstract class Item extends Resource {
     public Item() {
         super("");
-        setName(getClass().getSimpleName().toUpperCase());
+        // String before = (getClass().getSimpleName().toUpperCase());
+        String res = getClass().getSimpleName().replaceAll("(.)(\\p{Upper})", "$1_$2").toUpperCase();
+        setName(res);
+
     }
 
     public abstract void consumedBy(Creature creature);

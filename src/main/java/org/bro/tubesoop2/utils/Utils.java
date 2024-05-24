@@ -83,29 +83,29 @@ public class Utils {
             case "assets/Tanaman/BIJI_STROBERI.png":
                 key = "BIJI_STROBERI";
                 break;
-            case "assets/Hewan/Bear.png":
+            case "assets/Animal/Bear.png":
                 key = "BERUANG";
                 break;
-            case "assets/Hewan/Chicken.png":
+            case "assets/Animal/Chicken.png":
                 key = "AYAM";
                 break;
-            case "assets/Hewan/Cow.png":
+            case "assets/Animal/Cow.png":
                 key = "SAPI";
                 break;
-            case "assets/Hewan/Horse.png":
+            case "assets/Animal/Horse.png":
                 key = "KUDA";
                 break;
-            case "assets/Hewan/Shark.png":
+            case "assets/Animal/Shark.png":
                 key = "HIU_DARAT";
                 break;
 
-                case "assets/Hewan/shark fin.png":
+                case "assets/Animal/shark fin.png":
                 key = "HIU_DARAT";
                 break;
-            case "assets/Hewan/shark%20fin.png":
+            case "assets/Animal/shark%20fin.png":
                 key = "HIU_DARAT";
                 break;
-            case "assets/Hewan/Sheep.png":
+            case "assets/Animal/Sheep.png":
                 key = "DOMBA";
                 break;
             case "assets/Produk/corn.png":
@@ -144,7 +144,7 @@ public class Utils {
             case "assets/Item/bear trap.png":
                 key = "TRAP";
                 break;
-            // Handle Hewan paths
+            // Handle Animal paths
 
 
             // Handle Item paths
