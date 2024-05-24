@@ -141,9 +141,17 @@ public class MainController {
             int row = gridPosition[0];
             int col = gridPosition[1];
             Location lct = new Location(row, col);
-            System.out.print(indexFrom);
+            int index3=0;
+            for(int i=0;i<leftDeck.getChildren().size();i++){
+                if((leftDeck.getChildren().get(i) instanceof CreatureCard)){
+                    if(((CreatureCard)leftDeck.getChildren().get(i)).getResource().equals(rsc)){
+                        index3=i;
+                    }
+                }
+            }
             if(indexFrom ==-1){
                 state.getCurrentPlayer().putLadang(rsc, lct);
+                state.getCurrentPlayer().getActiveDeck().set(index3,null);
             }else{
                 int[] gridPositionFrom = convertListIdxToGrid(indexFrom);
                 int row2 = gridPositionFrom[0];
@@ -152,6 +160,7 @@ public class MainController {
                 state.getCurrentPlayer().removeLadang(rlct);
                 state.getCurrentPlayer().putLadang(rsc, lct);
             }
+            updateGUI();
         });
 
         CreatureCard.onMakan.AddListener(paths->{
@@ -400,7 +409,7 @@ public class MainController {
             Resource currentElement = ladangPlayer.getElement(a);
 
             // Set Destination Views
-            int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
+            int gridIDX = convertGridToListIdx(a.getRow(),a.getCol());
              destinationViews[gridIDX] = Card.createCard(currentElement);
 
             // Update Deck
