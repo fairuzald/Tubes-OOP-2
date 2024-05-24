@@ -23,10 +23,13 @@ import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
+import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
+import org.bro.tubesoop2.toko.Toko;
+import org.bro.tubesoop2.toko.TokoException;
 
 public class MainController {
     GameState state = new GameState();
@@ -65,8 +68,50 @@ public class MainController {
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
-        
 
+
+        ShopController.setToko(state.getToko());
+        ShopController.setInventory(state.getCurrentPlayer().getActiveDeck());
+
+        ShopController.onBuy.AddListener(arrToBuy ->{
+            try{
+                Toko toko  = state.getToko();
+
+                for(Tuple<Integer, Integer> src:arrToBuy){
+                    toko.buy(state.getCurrentPlayer(), src.getFirst(), src.getSecond());
+                }
+
+                ShopController.setToko(state.getToko());
+
+            }catch (TokoException e){
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("An error occurred while processing the action.");
+                alert.setContentText("Details: " + e.getMessage());
+                alert.showAndWait();
+            }
+
+        });
+
+        ShopController.onSell.AddListener(arrToSell ->{
+            try{
+                Toko toko  = state.getToko();
+
+                for(Tuple<Integer, Integer> src:arrToSell){
+                    toko.sell(state.getCurrentPlayer(), state.getCurrentPlayer().getActiveDeck().get(src.getFirst()), src.getSecond());
+                }
+
+                ShopController.setToko(state.getToko());
+
+            }catch (TokoException e){
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("An error occurred while processing the action.");
+                alert.setContentText("Details: " + e.getMessage());
+                alert.showAndWait();
+            }
+
+        });
 
 
 

@@ -11,6 +11,9 @@ public class Toko {
     public Toko(ArrayList<Quantifiable<Resource>> stock) {
         this.stock = stock;
     }
+    public Toko() {
+        this.stock = new ArrayList<Quantifiable<Resource>>();
+    }
 
     public Toko(Toko other) {
         this.stock = new ArrayList<>(other.stock);
