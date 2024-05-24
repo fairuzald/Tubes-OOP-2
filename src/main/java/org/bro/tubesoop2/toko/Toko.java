@@ -5,6 +5,7 @@ import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.player.Player;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Toko {
@@ -33,13 +34,13 @@ public class Toko {
     public void clearAndRepopulateItems(ArrayList<Quantifiable<Resource>> newStock){
         stock.clear();
         for(Quantifiable<Resource> item : newStock){
-            stock.add(item);
+            this.addItem(item);
         }
     }
 
     public int getItemIndex(Quantifiable<Resource> otherQuant) throws ItemShopNotFoundException {
         for (int i = 0; i < stock.size(); i++) {
-            if (stock.get(i).getValue().equals(otherQuant.getValue())) {
+            if (stock.get(i).getValue().getName().equals(otherQuant.getValue().getName())) {
                 return i;
             }
         }
@@ -48,7 +49,7 @@ public class Toko {
 
     public int getItemIndex(Resource otherRsc) throws ItemShopNotFoundException {
         for (int i = 0; i < stock.size(); i++) {
-            if (stock.get(i).getValue().equals(otherRsc)) {
+            if (stock.get(i).getValue().getName().equals(otherRsc.getName())) {
                 return i;
             }
         }
@@ -70,6 +71,15 @@ public class Toko {
             stock.get(idx).incrementQuantity(otherQuant.getQuantity());
         } catch (ItemShopNotFoundException e) {
             stock.add(otherQuant);
+        }
+    }
+
+    public void addItem(Resource otherrsc) {
+        try {
+            int idx = getItemIndex(otherrsc);
+            stock.get(idx).incrementQuantity(1);
+        } catch (ItemShopNotFoundException e) {
+            stock.add(new Quantifiable<>(otherrsc,1));
         }
     }
 
@@ -111,7 +121,7 @@ public class Toko {
             throw new Exception("Uang tidak cukup");
         }
 
-        if (pl.getActiveDeck().size() + quantity > 6) {
+        if (pl.getActiveDeckCount() + quantity > 6) {
             throw new PenyimpananTidakCukup();
         }
         }
@@ -123,19 +133,26 @@ public class Toko {
 
 
     public void sell(Player pl, Resource rsc, int quantity) throws TokoException {
+        System.out.println("Sedang menjual: "+rsc.getName()+" sebanyak "+quantity);
         int stockCount = getStockCount(pl, rsc);
         if (stockCount - quantity < 0) {
             throw new StockTidakCukupPlayer();
         }
         int price = ((Product) rsc).getPrice()*quantity;
 
-        for (int i = 0; i < quantity; i++) {
-            if (pl.getActiveDeck().contains(rsc)) {
-                pl.getActiveDeck().remove(rsc);
-            } else {
-                throw new ItemShopNotFoundException();
+        int sold = 0;
+        List<Resource> deck = new ArrayList<>(pl.getActiveDeck());
+        for (Resource r: deck) {
+            if(r.getName().equals(rsc.getName())){
+                pl.getActiveDeck().remove(r);
+                sold++;
+                if(sold >= quantity) {
+                    break;
+                }
             }
         }
+
+        this.addItem(new Quantifiable<>(rsc,quantity));
 
         pl.setGulden(pl.getGulden()+price);
     }
