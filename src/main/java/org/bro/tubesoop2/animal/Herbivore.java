@@ -7,9 +7,8 @@ import java.util.ArrayList;
 
 public class Herbivore extends Animal{
 
-    public Herbivore(String name, int weightToHarvest, ArrayList<Product> products){
+    public Herbivore(String name, int weightToHarvest, Product products){
         super(name, weightToHarvest, products);
-
     }
 
     @Override

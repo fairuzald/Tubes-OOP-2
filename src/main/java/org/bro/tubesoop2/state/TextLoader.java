@@ -83,7 +83,7 @@ public class TextLoader implements StatePlugin {
             for(int j = 0; j < activeItemAmount; j++){
                 String itemTypeName = split[4+j];
                 System.out.print(" "+itemTypeName);
-                c.addItem(state.createItem(itemTypeName));
+                c.addItem((Item)state.createResource(itemTypeName));
             }
 
             // Debug

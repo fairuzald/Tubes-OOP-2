@@ -4,9 +4,12 @@ import org.bro.tubesoop2.animal.Herbivore;
 import org.bro.tubesoop2.animal.Omnivore;
 import org.bro.tubesoop2.item.*;
 import org.bro.tubesoop2.plant.Plant;
+import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.product.ProductAnimal;
 import org.bro.tubesoop2.product.ProductPlant;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -15,7 +18,6 @@ import java.util.function.Supplier;
 
 public class ResourceFactory {
     Map<String, Supplier<Resource>> resourceMap = new HashMap<>();
-    Map<String, Supplier<Item>> itemMap = new HashMap<>();
 
     public ResourceFactory(){
         // Product
@@ -30,17 +32,17 @@ public class ResourceFactory {
         resourceMap.put("STROBERI", () -> new ProductPlant("STROBERI", 5, 350));
 
         // Animal
-        resourceMap.put("HIU_DARAT", () -> new Carnivore("HIU_DARAT", 25, null));
-        resourceMap.put("SAPI", () -> new Herbivore("SAPI", 10, null));
-        resourceMap.put("DOMBA", () -> new Herbivore("DOMBA", 12, null));
-        resourceMap.put("KUDA", () -> new Herbivore("KUDA", 14, null));
-        resourceMap.put("AYAM", () -> new Omnivore("AYAM", 5, null));
-        resourceMap.put("BERUANG", () -> new Omnivore("BERUANG", 25, null));
+        resourceMap.put("HIU_DARAT", () -> new Carnivore("HIU_DARAT", 25, (Product)get("SIRIP_HIRU") ));
+        resourceMap.put("SAPI", () -> new Herbivore("SAPI", 10, (Product)get("SUSU") ));
+        resourceMap.put("DOMBA", () -> new Herbivore("DOMBA", 12, (Product)get("DAGING_DOMBA") ));
+        resourceMap.put("KUDA", () -> new Herbivore("KUDA", 14, (Product)get("DAGING_KUDA") ));
+        resourceMap.put("AYAM", () -> new Omnivore("AYAM", 5, (Product)get("TELUR") ));
+        resourceMap.put("BERUANG", () -> new Omnivore("BERUANG", 25, (Product)get("DAGING_BERUANG") ));
 
         // Tanaman
-        resourceMap.put("BIJI_LABU", () -> new Plant(3, "BIJI_LABU", null));
-        resourceMap.put("BIJI_JAGUNG", () -> new Plant(5, "BIJI_JAGUNG", null));
-        resourceMap.put("BIJI_STROBERI", () -> new Plant(4, "BIJI_STROBERI", null));
+        resourceMap.put("BIJI_LABU", () -> new Plant(3, "BIJI_LABU", (Product)get("LABU") ));
+        resourceMap.put("BIJI_JAGUNG", () -> new Plant(5, "BIJI_JAGUNG", (Product)get("JAGUNG") ));
+        resourceMap.put("BIJI_STROBERI", () -> new Plant(4, "BIJI_STROBERI", (Product)get("STROBERI") ));
 
         resourceMap.put("ACCELERATE", Accelerate::new);
         resourceMap.put("DELAY", Delay::new);
@@ -49,25 +51,10 @@ public class ResourceFactory {
         resourceMap.put("PROTECT", Protect::new);
         resourceMap.put("TRAP", Trap::new);
 
-        // Item
-        itemMap.put("ACCELERATE", Accelerate::new);
-        itemMap.put("DELAY", Delay::new);
-        itemMap.put("INSTANT_HARVEST", InstantHarvest::new);
-        itemMap.put("DESTROY", Destroy::new);
-        itemMap.put("PROTECT", Protect::new);
-        itemMap.put("TRAP", Trap::new);
-
     }
 
     public Resource get(String key){
         Supplier<Resource> s = resourceMap.get(key);
-        System.out.println(s);
-        System.out.println(key);
-        return s.get();
-    }
-
-    public Item getItem(String key){
-        Supplier<Item> s = itemMap.get(key);
         return s.get();
     }
 
