@@ -42,6 +42,13 @@ public class ResourceFactory {
         resourceMap.put("BIJI_JAGUNG", () -> new Plant(5, "BIJI_JAGUNG", null));
         resourceMap.put("BIJI_STROBERI", () -> new Plant(4, "BIJI_STROBERI", null));
 
+        resourceMap.put("ACCELERATE", Accelerate::new);
+        resourceMap.put("DELAY", Delay::new);
+        resourceMap.put("INSTANT_HARVEST", InstantHarvest::new);
+        resourceMap.put("DESTROY", Destroy::new);
+        resourceMap.put("PROTECT", Protect::new);
+        resourceMap.put("TRAP", Trap::new);
+
         // Item
         itemMap.put("ACCELERATE", Accelerate::new);
         itemMap.put("DELAY", Delay::new);
@@ -54,6 +61,8 @@ public class ResourceFactory {
 
     public Resource get(String key){
         Supplier<Resource> s = resourceMap.get(key);
+        System.out.println(s);
+        System.out.println(key);
         return s.get();
     }
 

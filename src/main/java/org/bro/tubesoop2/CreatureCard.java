@@ -1,5 +1,6 @@
 package org.bro.tubesoop2;
 
+import javafx.scene.control.Alert;
 import javafx.scene.input.Dragboard;
 import javafx.scene.layout.TilePane;
 import org.bro.tubesoop2.action.Action;
@@ -12,8 +13,11 @@ import java.util.Objects;
 
 public class CreatureCard extends Card {
 
+    public static Action<CreatureCard> onCreatureCardClicked = new Action<>();
+    
     public CreatureCard(Creature c) {
-        super(c, c instanceof Plant ? "assets/Plant/"+c.getName()+".png" : "assets/Animal/"+c.getName()+".png");
+        super(c, c instanceof Plant ? "assets/Tanaman/"+c.getName()+".png" : "assets/Animal/"+c.getName()+".png");
+        setOnMouseClicked(e -> onCreatureCardClicked.Notify(this));
     }
 
     public static Action<Tuple<Integer, String>> onMakan = new Action<>();
@@ -28,6 +32,11 @@ public class CreatureCard extends Card {
     protected void handleDrop(Dragboard dragboard, Object source) {
         if (source instanceof CreatureCard) {
             System.out.println("CreatureCard cannot be replaced by another CreatureCard.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Cannot replace CreatureCard with another CreatureCard.");
+            alert.showAndWait();
+            return;
         }
         else if(source instanceof ProductCard){
             String imagePath = dragboard.getString();
@@ -38,10 +47,20 @@ public class CreatureCard extends Card {
             }
         }
         else if (source instanceof ItemCard) {
-            System.out.println("CreatureCard can be replaced by ItemCard or ProductCard.");
+            System.out.println("CreatureCard cannot be replaced by ItemCard or ProductCard.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Cannot replace CreatureCard with ItemCard or ProductCard.");
+            alert.showAndWait();
+            return;
             // No change in image or class
         } else {
             System.out.println("CreatureCard cannot be replaced by this type.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Cannot replace CreatureCard with this type.");
+            alert.showAndWait();
+            return;
         }
     }
 }

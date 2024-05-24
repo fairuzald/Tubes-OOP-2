@@ -18,12 +18,14 @@ public class Player {
         ladang = new Grid<>(4, 5);
         deck = new ArrayList<>(40);
         activeDeck = new ArrayList<>(6);
-    }
 
-    public Player(Grid<Resource> ladang, List<Resource> activeDeck, List<Resource> deck) {
-        this.ladang = ladang;
-        this.deck = activeDeck;
-        this.activeDeck = deck;
+        // prefill
+        for (int i = 0; i < 40; i++) {
+            deck.add(null);
+        }
+        for (int i = 0; i < 6; i++) {
+            activeDeck.add(null);
+        }
     }
 
     public Grid<Resource> getLadang() {
@@ -38,13 +40,26 @@ public class Player {
         return activeDeck;
     }
 
+    public void compactActiveDeck() {
+        List<Resource> activeDeckCopy = new ArrayList<>();
+
+        for (int i = 0; i < activeDeck.size(); i++) {
+            if (activeDeck.get(i) != null) {
+                activeDeckCopy.add(activeDeck.get(i));
+            }
+        }
+
+        activeDeck = activeDeckCopy;
+        System.out.println(activeDeck);
+    }
+
     public int getDeckLeft(){return deckLeft;}
 
     public void setGulden(Integer gulden){this.gulden = gulden;}
     public Integer getGulden(){return gulden;}
 
     public void insertDeck(Resource r, Location l){
-        activeDeck.add(l.getCol(), r);
+        activeDeck.add(l.getRow(), r);
     }
 
     public void addLadang(Resource r, Location l){
@@ -58,5 +73,21 @@ public class Player {
 
     public void setDeckLeft(int deckLeft){
         this.deckLeft = deckLeft;
+    }
+
+    public void clear(){
+        ladang.clear();
+        deck.clear();
+        activeDeck.clear();
+        gulden = 0;
+        deckLeft = 40;
+
+        // prefill
+        for (int i = 0; i < 40; i++) {
+            deck.add(null);
+        }
+        for (int i = 0; i < 6; i++) {
+            activeDeck.add(null);
+        }
     }
 }

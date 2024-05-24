@@ -2,6 +2,7 @@ package org.bro.tubesoop2.state;
 
 import org.bro.tubesoop2.item.Item;
 import org.bro.tubesoop2.player.Player;
+import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.resource.ResourceFactory;
 import org.bro.tubesoop2.toko.Toko;
@@ -12,7 +13,7 @@ public class GameState {
     Player player1 = new Player();
     Player player2 = new Player();
 
-    Toko toko;
+    Toko toko = new Toko(new ArrayList<Quantifiable<Resource>>());
 
     int turn = 1; // Asumsi turn 1 dan 2 instead of 0 dan 1
     public void NextTurn(){
@@ -32,8 +33,10 @@ public class GameState {
 
     public void setToko(Toko toko){this.toko = toko;}
 
+
     ResourceFactory factory = new ResourceFactory();
     public Resource createResource(String key){
+        System.out.println(key);
         return factory.get(key);
     }
     public Item createItem(String key){
@@ -60,6 +63,12 @@ public class GameState {
     public void populateBothPlayersDecks(int count) {
         populateDeckWithRandomResources(player1, count);
         populateDeckWithRandomResources(player2, count);
+    }
+
+    public void clear(){
+        player1.clear();
+        player2.clear();
+        toko.clear();
     }
 
     public static void main(String[] args) {

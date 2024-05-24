@@ -1,12 +1,14 @@
 package org.bro.tubesoop2.quantifiable;
 
 
+import java.util.Objects;
+
 public class Quantifiable<T> {
     private T value;
     private int quantity;
 
     /**
-     * @brief Constructor to initialize Quantifiable object
+     * Constructor to initialize Quantifiable object
      *
      * @param val Initial value
      * @param qty Initial quantity
@@ -17,7 +19,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Get the value of the Quantifiable object
+     * Get the value of the Quantifiable object
      *
      * @return T Value of the object
      */
@@ -26,7 +28,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Get the quantity of the Quantifiable object
+     * Get the quantity of the Quantifiable object
      *
      * @return int Quantity of the object
      */
@@ -35,7 +37,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Set the value of the Quantifiable object
+     * Set the value of the Quantifiable object
      *
      * @param val New value to set
      */
@@ -44,7 +46,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Set the quantity of the Quantifiable object
+     * Set the quantity of the Quantifiable object
      *
      * @param qty New quantity to set
      */
@@ -53,7 +55,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Increment the quantity by a given value
+     * Increment the quantity by a given value
      *
      * @param qty Value to add to the quantity
      */
@@ -62,7 +64,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Increment the quantity by the quantity of another Quantifiable
+     * Increment the quantity by the quantity of another Quantifiable
      *
      * @param other Quantifiable object to add the quantity from
      */
@@ -71,7 +73,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Decrement the quantity by a given value
+     * Decrement the quantity by a given value
      *
      * @param qty Value to subtract from the quantity
      */
@@ -80,7 +82,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Increment the quantity by 1 (postfix increment)
+     * Increment the quantity by 1 (postfix increment)
      */
     public Quantifiable<T> increment() {
         Quantifiable<T> temp = new Quantifiable<>(this.value, this.quantity);
@@ -89,7 +91,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Decrement the quantity by 1 (postfix decrement)
+     * Decrement the quantity by 1 (postfix decrement)
      */
     public Quantifiable<T> decrement() {
         Quantifiable<T> temp = new Quantifiable<>(this.value, this.quantity);
@@ -98,7 +100,7 @@ public class Quantifiable<T> {
     }
 
     /**
-     * @brief Check if both Quantifiable objects have the same value
+     * Check if both Quantifiable objects have the same value
      *
      * @param other Quantifiable object to compare with
      * @return true if same
@@ -111,26 +113,26 @@ public class Quantifiable<T> {
         Quantifiable<?> that = (Quantifiable<?>) other;
 
         if (quantity != that.quantity) return false;
-        return value != null ? value.equals(that.value) : that.value == null;
+        return value != null ? Objects.equals(value, that.value) : that.value == null;
     }
 
     /**
-     * @brief Check if the value is infinite
+     * Check if the value is infinite
      *
      * @return true if infinite
      */
     public boolean isInfinite() {
-        return this.quantity == -1;
+        return this.quantity == INFINITE;
     }
 
     /**
-     * @brief Check if the value is infinite (static version)
+     * Check if the value is infinite (static version)
      *
      * @param q Quantifiable object to check
      * @return true if infinite
      */
     public static <T> boolean isInfinite(Quantifiable<T> q) {
-        return q.getQuantity() == -1;
+        return q.getQuantity() == INFINITE;
     }
 
     public static final int INFINITE = -1;

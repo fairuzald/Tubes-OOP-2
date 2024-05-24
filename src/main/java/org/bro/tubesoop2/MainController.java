@@ -1,4 +1,6 @@
 package org.bro.tubesoop2;
+import javafx.application.Platform;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.TilePane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,20 +18,26 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import org.bro.tubesoop2.animal.Animal;
+import org.bro.tubesoop2.creature.Creature;
+import org.bro.tubesoop2.countdowntimer.CountdownTimer;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
+import org.bro.tubesoop2.seranganberuang.SeranganBeruang;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
 import org.bro.tubesoop2.toko.Toko;
 import org.bro.tubesoop2.toko.TokoException;
+import org.bro.tubesoop2.utils.Utils;
 
 public class MainController {
     GameState state = new GameState();
@@ -38,7 +46,7 @@ public class MainController {
     RandomController randomController = new RandomController();
 
     @FXML
-    private Label player1Name, player2Name, player1Gulden, player2Gulden, activeDeck, turn;
+    private Label player1Name, player2Name, player1Gulden, player2Gulden, activeDeck, turn, timerLabel;
 
     @FXML
     private Button shopButton, loadButton, myFieldButton, enemyFieldButton, saveButton, pluginButton;
@@ -54,9 +62,6 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        loader.setPath("state", "gamestate.txt", "player1.txt", "player2.txt")
-                .setPlugin(new TextLoader())
-                .loadState(state);
         
         // Remove all
         for (int i = 0; i < destinationViews.length; i++) {
@@ -167,8 +172,20 @@ public class MainController {
 
         });
         RandomController.onNextDone.AddListener(r -> {
-            state.NextTurn();
+
+
+            int length = RandomController.selectedViews.size();
+            for (int i = 0; i < length; i++) {
+                String current_absolute_path = RandomController.selectedViews.get(i).getImage().getUrl();
+                System.out.println(current_absolute_path);
+                String relative_path_from_project = Utils.getRelativePathFromProject(current_absolute_path);
+                System.out.println(relative_path_from_project);
+                String key = Utils.toResourceFactoryKeys(relative_path_from_project);
+                state.getCurrentPlayer().getActiveDeck().add(state.createResource(key));
+            }
+
             updateGUI(state);
+            seranganBeruangHandler(state);
         });
 
         SaveController.onSaveValid.AddListener(folderDir -> {
@@ -185,7 +202,10 @@ public class MainController {
             updateGUI(state);
         });
      
-     
+        // Show detail
+        CreatureCard.onCreatureCardClicked.AddListener(creature -> {
+            onItemClick(null, (Resource)creature.getResource());
+        });
     }
 
     void updateGUI(GameState state){
@@ -238,6 +258,18 @@ public class MainController {
             ladangDeck.getChildren().remove(gridIDX);
             ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
         });
+
+
+    }
+
+    void resetActiveDeckViews() {
+        state.getCurrentPlayer().compactActiveDeck();
+
+        sourceViews = new DraggableItem[6];
+        for (int i = 0; i < 6; i++) {
+            sourceViews[i] = new EmptyCard();
+            leftDeck.getChildren().add(sourceViews[i]);
+        }
     }
 
 
@@ -254,22 +286,19 @@ public class MainController {
 
 
     @FXML
-    private void onItemClick(MouseEvent event) {
+    private void onItemClick(MouseEvent event, Resource c) {
         if (!DetailController.isDetailOpen()) {
             try {
-                String itemName = "Corn";
-                String[] activeItems = {"Item1", "Item2", "Item3"};
-                String age = "5";
-                String ageOrWeight = "Age";
-
+                Creature creature = (Creature) c;
+                
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detail.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage detailStage = new Stage();
 
                 DetailController controller = fxmlLoader.getController();
-                controller.updateDetails(itemName, activeItems, age, ageOrWeight);
+                controller.updateDetails(creature);
 
-                detailStage.setTitle("Detail");
+                detailStage.setTitle(creature.getName());
                 detailStage.setScene(new Scene(root));
                 detailStage.show();
                 DetailController.setDetailOpen(true);
@@ -424,6 +453,22 @@ public class MainController {
 
     @FXML
     void onNextClick(ActionEvent event) {
+
+        state.NextTurn();
+        resetActiveDeckViews();
+        updateGUI(state);
+
+        RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().getActiveDeck().size();
+
+
+        if (RandomController.maximumCardsCanBeSelected == 0) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("No new card");
+            alert.setContentText("You have 6 active deck!");
+            alert.showAndWait();
+            return;
+        }
+
         if (!RandomController.isRandomWindowOpen()) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("random.fxml"));
@@ -480,4 +525,47 @@ public class MainController {
     void enemyFieldButton(ActionEvent event) {
 
     }
+
+    private void applyRedBorder(ImageView imageView) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setHue(1);
+        colorAdjust.setSaturation(1);
+        imageView.setEffect(colorAdjust);
+    }
+
+    @FXML
+    void seranganBeruangHandler(GameState state){
+       Random random = new Random();
+        if(true){
+            Thread timerThread = new Thread(() -> {
+            SeranganBeruang sb = new SeranganBeruang();
+            List <Integer> affected = sb.generateAffectedIndex();
+            for(int i = 0; i < affected.size(); i++){
+                int idx = affected.get(i);
+                System.out.println(idx);
+                applyRedBorder(destinationViews[idx]);
+            }
+            System.out.println("Affected: " + affected);
+            CountdownTimer countdownTimer = new CountdownTimer(10);
+            Platform.runLater(() -> timerLabel.setVisible(true));
+            countdownTimer.start();
+            while (!countdownTimer.isTimeUp()) {
+                try {
+
+                    Thread.sleep(100);
+                    String currtime = Integer.toString(countdownTimer.getTime()/1000) + "," + Integer.toString((countdownTimer.getTime()%1000)/100); ;
+                    Platform.runLater(() -> {timerLabel.setText(currtime);}
+                    );
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Platform.runLater(() -> timerLabel.setVisible(false));
+            System.out.println("test");
+            System.out.println("Affected: " + affected);
+           });
+           timerThread.start();
+       }
+   }
+//}
 }

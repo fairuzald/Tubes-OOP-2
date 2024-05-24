@@ -1,5 +1,6 @@
 package org.bro.tubesoop2;
 
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -77,6 +78,10 @@ public abstract class DraggableItem extends ImageView {
                 event.setDropCompleted(true);
             } else {
                 System.out.println("Invalid drop action.");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Invalid drop action.");
+                alert.showAndWait();
                 event.setDropCompleted(false);
             }
         } else {
