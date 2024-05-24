@@ -15,7 +15,7 @@ public class CreatureCard extends Card {
     public static Action<CreatureCard> onCreatureCardClicked = new Action<>();
     
     public CreatureCard(Creature c) {
-        super(c, c instanceof Plant ? "assets/Plant/"+c.getName()+".png" : "assets/Animal/"+c.getName()+".png");
+        super(c, c instanceof Plant ? "assets/Tanaman/"+c.getName()+".png" : "assets/Animal/"+c.getName()+".png");
         setOnMouseClicked(e -> onCreatureCardClicked.Notify(this));
     }
 
