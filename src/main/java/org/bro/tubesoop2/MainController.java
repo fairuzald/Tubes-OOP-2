@@ -62,7 +62,6 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        
         // Remove all
         for (int i = 0; i < destinationViews.length; i++) {
             destinationViews[i] = new EmptyCard();
@@ -74,9 +73,6 @@ public class MainController {
         }
 
 
-
-        ShopController.setToko(state.getToko());
-        ShopController.setInventory(state.getCurrentPlayer().getActiveDeck());
 
         ShopController.onBuy.AddListener(arrToBuy ->{
             try{
@@ -128,8 +124,6 @@ public class MainController {
         });
 
 
-
-
         EmptyCard.onDrop.AddListener(tup -> {
             Resource rsc = tup.getFirst();
             Integer index = tup.getSecond();
@@ -172,8 +166,6 @@ public class MainController {
 
         });
         RandomController.onNextDone.AddListener(r -> {
-
-
             int length = RandomController.selectedViews.size();
             for (int i = 0; i < length; i++) {
                 String current_absolute_path = RandomController.selectedViews.get(i).getImage().getUrl();
@@ -200,6 +192,9 @@ public class MainController {
                     .setPlugin(new TextLoader())
                     .loadState(state);
             updateGUI(state);
+            ShopController.setToko(state.getToko());
+            ShopController.setInventory(state.getCurrentPlayer().getActiveDeck());
+
         });
      
         // Show detail
@@ -283,7 +278,6 @@ public class MainController {
         int colIndex = listIndex % 4;
         return new int[]{rowIndex, colIndex};
     }
-
 
 
     @FXML

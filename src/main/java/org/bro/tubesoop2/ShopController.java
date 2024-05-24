@@ -51,6 +51,7 @@ public class ShopController {
     }
 
     public static void setInventory(List<Resource> in){
+        System.out.println("inventory"+in);
         inventory = in;
     }
 
@@ -64,6 +65,7 @@ public class ShopController {
 
     @FXML
     void initialize() {
+
 
         for(Resource rsc:getInventory()){
             if(rsc instanceof Product){

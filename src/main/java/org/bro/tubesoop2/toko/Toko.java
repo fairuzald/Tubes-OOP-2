@@ -5,6 +5,7 @@ import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
 import org.bro.tubesoop2.player.Player;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Toko {
     private ArrayList<Quantifiable<Resource>> stock;
@@ -85,7 +86,7 @@ public class Toko {
     public int getStockCount(Player pl, Resource r){
         int count = 0;
         for (Resource rsc:pl.getActiveDeck()){
-            if(rsc.getName().equals(r.getName())){
+            if(rsc!=null && Objects.equals(rsc.getName(), r.getName())){
                 count++;
             }
         }
