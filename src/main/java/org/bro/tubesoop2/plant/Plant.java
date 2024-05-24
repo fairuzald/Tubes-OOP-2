@@ -61,4 +61,13 @@ public class Plant extends Creature {
             p.currentAge++;
         }
     } 
+
+    @Override
+    public Product harvest() throws IllegalStateException {
+        if(currentAge >= durationToHarvest){
+            return drops;
+        }
+        throw new IllegalStateException(getFormattedName() + " is not ready to be harvested. Atleast age is "+durationToHarvest);
+    }
+
 }

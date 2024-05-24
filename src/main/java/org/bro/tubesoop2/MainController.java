@@ -31,6 +31,7 @@ import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
+import org.bro.tubesoop2.resource.ResourceFactory;
 import org.bro.tubesoop2.seranganberuang.SeranganBeruang;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
@@ -97,7 +98,7 @@ public class MainController {
                 alert.setContentText("Details: " + e.getMessage());
                 alert.showAndWait();
             }finally {
-                updateGUI(state);
+                updateGUI();
             }
         });
 
@@ -118,7 +119,7 @@ public class MainController {
                 alert.setContentText("Details: " + e.getMessage());
                 alert.showAndWait();
             }finally {
-                updateGUI(state);
+                updateGUI();
             }
 
         });
@@ -131,7 +132,7 @@ public class MainController {
             int row = gridPosition[0];
             int col = gridPosition[1];
             Location lct = new Location(row, col);
-            state.getCurrentPlayer().addLadang(rsc, lct);
+            state.getCurrentPlayer().putLadang(rsc, lct);
         });
 
         CreatureCard.onMakan.AddListener(paths->{
@@ -176,7 +177,7 @@ public class MainController {
                 state.getCurrentPlayer().getActiveDeck().add(state.createResource(key));
             }
 
-            updateGUI(state);
+            updateGUI();
             seranganBeruangHandler(state);
         });
 
@@ -184,14 +185,14 @@ public class MainController {
             loader.setPath(folderDir, "gamestate_.txt", "player1_.txt", "player2_.txt")
                     .setPlugin(new TextLoader())
                     .saveState(state);
-            updateGUI(state);
+            updateGUI();
         });
 
         LoadController.onLoadValid.AddListener(folderDir -> {
             loader.setPath(folderDir, "gamestate.txt", "player1.txt", "player2.txt")
                     .setPlugin(new TextLoader())
                     .loadState(state);
-            updateGUI(state);
+            updateGUI();
             ShopController.setToko(state.getToko());
             ShopController.setInventory(state.getCurrentPlayer().getActiveDeck());
 
@@ -201,9 +202,23 @@ public class MainController {
         CreatureCard.onCreatureCardClicked.AddListener(creature -> {
             onItemClick(null, (Resource)creature.getResource());
         });
+        
+        DetailController.onHarvestClicked.AddListener(creature -> {
+            try{
+                if(state.getCurrentPlayer().isActiveDeckFull()) throw new IllegalStateException("Active deck is full!");
+                Product product = creature.harvest();
+                state.getCurrentPlayer().addToDeck(product);
+                updateGUI();
+            } catch (Exception e) {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(e.getMessage());
+                alert.showAndWait();
+            }
+        });
     }
 
-    void updateGUI(GameState state){
+    void updateGUI(){
         Integer turn = state.getTurn();
         this.turn.setText(turn.toString());
         if(turn % 2 == 1){
@@ -251,8 +266,6 @@ public class MainController {
 
             // Update Deck
             ladangDeck.getChildren().set(gridIDX,destinationViews[gridIDX]);
-            
-            System.out.println("gridIDX: "+gridIDX);
         });
 
 
@@ -264,10 +277,9 @@ public class MainController {
         sourceViews = new DraggableItem[6];
         for (int i = 0; i < 6; i++) {
             sourceViews[i] = new EmptyCard();
-            leftDeck.getChildren().add(sourceViews[i]);
+            leftDeck.getChildren().set(i, sourceViews[i]);
         }
     }
-
 
 
     private int convertGridToListIdx(int i, int j){
@@ -436,7 +448,7 @@ public class MainController {
 
         state.NextTurn();
         resetActiveDeckViews();
-        updateGUI(state);
+        updateGUI();
 
         RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().getActiveDeck().size();
 

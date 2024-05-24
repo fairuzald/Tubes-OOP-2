@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import org.bro.tubesoop2.action.Action;
 import org.bro.tubesoop2.animal.Animal;
 import org.bro.tubesoop2.creature.Creature;
 
@@ -27,6 +28,8 @@ public class DetailController {
 
     Creature currentCreature;
 
+    public static Action<Creature> onHarvestClicked = new Action<Creature>();
+
     @FXML
     void onBack(ActionEvent event) {
         setDetailOpen(false);
@@ -36,7 +39,7 @@ public class DetailController {
 
     @FXML
     void onHarvest(ActionEvent event) {
-        
+        onHarvestClicked.Notify(currentCreature);
     }
 
     public static boolean isDetailOpen() {

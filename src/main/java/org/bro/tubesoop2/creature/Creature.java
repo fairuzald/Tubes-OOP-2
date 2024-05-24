@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Creature extends Resource {
-    private Product drops;
+    protected Product drops;
     private List<Item> itemsActive;
 
 
@@ -21,6 +21,8 @@ public abstract class Creature extends Resource {
     public Product getDrop() {
         return drops;
     }
+
+    public abstract Product harvest() throws IllegalStateException;
 
     public List<Item> getItemsActive() {
         return itemsActive;
