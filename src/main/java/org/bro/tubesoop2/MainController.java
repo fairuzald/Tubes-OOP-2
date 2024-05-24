@@ -63,11 +63,6 @@ public class MainController {
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
-        
-
-
-
-
 
         EmptyCard.onDrop.AddListener(tup -> {
             Resource rsc = tup.getFirst();

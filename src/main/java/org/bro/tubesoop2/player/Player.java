@@ -59,4 +59,12 @@ public class Player {
     public void setDeckLeft(int deckLeft){
         this.deckLeft = deckLeft;
     }
+
+    public void clear(){
+        ladang.clear();
+        deck.clear();
+        activeDeck.clear();
+        gulden = 0;
+        deckLeft = 40;
+    }
 }

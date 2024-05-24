@@ -124,4 +124,15 @@ public class Grid<T> {
 
             return result;
         }
+
+        public void clear(){
+            for (int i = 0; i < elements.size(); i++) {
+                for (int j = 0; j < elements.get(i).size(); j++) {
+                    elements.get(i).set(j, null);
+                    isFilled.get(i).set(j, false);
+                }
+            }
+            countFilled = 0;
+            countNotFilled = elements.size() * elements.get(0).size();
+        }
     }

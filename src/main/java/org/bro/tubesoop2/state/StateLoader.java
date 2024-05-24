@@ -75,6 +75,7 @@ public class StateLoader {
             System.out.println("State is null, please instantiate it first.");
             return;
         }
+        state.clear();
         String gameStatePath = path + "/" + gameStateFileName;
         String player1Path   = path + "/" + player1FileName;
         String player2Path   = path + "/" + player2FileName;
