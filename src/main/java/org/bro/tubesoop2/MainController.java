@@ -188,6 +188,7 @@ public class MainController {
                 String key = Utils.toResourceFactoryKeys(relative_path_from_project);
                 state.getCurrentPlayer().getActiveDeck().add(state.createResource(key));
             }
+            // Increment plant age
 
             updateGUI();
             seranganBeruangHandler(state);

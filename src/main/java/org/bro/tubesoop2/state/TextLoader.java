@@ -141,21 +141,22 @@ public class TextLoader implements StatePlugin {
 
 
     void savePlayer(FileWriter f, Player p) throws Exception {
+        int activeDeckCount = p.getActiveDeckCount();
+
         System.out.println(p.getGulden());
         System.out.println(p.getDeckLeft());
-        System.out.println(p.getActiveDeck().size());
+        System.out.println(activeDeckCount);
         f.write(p.getGulden()+"\n");
         f.write(p.getDeckLeft()+"\n");
-        f.write(p.getActiveDeck().size()+"\n");
+        f.write(activeDeckCount+"\n");
 
 
         for(int i = 0; i < p.getActiveDeck().size(); i++){
             Resource r = p.getActiveDeck().get(i);
             if(r != null){
-                Location loc = new Location(0, i);
+                Location loc = new Location(i, 0);
                 System.out.println(loc.toString() + " " + r.getName());
-                f.write(loc.toString() + " " + r.getName());
-                f.write(loc.toString() + r.getName());
+                f.write(loc.toString() + " " + r.getName() + "\n");
             }
         }
         System.out.println(p.getLadang().getCountFilled());
@@ -172,6 +173,7 @@ public class TextLoader implements StatePlugin {
                     f.write(" "+className);
                 }
                 System.out.println("\n");
+                f.write("\n");
 
             } catch (Exception e){}
 

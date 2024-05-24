@@ -13,7 +13,6 @@ public class Plant extends Creature {
 
     public Plant(Integer duration, String name, Product drops) {
         super(name, drops);
-        plantList.add(this);
         this.durationToHarvest = duration;
     }
 
@@ -53,15 +52,6 @@ public class Plant extends Creature {
     @Override
     public int getUmurOrBerat(){return this.currentAge;}
     
-    
-    // All plants that is constructed
-    private static ArrayList<Plant> plantList = new ArrayList<Plant>();
-    public static void IncreaseAllPlantAge(){
-        for (Plant p : plantList){
-            p.currentAge++;
-        }
-    } 
-
     @Override
     public Product harvest() throws IllegalStateException {
         if(currentAge >= durationToHarvest){
