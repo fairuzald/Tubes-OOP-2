@@ -154,6 +154,8 @@ public class MainController {
         });
 
         CreatureCard.onMakan.AddListener(paths->{
+            System.out.println("WOY");
+            
             Product p = paths.getSecond();
             Integer index = paths.getFirst();
             int[] gridPosition = convertListIdxToGrid(index);
@@ -164,6 +166,8 @@ public class MainController {
 
             if (animal instanceof Animal) {
                 try {
+                    System.out.println(animal);
+                    System.out.println(p);
                     ((Animal) animal).eat(p);
                 } catch (Exception e) {
                     // Display an error message dialog
@@ -177,17 +181,28 @@ public class MainController {
 
         });
 
-        // CreatureCard.onItemGiven.AddListener(paths -> {
-        //     String sourcePath = paths.getSecond();
-        //     Integer index = paths.getFirst();
+        CreatureCard.onItemGiven.AddListener(paths -> {
+            Item item = paths.getSecond();
+            Integer index = paths.getFirst();
             
-        //     int[] gridPosition = convertListIdxToGrid(index);
-        //     int row = gridPosition[0];
-        //     int col = gridPosition[1];
+            int[] gridPosition = convertListIdxToGrid(index);
+            int row = gridPosition[0];
+            int col = gridPosition[1];
 
-        //     List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
-        //     Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
-        // });
+            Resource creature = state.getCurrentPlayer().getLadang().getElement(row,col);
+            try{
+                System.out.println("mmmsskkk");
+                item.consumedBy((Creature)creature);
+            }catch (Exception e) {
+                // Display an error message dialog
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("An error occurred while processing the action.");
+                alert.setContentText("Details: " + e.getMessage());
+                alert.showAndWait();
+            }
+            
+        });
 
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
