@@ -12,9 +12,11 @@ public abstract class Item extends Resource {
 
     }
 
-    public abstract void consumedBy(Creature creature);
+    public void consumedBy(Creature creature){
+        creature.addItem(this);
+    }
 
-    boolean hasProtectCard(Creature creature) {
+    public boolean hasProtectCard(Creature creature) {
         boolean hasProtectCard = false;
         for (Item item : creature.getItemsActive()) {
             if (item instanceof Protect) {

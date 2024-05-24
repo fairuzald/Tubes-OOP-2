@@ -48,7 +48,10 @@ public class Location {
     public String toString() {
         Icosihexastring rowString = new Icosihexastring(row);
         Integer col1Indexed = col + 1;
-        String colRow = col1Indexed.toString();
-        return rowString.getStr() + col1Indexed;
+        String colStr = col1Indexed.toString();
+        if (col1Indexed < 10) {
+            colStr = "0" + col1Indexed;
+        }
+        return rowString.getStr() + colStr;
     }
 }

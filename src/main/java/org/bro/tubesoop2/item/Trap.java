@@ -7,13 +7,6 @@ import org.bro.tubesoop2.plant.Plant;
 public class Trap extends Item {
     @Override
     public void consumedBy(Creature creature) {
-        if (creature instanceof Animal) {
-            Animal animal = (Animal) creature;
-            // Implement logic specific to Animal
-            System.out.println("Animal has consumed the Accelerate item.");
-        } else if (creature instanceof Plant) {
-            // Logic for other types of Creatures if necessary
-            System.out.println("Creature has consumed the Accelerate item.");
-        }
+        super.consumedBy(creature);
     }
 }

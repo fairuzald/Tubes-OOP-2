@@ -33,6 +33,10 @@ import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.countdowntimer.CountdownTimer;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
+import org.bro.tubesoop2.plant.Plant;
+import org.bro.tubesoop2.item.Item;
+import org.bro.tubesoop2.item.Protect;
+import org.bro.tubesoop2.item.Trap;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
@@ -178,17 +182,29 @@ public class MainController {
 
         });
 
-        // CreatureCard.onItemGiven.AddListener(paths -> {
-        //     String sourcePath = paths.getSecond();
-        //     Integer index = paths.getFirst();
+        CreatureCard.onItemGiven.AddListener(paths -> {
+            Item item = paths.getSecond();
+            Integer index = paths.getFirst();
+            
+            int[] gridPosition = convertListIdxToGrid(index);
+            int row = gridPosition[0];
+            int col = gridPosition[1];
 
-        //     int[] gridPosition = convertListIdxToGrid(index);
-        //     int row = gridPosition[0];
-        //     int col = gridPosition[1];
-
-        //     List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
-        //     Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
-        // });
+            Resource creature = state.getCurrentPlayer().getLadang().getElement(row,col);
+            try{
+                System.out.println("mmmsskkk");
+                item.consumedBy((Creature)creature);
+                // updateGUI();
+            }catch (Exception e) {
+                // Display an error message dialog
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("An error occurred while processing the action.");
+                alert.setContentText("Details: " + e.getMessage());
+                alert.showAndWait();
+            }
+            
+        });
 
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
@@ -200,6 +216,19 @@ public class MainController {
                 String key = Utils.toResourceFactoryKeys(relative_path_from_project);
                 state.getCurrentPlayer().getActiveDeck().add(state.createResource(key));
             }
+            // Increment plant age
+            state.getPlayer1().getLadang().forEachActive(l -> {
+                Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
+                if(c instanceof Plant){
+                    ((Plant) c).addAge(2);
+                }
+            });
+            state.getPlayer2().getLadang().forEachActive(l -> {
+                Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
+                if(c instanceof Plant){
+                    ((Plant) c).addAge(2);
+                }
+            });
 
             updateGUI();
             System.out.println(state.getCurrentPlayer().getLadang().getCountFilled());
@@ -616,8 +645,31 @@ public class MainController {
        }
    }
     public void killCreatureAt(int i){
+        
         int[] gridPosition = convertListIdxToGrid(i);
+        boolean hasProtectCard = false;
+        boolean hasTrap = false;
+        Creature creature = (Creature) state.getCurrentPlayer().getLadang().getElement(gridPosition[0], gridPosition[1]);
+        if(creature == null) return;
+        System.out.println(creature+"uhuy");
+        for (Item item : creature.getItemsActive()) {
+            if (item instanceof Protect) {
+                hasProtectCard = true;
+               
+            }
+            if(item instanceof Trap){
+                hasTrap = true;
+            }
+        }
 
+        if(hasProtectCard){
+            return;
+        }
+        if(hasTrap){
+            state.getCurrentPlayer().addToDeck(state.createResource("BERUANG"));
+//            updateActiveDeck();
+            return;
+        }
         try{
             state.getCurrentPlayer().getLadang().pop(gridPosition[0], gridPosition[1]);
             // ladangDeck.getChildren().remove(i);

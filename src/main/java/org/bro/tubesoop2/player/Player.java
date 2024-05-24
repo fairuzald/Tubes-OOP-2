@@ -38,6 +38,15 @@ public class Player {
     public List<Resource> getActiveDeck() {
         return activeDeck;
     }
+    public int getActiveDeckCount() {
+        int count = 0;
+        for (Resource r : activeDeck) {
+            if (r != null) {
+                count++;
+            }
+        }
+        return count;
+    }
 
     public void compactActiveDeck() {
         List<Resource> activeDeckCopy = new ArrayList<>();

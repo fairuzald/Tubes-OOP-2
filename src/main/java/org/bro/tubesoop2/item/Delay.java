@@ -10,7 +10,7 @@ public class Delay extends Item {
     @Override
     public void consumedBy(Creature creature) {
         if(hasProtectCard(creature)) return;
-
+        super.consumedBy(creature);
         if (creature instanceof Animal) {
             Animal animal = (Animal) creature;
             animal.reduceWeight(8);

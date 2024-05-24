@@ -7,6 +7,6 @@ import org.bro.tubesoop2.plant.Plant;
 public class Protect extends Item {
     @Override
     public void consumedBy(Creature creature) {
-        
+        super.consumedBy(creature);
     }
 }
