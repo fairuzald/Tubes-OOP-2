@@ -198,6 +198,18 @@ public class MainController {
             ladangDeck.getChildren().remove(gridIDX);
             ladangDeck.getChildren().add(gridIDX,destinationViews[gridIDX]);
         });
+
+
+    }
+
+    void resetActiveDeckViews() {
+        state.getCurrentPlayer().compactActiveDeck();
+
+        sourceViews = new DraggableItem[6];
+        for (int i = 0; i < 6; i++) {
+            sourceViews[i] = new EmptyCard();
+            leftDeck.getChildren().add(sourceViews[i]);
+        }
     }
 
 
@@ -218,17 +230,13 @@ public class MainController {
         if (!DetailController.isDetailOpen()) {
             try {
                 Creature creature = (Creature) c;
-                String itemName = creature.getFormattedName();
-                String[] activeItems = creature.getItemsActive().stream().map(item -> item.getName()).toArray(String[]::new);
-                String value = Integer.toString(creature.getUmurOrBerat());
-                String label = creature instanceof Animal ? "Berat" : "Umur";
-
+                
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detail.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage detailStage = new Stage();
 
                 DetailController controller = fxmlLoader.getController();
-                controller.updateDetails(itemName, activeItems, value, label);
+                controller.updateDetails(creature);
 
                 detailStage.setTitle(creature.getName());
                 detailStage.setScene(new Scene(root));
@@ -385,19 +393,19 @@ public class MainController {
 
     @FXML
     void onNextClick(ActionEvent event) {
-        RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().getActiveDeck().size();
-        System.out.println("Prev player deck:" + state.getCurrentPlayer().getActiveDeck());
 
         state.NextTurn();
+        resetActiveDeckViews();
         updateGUI(state);
 
-        System.out.println("current player deck:" + state.getCurrentPlayer().getActiveDeck());
+        RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().getActiveDeck().size();
 
 
         if (RandomController.maximumCardsCanBeSelected == 0) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("No new card");
             alert.setContentText("You have 6 active deck!");
+            alert.showAndWait();
             return;
         }
 
