@@ -17,7 +17,11 @@ public class CreatureCard extends Card {
     
     public CreatureCard(Creature c) {
         super(c, c instanceof Plant ? "assets/Tanaman/"+c.getName()+".png" : "assets/Animal/"+c.getName()+".png");
-        setOnMouseClicked(e -> onCreatureCardClicked.Notify(this));
+        setOnMouseClicked(e -> {
+            if (this.isDragable()) {
+                onCreatureCardClicked.Notify(this);
+            }
+        });
     }
 
     public static Action<Tuple<Integer, String>> onMakan = new Action<>();
