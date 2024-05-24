@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bro.tubesoop2.action.Action;
+import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
+import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.toko.Toko;
 
 import javafx.scene.image.Image;
@@ -37,44 +39,78 @@ public class ShopController {
 
     private List<Tuple<Integer, Integer>> buyList = new ArrayList<>();
 
-    private List<Tuple<Integer, Integer>> itemToSell = new ArrayList<>();
+    private List<Tuple<Resource, Integer>> itemToSell = new ArrayList<>();
 
     public static Action<List<Tuple<Integer, Integer>>> onBuy = new Action<>();
 
-    public static Action<List<Tuple<Integer, Integer>>> onSell = new Action<>();
+    public static Action<List<Tuple<Resource, Integer>>> onSell = new Action<>();
 
-    private static Toko toko = new Toko();
-    public static List<Resource> inventory = new ArrayList();
+    private static GameState state;
 
-    public static List<Resource>  getInventory(){
-    return inventory;
+    public static void setState(GameState pl) {
+        state = pl;
+    };
+
+    public static int getInventoryIdx(List<Quantifiable<Resource>> list,Resource rsc) throws Exception {
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).getValue().getName().equals(rsc.getName())){
+                return i;
+            }
+        }
+        throw new Exception();
     }
 
-    public static void setInventory(List<Resource> in){
+    public static List<Quantifiable<Resource>> getInventory(boolean soldable){
+        List<Resource> in = state.getCurrentPlayer().getActiveDeck();
+        List<Quantifiable<Resource>> temp = new ArrayList<>();
+
         System.out.println("inventory"+in);
-        inventory = in;
+        if(soldable) {
+            for (Resource rsc: in) {
+                if(rsc instanceof Product) {
+                    try {
+                        Quantifiable<Resource> item = temp.get(getInventoryIdx(temp,rsc));
+                        item.increment();
+                    } catch (Exception e) {
+                        temp.add(new Quantifiable<>(rsc,1));
+                    }
+                }
+            }
+        } else {
+            for (Resource rsc: in) {
+                try {
+                    Quantifiable<Resource> item = temp.get(getInventoryIdx(temp, rsc));
+                    item.increment();
+                } catch (Exception e) {
+                    temp.add(new Quantifiable<>(rsc, 1));
+                }
+            }
+        }
+
+        return temp;
     }
 
-    public static void setToko(Toko tokos){
-        toko=tokos;
-    }
     public static Toko getTokoStatic(){
-        return toko;
+        return state.getToko();
     }
 
 
     @FXML
     void initialize() {
+        System.out.println("Aku terdefinisi qq!!");
+        System.out.println(state.getCurrentPlayer());
+        System.out.println(state.getCurrentPlayer().getActiveDeck());
 
-
-        for(Resource rsc:getInventory()){
-            if(rsc instanceof Product){
-                HBox itemBox = createDummyItemBox(rsc.getName(),((Product) rsc).getPrice(),1, "assets/Produk/"+rsc.getName()+".png");
+        List<Quantifiable<Resource>> inventory = new ArrayList<>(getInventory(false));
+        for(Quantifiable<Resource> qrsc:inventory){
+            if(qrsc.getValue() instanceof Product){
+                HBox itemBox = createDummyItemBox(qrsc.getValue().getName(),((Product) qrsc.getValue()).getPrice(), qrsc.getQuantity(), "assets/Produk/"+qrsc.getValue().getName()+".png");
                 sellTilePane.getChildren().add(itemBox);
             }
         }
 
-        for(Quantifiable<Resource> rsc:getTokoStatic().getStock()){
+        List<Quantifiable<Resource>> stock_toko = new ArrayList<>(getTokoStatic().getStock());
+        for(Quantifiable<Resource> rsc:stock_toko){
             if(rsc.getValue() instanceof Product){
                 HBox itemBox = createDummyItemBox(rsc.getValue().getName(),((Product) rsc.getValue()).getPrice(),rsc.getQuantity(), "assets/Produk/"+rsc.getValue().getName()+".png");
                 buyPane.getChildren().add(itemBox);
@@ -225,7 +261,7 @@ public class ShopController {
     }
 
     private void addToSellList(Integer idx, Integer quantity) {
-        Tuple<Integer, Integer> t = new Tuple<>(idx,quantity);
+        Tuple<Resource, Integer> t = new Tuple<>(getInventory(true).get(idx).getValue(),quantity);
         itemToSell.add(t);
     }
 

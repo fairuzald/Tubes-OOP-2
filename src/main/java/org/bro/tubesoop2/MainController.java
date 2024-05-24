@@ -33,7 +33,6 @@ import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.countdowntimer.CountdownTimer;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
-import org.bro.tubesoop2.item.Item;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
@@ -90,8 +89,6 @@ public class MainController {
                     toko.buy(state.getCurrentPlayer(), src.getFirst(), src.getSecond());
                 }
 
-                ShopController.setToko(state.getToko());
-
             }catch (TokoException e){
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
@@ -113,11 +110,11 @@ public class MainController {
             try{
                 Toko toko  = state.getToko();
 
-                for(Tuple<Integer, Integer> src:arrToSell){
-                    toko.sell(state.getCurrentPlayer(), state.getCurrentPlayer().getActiveDeck().get(src.getFirst()), src.getSecond());
+                for(Tuple<Resource, Integer> src:arrToSell){
+                    toko.sell(state.getCurrentPlayer(), src.getFirst(), src.getSecond());
                 }
 
-                ShopController.setToko(state.getToko());
+                ShopController.setState(state);
 
             }catch (TokoException e){
                 Alert alert = new Alert(AlertType.ERROR);
@@ -155,7 +152,7 @@ public class MainController {
 
         CreatureCard.onMakan.AddListener(paths->{
             System.out.println("WOY");
-            
+
             Product p = paths.getSecond();
             Integer index = paths.getFirst();
             int[] gridPosition = convertListIdxToGrid(index);
@@ -181,28 +178,17 @@ public class MainController {
 
         });
 
-        CreatureCard.onItemGiven.AddListener(paths -> {
-            Item item = paths.getSecond();
-            Integer index = paths.getFirst();
-            
-            int[] gridPosition = convertListIdxToGrid(index);
-            int row = gridPosition[0];
-            int col = gridPosition[1];
+        // CreatureCard.onItemGiven.AddListener(paths -> {
+        //     String sourcePath = paths.getSecond();
+        //     Integer index = paths.getFirst();
 
-            Resource creature = state.getCurrentPlayer().getLadang().getElement(row,col);
-            try{
-                System.out.println("mmmsskkk");
-                item.consumedBy((Creature)creature);
-            }catch (Exception e) {
-                // Display an error message dialog
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("An error occurred while processing the action.");
-                alert.setContentText("Details: " + e.getMessage());
-                alert.showAndWait();
-            }
-            
-        });
+        //     int[] gridPosition = convertListIdxToGrid(index);
+        //     int row = gridPosition[0];
+        //     int col = gridPosition[1];
+
+        //     List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
+        //     Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
+        // });
 
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
@@ -241,9 +227,7 @@ public class MainController {
                     .setPlugin(new TextLoader())
                     .loadState(state);
             updateGUI();
-            ShopController.setToko(state.getToko());
-            ShopController.setInventory(state.getCurrentPlayer().getActiveDeck());
-
+            ShopController.setState(state);
         });
      
         // Show detail
@@ -292,44 +276,11 @@ public class MainController {
         }
         player1Gulden.setText(state.getPlayer1().getGulden().toString());
         player2Gulden.setText(state.getPlayer2().getGulden().toString());
-        updateActiveDeck();
-        updateLadang();
+        updateActiveDeck(state.getCurrentPlayer());
+        updateLadang(state.getCurrentPlayer());
     }
 
-    /**
-     * Set Active Deck
-     * */
-    void updateActiveDeck(){
-        List<Resource> activeDeckPlayer = state.getCurrentPlayer().getActiveDeck();
-        for(int i = 0; i < activeDeckPlayer.size(); i++) {
-            Resource resource = activeDeckPlayer.get(i);
-            if(resource != null) {
-                sourceViews[i] = Card.createCard(resource);
-                leftDeck.getChildren().set(i,sourceViews[i]);
-            }
-        }
-    }
 
-    /**
-     * Set Ladang
-     * */
-    // Iterasi grid aktif
-    void updateLadang(){
-        Grid<Resource> ladangPlayer = state.getCurrentPlayer().getLadang();
-        ladangPlayer.forEach(l -> {
-            int gridIDX = convertGridToListIdx(l.getRow(), l.getCol());
-            if(!ladangPlayer.isFilled(l)) {
-                destinationViews[gridIDX] = new EmptyCard();
-                ladangDeck.getChildren().set(gridIDX, destinationViews[gridIDX]);
-                return;
-            }
-
-            destinationViews[gridIDX] = Card.createCard(ladangPlayer.getElement(l));
-            ladangDeck.getChildren().set(gridIDX, destinationViews[gridIDX]);
-        });
-
-
-    }
 
     void resetActiveDeckViews() {
         state.getCurrentPlayer().compactActiveDeck();
@@ -379,9 +330,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Set Active Deck
+     * */
     void updateActiveDeck(Player pl){
         leftDeck.getChildren().clear();
-        for (int i = 0; i < sourceViews.length; i++) {
+        for (int i = 0; i < 6; i++) {
             sourceViews[i] = new EmptyCard();
             leftDeck.getChildren().add(sourceViews[i]);
         }
@@ -390,12 +344,16 @@ public class MainController {
         for(int i = 0; i < activeDeckPlayer.size(); i++) {
             Resource resource = activeDeckPlayer.get(i);
             if(resource != null) {
-                 sourceViews[i] = Card.createCard(resource);
+                sourceViews[i] = Card.createCard(resource);
                 leftDeck.getChildren().set(i,sourceViews[i]);
             }
         }
     }
 
+
+    /**
+     * Set Ladang
+     * */
     void updateLadang(Player pl) {
         ladangDeck.getChildren().clear();
 
@@ -415,6 +373,7 @@ public class MainController {
             // Update Deck
             ladangDeck.getChildren().set(gridIDX,destinationViews[gridIDX]);
         });
+
     }
 
     @FXML
@@ -555,6 +514,7 @@ public class MainController {
     void onShopClick(ActionEvent event) {
         if (!ShopController.isShopWindowOpen()) {
             try {
+                ShopController.setState(state);
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("shop.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage shopStage = new Stage();
@@ -573,10 +533,6 @@ public class MainController {
         }
     }
 
-    @FXML
-    void enemyFieldButton(ActionEvent event) {
-
-    }
 
     private void applyRedBorder(ImageView imageView) {
         ColorAdjust colorAdjust = new ColorAdjust();
@@ -603,7 +559,7 @@ public class MainController {
             saveButton.setDisable(true);
             pluginButton.setDisable(true);
             nextButton.setDisable(true);
-            
+
             Thread timerThread = new Thread(() -> {
             SeranganBeruang sb = new SeranganBeruang();
             List <Integer> affected = sb.generateAffectedIndex();
@@ -618,6 +574,7 @@ public class MainController {
             countdownTimer.start();
             while (!countdownTimer.isTimeUp()) {
                 try {
+
                     Thread.sleep(100);
                     String currtime = Integer.toString(countdownTimer.getTime()/1000) + "," + Integer.toString((countdownTimer.getTime()%1000)/100); ;
                     Platform.runLater(() -> {timerLabel.setText(currtime);}
@@ -632,10 +589,10 @@ public class MainController {
 
             for(int i = 0; i < affected.size(); i++){
                 int idx = affected.get(i);
-            
+
                 Platform.runLater(() -> {
                     killCreatureAt(idx);
-                    updateLadang();
+                    updateLadang(state.getCurrentPlayer());
                 });
             }
             Platform.runLater(() -> {
@@ -647,7 +604,7 @@ public class MainController {
                 pluginButton.setDisable(false);
                 nextButton.setDisable(false);
             });
-            
+
            });
 
 
