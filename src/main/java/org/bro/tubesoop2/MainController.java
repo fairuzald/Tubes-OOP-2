@@ -359,6 +359,7 @@ public class MainController {
          * Set Ladang
          * */
         updateLadang(this.state.getNextPlayer());
+        ladangDeck.getChildren().forEach((a) -> ((DraggableItem) a).setDragState(false));
     }
 
     @FXML

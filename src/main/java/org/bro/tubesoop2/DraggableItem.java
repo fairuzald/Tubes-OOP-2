@@ -12,6 +12,7 @@ import javafx.scene.layout.TilePane;
 
 public abstract class DraggableItem extends ImageView {
     private String imagePath;
+    private boolean isDragable = true;
     protected boolean isDefaultImage;
 
     public DraggableItem(String imagePath) {
@@ -31,18 +32,20 @@ public abstract class DraggableItem extends ImageView {
     }
 
     public void dragDetected(MouseEvent event) {
-        ImageView sourceView = (ImageView) event.getSource();
+        if(isDragable) {
+            ImageView sourceView = (ImageView) event.getSource();
 
-        if (!isDefaultImage) {
-            Dragboard dragboard = sourceView.startDragAndDrop(TransferMode.MOVE);
+            if (!isDefaultImage) {
+                Dragboard dragboard = sourceView.startDragAndDrop(TransferMode.MOVE);
 
-            ClipboardContent content = new ClipboardContent();
-            content.putImage(sourceView.getImage());
-            content.putString(imagePath); // Set the image path on the dragboard
-            dragboard.setContent(content);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(sourceView.getImage());
+                content.putString(imagePath); // Set the image path on the dragboard
+                dragboard.setContent(content);
+            }
+
+            event.consume();
         }
-
-        event.consume();
     }
 
     public void dragDone(DragEvent event) {
@@ -103,6 +106,14 @@ public abstract class DraggableItem extends ImageView {
             return false;
         }
         return true;
+    }
+
+    public void setDragState(boolean isDragable) {
+        this.isDragable = isDragable;
+    }
+
+    public boolean isDragable() {
+        return isDragable;
     }
 
     abstract public void dragDoneAction();
