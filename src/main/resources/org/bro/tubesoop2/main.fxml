@@ -181,6 +181,11 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </VBox>
+            <Label fx:id="timerLabel" layoutX="69.0" layoutY="582.0" prefHeight="45.0" prefWidth="63.0" styleClass="light_color" text="Label" visible="false">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
                </children>
                <BorderPane.margin>
                   <Insets />
