@@ -6,6 +6,7 @@ import javafx.scene.layout.TilePane;
 import org.bro.tubesoop2.action.Action;
 import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.plant.Plant;
+import org.bro.tubesoop2.product.Product;
 
 public class CreatureCard extends Card {
 
@@ -21,7 +22,7 @@ public class CreatureCard extends Card {
         });
     }
 
-    public static Action<Tuple<Integer, String>> onMakan = new Action<>();
+    public static Action<Tuple<Integer, Product>> onMakan = new Action<>();
 
     @Override
     public void dragDoneAction() {
@@ -44,7 +45,10 @@ public class CreatureCard extends Card {
             if (getParent() instanceof TilePane) {
                 TilePane parentContainer = (TilePane) getParent();
                 int index = parentContainer.getChildren().indexOf(this);
-                onMakan.Notify(new Tuple<>(index, imagePath));
+                if(this.getResource() instanceof  Product){
+                onMakan.Notify(new Tuple<>(index, (Product) this.getResource()));
+                }
+
             }
         }
         else if (source instanceof ItemCard) {

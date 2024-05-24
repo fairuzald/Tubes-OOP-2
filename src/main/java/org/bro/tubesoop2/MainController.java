@@ -148,22 +148,14 @@ public class MainController {
         });
 
         CreatureCard.onMakan.AddListener(paths->{
-            String sourcePath = paths.getSecond();
+            Product p = paths.getSecond();
             Integer index = paths.getFirst();
-            Product p = new Product(sourcePath,0,0);
             int[] gridPosition = convertListIdxToGrid(index);
             int row = gridPosition[0];
             int col = gridPosition[1];
 
-            List<Resource> rscs = state.getCurrentPlayer().getActiveDeck();
             Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
-            for (Resource rsc : rscs) {
-                if(rsc instanceof Product){
-                    if(rsc.getName()==p.getName()){
-                        p = (Product) rsc;
-                    }
-                }
-            }
+
             if (animal instanceof Animal) {
                 try {
                     ((Animal) animal).eat(p);
