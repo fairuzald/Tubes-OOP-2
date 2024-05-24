@@ -33,6 +33,7 @@ import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.countdowntimer.CountdownTimer;
 import org.bro.tubesoop2.grid.Grid;
 import org.bro.tubesoop2.grid.Location;
+import org.bro.tubesoop2.plant.Plant;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
 import org.bro.tubesoop2.quantifiable.Quantifiable;
@@ -201,6 +202,18 @@ public class MainController {
                 state.getCurrentPlayer().getActiveDeck().add(state.createResource(key));
             }
             // Increment plant age
+            state.getPlayer1().getLadang().forEachActive(l -> {
+                Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
+                if(c instanceof Plant){
+                    ((Plant) c).addAge(2);
+                }
+            });
+            state.getPlayer2().getLadang().forEachActive(l -> {
+                Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
+                if(c instanceof Plant){
+                    ((Plant) c).addAge(2);
+                }
+            });
 
             updateGUI();
             System.out.println(state.getCurrentPlayer().getLadang().getCountFilled());
