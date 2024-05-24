@@ -17,7 +17,7 @@ public class Player {
     static final int MAX_DECK_LEFT = 40;
 
     public Player() {
-        ladang = new Grid<>(4, 5);
+        ladang = new Grid<>();
         activeDeck = new ArrayList<>(MAX_ACTIVE_DECK);
 
         // prefill
@@ -80,6 +80,10 @@ public class Player {
         activeDeck.clear();
         gulden = 0;
         deckLeft = 40;
+        // prefill
+        for (int i = 0; i < 6; i++) {
+            activeDeck.add(null);
+        }
     }
 
     public boolean isActiveDeckFull(){

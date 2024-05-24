@@ -27,8 +27,9 @@ public class DetailController {
     private ImageView detailView;
 
     Creature currentCreature;
+    int locationIndex;
 
-    public static Action<Creature> onHarvestClicked = new Action<Creature>();
+    public static Action<Integer> onHarvestClicked = new Action<Integer>();
 
     @FXML
     void onBack(ActionEvent event) {
@@ -39,7 +40,10 @@ public class DetailController {
 
     @FXML
     void onHarvest(ActionEvent event) {
-        onHarvestClicked.Notify(currentCreature);
+        onHarvestClicked.Notify(locationIndex);
+        setDetailOpen(false);
+        Stage currentStage = (Stage) backButton.getScene().getWindow();
+        currentStage.close();
     }
 
     public static boolean isDetailOpen() {
@@ -52,8 +56,9 @@ public class DetailController {
 
     private static boolean detailOpen = false;
 
-    public void updateDetails(Creature creature) {
+    public void updateDetails(Creature creature, int locationIndex) {
         this.currentCreature = creature;
+        this.locationIndex = locationIndex;
 
         String itemName = creature.getFormattedName();
         String[] activeItems = creature.getItemsActive().stream().map(item -> item.getName()).toArray(String[]::new);

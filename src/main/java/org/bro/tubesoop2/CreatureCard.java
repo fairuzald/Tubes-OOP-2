@@ -6,20 +6,17 @@ import javafx.scene.layout.TilePane;
 import org.bro.tubesoop2.action.Action;
 import org.bro.tubesoop2.creature.Creature;
 import org.bro.tubesoop2.plant.Plant;
-import org.bro.tubesoop2.product.Product;
-import org.bro.tubesoop2.resource.Resource;
-
-import java.util.Objects;
 
 public class CreatureCard extends Card {
 
-    public static Action<CreatureCard> onCreatureCardClicked = new Action<>();
+    public static Action<Integer> onCreatureCardClicked = new Action<>();
     
     public CreatureCard(Creature c) {
         super(c, c instanceof Plant ? "assets/Tanaman/"+c.getName()+".png" : "assets/Animal/"+c.getName()+".png");
         setOnMouseClicked(e -> {
             if (this.isDragable()) {
-                onCreatureCardClicked.Notify(this);
+                int locationIndex = ((TilePane) getParent()).getChildren().indexOf(this);
+                onCreatureCardClicked.Notify(locationIndex);
             }
         });
     }

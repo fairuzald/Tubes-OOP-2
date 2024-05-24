@@ -199,15 +199,24 @@ public class MainController {
         });
      
         // Show detail
-        CreatureCard.onCreatureCardClicked.AddListener(creature -> {
-            onItemClick(null, (Resource)creature.getResource());
+        CreatureCard.onCreatureCardClicked.AddListener(locationIndex -> {
+            // onItemClick(null, (Resource)creature.getResource());
+            Card d = (Card)ladangDeck.getChildren().get(locationIndex);
+            Creature creature = (Creature) d.getResource();
+            onItemClick(null, creature, locationIndex);
         });
         
-        DetailController.onHarvestClicked.AddListener(creature -> {
+        DetailController.onHarvestClicked.AddListener(locationIndex -> {
             try{
+                Card c = (Card)ladangDeck.getChildren().get(locationIndex);
+                Creature creature = (Creature) c.getResource();
+                int[] pos = convertListIdxToGrid(locationIndex);
+
                 if(state.getCurrentPlayer().isActiveDeckFull()) throw new IllegalStateException("Active deck is full!");
                 Product product = creature.harvest();
                 state.getCurrentPlayer().addToDeck(product);
+
+                state.getCurrentPlayer().getLadang().pop(pos[0], pos[1]);
                 updateGUI();
             } catch (Exception e) {
                 Alert alert = new Alert(AlertType.ERROR);
@@ -235,14 +244,14 @@ public class MainController {
         }
         player1Gulden.setText(state.getPlayer1().getGulden().toString());
         player2Gulden.setText(state.getPlayer2().getGulden().toString());
-        initActiveDeck(state);
-        initLadang(state);
+        updateActiveDeck();
+        updateLadang();
     }
 
     /**
      * Set Active Deck
      * */
-    void initActiveDeck(GameState state){
+    void updateActiveDeck(){
         List<Resource> activeDeckPlayer = state.getCurrentPlayer().getActiveDeck();
         for(int i = 0; i < activeDeckPlayer.size(); i++) {
             Resource resource = activeDeckPlayer.get(i);
@@ -257,15 +266,18 @@ public class MainController {
      * Set Ladang
      * */
     // Iterasi grid aktif
-    void initLadang(GameState state){
+    void updateLadang(){
         Grid<Resource> ladangPlayer = state.getCurrentPlayer().getLadang();
-        ladangPlayer.forEachActive((a) -> {
-            // Set Destination Views
-            int gridIDX = convertGridToListIdx(a.getCol(),a.getRow());
-            destinationViews[gridIDX] = Card.createCard(ladangPlayer.getElement(a));
+        ladangPlayer.forEach(l -> {
+            int gridIDX = convertGridToListIdx(l.getRow(), l.getCol());
+            if(!ladangPlayer.isFilled(l)) {
+                destinationViews[gridIDX] = new EmptyCard();
+                ladangDeck.getChildren().set(gridIDX, destinationViews[gridIDX]);
+                return;
+            }
 
-            // Update Deck
-            ladangDeck.getChildren().set(gridIDX,destinationViews[gridIDX]);
+            destinationViews[gridIDX] = Card.createCard(ladangPlayer.getElement(l));
+            ladangDeck.getChildren().set(gridIDX, destinationViews[gridIDX]);
         });
 
 
@@ -283,17 +295,17 @@ public class MainController {
 
 
     private int convertGridToListIdx(int i, int j){
-        return i*4 + j;
+        return i*5 + j;
     }
     private int[] convertListIdxToGrid(int listIndex) {
-        int rowIndex = listIndex / 4;
-        int colIndex = listIndex % 4;
+        int rowIndex = listIndex / 5;
+        int colIndex = listIndex % 5;
         return new int[]{rowIndex, colIndex};
     }
 
 
     @FXML
-    private void onItemClick(MouseEvent event, Resource c) {
+    private void onItemClick(MouseEvent event, Resource c, int locationIndex) {
         if (!DetailController.isDetailOpen()) {
             try {
                 Creature creature = (Creature) c;
@@ -303,7 +315,7 @@ public class MainController {
                 Stage detailStage = new Stage();
 
                 DetailController controller = fxmlLoader.getController();
-                controller.updateDetails(creature);
+                controller.updateDetails(creature, locationIndex);
 
                 detailStage.setTitle(creature.getName());
                 detailStage.setScene(new Scene(root));

@@ -75,7 +75,6 @@ public class TextLoader implements StatePlugin {
             int activeItemAmount = Integer.parseInt(split[3]);
 
             // Debug
-            System.out.println(player.getActiveDeck());
             System.out.print(location + " " + typeName + " " + umurORBerat + " " + activeItemAmount);
             Creature c = (Creature) state.createResource(typeName);
             c.setUmurOrBerat(umurORBerat);

@@ -71,6 +71,7 @@ public class Grid<T> {
 
             T val = elements.get(row).get(col);
             isFilled.get(row).set(col, false);
+            elements.get(row).set(col, null);
 
             countFilled--;
             countNotFilled++;
@@ -86,7 +87,7 @@ public class Grid<T> {
         }
 
         public void put(Location l, T t){
-            setElement(l.getCol(), l.getRow(), t);
+            setElement(l.getRow(), l.getCol(), t);
         }
 
         public boolean isFilled(int row, int col) {
@@ -118,6 +119,18 @@ public class Grid<T> {
             }
         }
 
+        public void forEach(Consumer<Location> callback){
+            try{
+                for (int i = 0; i < elements.size(); i++) {
+                    for (int j = 0; j < elements.get(0).size(); j++) {
+                        callback.accept(new Location(i, j));
+                    }
+                }
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+
         public List<T> getFlattened() {
             List<T> result = new ArrayList<>();
             Collections.addAll(elements);
@@ -135,4 +148,6 @@ public class Grid<T> {
             countFilled = 0;
             countNotFilled = elements.size() * elements.get(0).size();
         }
+
+        
     }
