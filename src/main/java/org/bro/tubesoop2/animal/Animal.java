@@ -32,9 +32,7 @@ public abstract class Animal extends Creature {
         if(this.weight < 0) this.weight = 0;
     }
 
-    public boolean isHarvestable() {
-        return weight >= weightToHarvest;
-    }
+  
     abstract public void eat(Product p) throws Exception;
 
     @Override
@@ -47,4 +45,12 @@ public abstract class Animal extends Creature {
 
     @Override
     public int getUmurOrBerat(){return this.weight;}
+
+    @Override
+    public Product harvest()  throws IllegalStateException {
+        if(weight >= weightToHarvest){
+            return drops;
+        }
+        throw new IllegalStateException(getFormattedName() + " is not ready to be harvested. Atleast weight is "+weightToHarvest);
+    }
 }

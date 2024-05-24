@@ -14,10 +14,13 @@ public class Player {
     private int gulden = 0;
     private int deckLeft = 40;
 
+    static final int MAX_ACTIVE_DECK = 6;
+    static final int MAX_DECK_LEFT = 40;
+
     public Player() {
         ladang = new Grid<>(4, 5);
-        deck = new ArrayList<>(40);
-        activeDeck = new ArrayList<>(6);
+        deck = new ArrayList<>(MAX_DECK_LEFT);
+        activeDeck = new ArrayList<>(MAX_ACTIVE_DECK);
 
         // prefill
         for (int i = 0; i < 40; i++) {
@@ -67,7 +70,14 @@ public class Player {
     }
 
     public void addToDeck(Resource resource) {
-        deck.add(resource);
+        // find first empty slot
+        for (int i = 0; i < deck.size(); i++) {
+            if (deck.get(i) == null) {
+                deck.set(i, resource);
+                return;
+            }
+        }
+        throw new IllegalStateException("Deck is full");
     }
 
 
@@ -89,5 +99,14 @@ public class Player {
         for (int i = 0; i < 6; i++) {
             activeDeck.add(null);
         }
+    }
+
+    public boolean isActiveDeckFull(){
+        for(int i = 0; i < activeDeck.size(); i++){
+            if(activeDeck.get(i) == null){
+                return false;
+            }
+        }
+        return true;
     }
 }
