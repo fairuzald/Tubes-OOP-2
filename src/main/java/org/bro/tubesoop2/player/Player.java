@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
+
+    // Only used when printing who wins
+    private String name;
+    public String getName(){return name;}
+
     private Grid<Resource> ladang;
     private List<Resource> activeDeck;
     private Integer gulden = 0;
@@ -16,7 +21,8 @@ public class Player {
     static final int MAX_ACTIVE_DECK = 6;
     static final int MAX_DECK_LEFT = 40;
 
-    public Player() {
+    public Player(String name) {
+        this.name = name;
         ladang = new Grid<>();
         activeDeck = new ArrayList<>(MAX_ACTIVE_DECK);
 
