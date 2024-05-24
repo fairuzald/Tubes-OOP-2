@@ -1,5 +1,8 @@
 package org.bro.tubesoop2;
 
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.input.Dragboard;
 import javafx.scene.layout.TilePane;
@@ -15,7 +18,7 @@ public class EmptyCard extends DraggableItem {
         this.isDefaultImage = true;  // Mark this as the default image
     }
 
-    public static Action<Tuple<Resource, Integer>> onDrop = new Action<>();
+    public static Action<Tuple<Integer,Tuple<Resource, Integer>>> onDrop = new Action<>();
 
     @Override
     public void dragDoneAction() {
@@ -27,30 +30,21 @@ public class EmptyCard extends DraggableItem {
         if (source instanceof CreatureCard) {
             System.out.println("EmptyCard can be replaced.");
             // Create a new instance of the appropriate card with the image from the dragboard
-            String imagePath = getImagePathFromDragboard(dragboard);
             if (getParent() instanceof TilePane) {
                 TilePane parentContainer = (TilePane) getParent();
                 int index = parentContainer.getChildren().indexOf(this);
-                System.out.println(source);
+
+                int index2 = -1;
+                if (parentContainer.getChildren().contains(source)) {
+                    ObservableList<Node> s = parentContainer.getChildren();
+                        index2 = s.indexOf(source);
+                }
 
                 CreatureCard cc = (CreatureCard) source;
-
-                
-                // System.out.println(index);
-                // Resource rsc = cc.getResource();
-                // DraggableItem newCard = new CreatureCard(imagePath);
-                
-                // System.out.println(rsc.getName());
-                // parentContainer.getChildren().set(index, newCard);
-                // onDrop.Notify(new Tuple<>(rsc, index));
-
-                
-                // parentContainer.getChildren().set(index, cc);
-                // onDrop.Notify(new Tuple<>(cc.getResource(), index));
-
-                DraggableItem newCard = new CreatureCard((Creature)cc.getResource());
+                DraggableItem newCard = new CreatureCard((Creature) cc.getResource());
                 parentContainer.getChildren().set(index, newCard);
-                onDrop.Notify(new Tuple<>(cc.getResource(), index));
+                Tuple <Resource, Integer> resource = new Tuple<>(cc.getResource(), index);
+                onDrop.Notify(new Tuple<>(index2, resource));
             }
         } else {
             System.out.println("EmptyCard cannot be replaced by " + source.getClass().getSimpleName());

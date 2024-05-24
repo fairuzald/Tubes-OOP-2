@@ -126,13 +126,25 @@ public class MainController {
 
 
         EmptyCard.onDrop.AddListener(tup -> {
-            Resource rsc = tup.getFirst();
-            Integer index = tup.getSecond();
+            Integer indexFrom = tup.getFirst();
+            Tuple<Resource, Integer> tup2 = tup.getSecond();
+            Resource rsc = tup2.getFirst();
+            Integer index = tup2.getSecond();
             int[] gridPosition = convertListIdxToGrid(index);
             int row = gridPosition[0];
             int col = gridPosition[1];
             Location lct = new Location(row, col);
-            state.getCurrentPlayer().putLadang(rsc, lct);
+            System.out.print(indexFrom);
+            if(indexFrom ==-1){
+                state.getCurrentPlayer().putLadang(rsc, lct);
+            }else{
+                int[] gridPositionFrom = convertListIdxToGrid(indexFrom);
+                int row2 = gridPositionFrom[0];
+                int col2 = gridPositionFrom[1];
+                Location rlct = new Location(row2,col2);
+                state.getCurrentPlayer().removeLadang(rlct);
+                state.getCurrentPlayer().putLadang(rsc, lct);
+            }
         });
 
         CreatureCard.onMakan.AddListener(paths->{

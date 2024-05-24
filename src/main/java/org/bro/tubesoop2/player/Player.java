@@ -59,6 +59,10 @@ public class Player {
         ladang.put(l, r);
     }
 
+    public void removeLadang(Location l){
+        ladang.pop(l.getRow(), l.getCol());
+    }
+
     public void addToDeck(Resource resource) {
         // find first empty slot
         for (int i = 0; i < activeDeck.size(); i++) {
