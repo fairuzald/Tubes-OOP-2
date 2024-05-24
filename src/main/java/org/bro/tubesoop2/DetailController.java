@@ -25,6 +25,8 @@ public class DetailController {
     @FXML
     private ImageView detailView;
 
+    Creature currentCreature;
+
     @FXML
     void onBack(ActionEvent event) {
         setDetailOpen(false);
@@ -34,6 +36,7 @@ public class DetailController {
 
     @FXML
     void onHarvest(ActionEvent event) {
+        
     }
 
     public static boolean isDetailOpen() {
@@ -46,8 +49,9 @@ public class DetailController {
 
     private static boolean detailOpen = false;
 
-    // public void updateDetails(String itemName, String[] activeItems, String age, String ageOrWeight) {
     public void updateDetails(Creature creature) {
+        this.currentCreature = creature;
+
         String itemName = creature.getFormattedName();
         String[] activeItems = creature.getItemsActive().stream().map(item -> item.getName()).toArray(String[]::new);
         String value = Integer.toString(creature.getUmurOrBerat());

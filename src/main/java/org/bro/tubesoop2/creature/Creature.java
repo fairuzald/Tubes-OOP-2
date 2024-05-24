@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Creature extends Resource {
-    private List<Product> drops;
+    private Product drops;
     private List<Item> itemsActive;
 
 
-    public Creature(String name, List<Product> drops) {
+    public Creature(String name, Product drops) {
         super(name);
         this.drops = drops;
         itemsActive = new ArrayList<>();
     }
 
-    public List<Product> getDrops() {
+    public Product getDrop() {
         return drops;
     }
 

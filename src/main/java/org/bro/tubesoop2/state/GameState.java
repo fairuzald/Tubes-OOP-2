@@ -39,9 +39,6 @@ public class GameState {
         System.out.println(key);
         return factory.get(key);
     }
-    public Item createItem(String key){
-        return factory.getItem(key);
-    }
 
     public Player getPlayer1(){return player1;}
     public Player getPlayer2(){return player2;}

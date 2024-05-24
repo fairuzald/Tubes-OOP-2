@@ -11,7 +11,7 @@ public class Plant extends Creature {
     private Integer durationToHarvest = 0;
     private Integer currentAge = 0;
 
-    public Plant(Integer duration, String name, ArrayList<Product> drops) {
+    public Plant(Integer duration, String name, Product drops) {
         super(name, drops);
         plantList.add(this);
         this.durationToHarvest = duration;
