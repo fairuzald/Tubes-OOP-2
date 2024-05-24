@@ -132,7 +132,7 @@ public class MainController {
             int row = gridPosition[0];
             int col = gridPosition[1];
             Location lct = new Location(row, col);
-            state.getCurrentPlayer().addLadang(rsc, lct);
+            state.getCurrentPlayer().putLadang(rsc, lct);
         });
 
         CreatureCard.onMakan.AddListener(paths->{

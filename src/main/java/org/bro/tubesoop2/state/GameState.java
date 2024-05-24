@@ -36,7 +36,6 @@ public class GameState {
 
     ResourceFactory factory = new ResourceFactory();
     public Resource createResource(String key){
-        System.out.println(key);
         return factory.get(key);
     }
 
@@ -72,7 +71,7 @@ public class GameState {
         Player p1 =  new Player();
         GameState newGameState = new GameState();
         newGameState.populateDeckWithRandomResources(p1, 40);
-        System.out.println(p1.getDeck().size());
+        System.out.println(p1.getActiveDeck().size());
     }
 }
 
