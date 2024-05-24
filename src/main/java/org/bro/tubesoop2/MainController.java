@@ -228,17 +228,13 @@ public class MainController {
         if (!DetailController.isDetailOpen()) {
             try {
                 Creature creature = (Creature) c;
-                String itemName = creature.getFormattedName();
-                String[] activeItems = creature.getItemsActive().stream().map(item -> item.getName()).toArray(String[]::new);
-                String value = Integer.toString(creature.getUmurOrBerat());
-                String label = creature instanceof Animal ? "Berat" : "Umur";
-
+                
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detail.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage detailStage = new Stage();
 
                 DetailController controller = fxmlLoader.getController();
-                controller.updateDetails(itemName, activeItems, value, label);
+                controller.updateDetails(creature);
 
                 detailStage.setTitle(creature.getName());
                 detailStage.setScene(new Scene(root));
