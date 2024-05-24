@@ -214,7 +214,8 @@ public class MainController {
                 String relative_path_from_project = Utils.getRelativePathFromProject(current_absolute_path);
                 System.out.println(relative_path_from_project);
                 String key = Utils.toResourceFactoryKeys(relative_path_from_project);
-                state.getCurrentPlayer().getActiveDeck().add(state.createResource(key));
+                System.out.println(key);
+                state.getCurrentPlayer().addToDeck(state.createResource(key));
             }
             // Increment plant age
             state.getPlayer1().getLadang().forEachActive(l -> {
@@ -316,7 +317,6 @@ public class MainController {
 
 
     void resetActiveDeckViews() {
-        state.getCurrentPlayer().compactActiveDeck();
 
         sourceViews = new DraggableItem[6];
         for (int i = 0; i < 6; i++) {
@@ -502,7 +502,7 @@ public class MainController {
         resetActiveDeckViews();
         updateGUI();
 
-        RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().getActiveDeck().size();
+        RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().countFreeSlotFromActiveDeck();
 
 
         if (RandomController.maximumCardsCanBeSelected == 0) {

@@ -32,7 +32,7 @@ public class ResourceFactory {
         resourceMap.put("STROBERI", () -> new ProductPlant("STROBERI", 5, 350));
 
         // Animal
-        resourceMap.put("HIU_DARAT", () -> new Carnivore("HIU_DARAT", 25, (Product)get("SIRIP_HIRU") ));
+        resourceMap.put("HIU_DARAT", () -> new Carnivore("HIU_DARAT", 25, (Product)get("SIRIP_HIU") ));
         resourceMap.put("SAPI", () -> new Herbivore("SAPI", 10, (Product)get("SUSU") ));
         resourceMap.put("DOMBA", () -> new Herbivore("DOMBA", 12, (Product)get("DAGING_DOMBA") ));
         resourceMap.put("KUDA", () -> new Herbivore("KUDA", 14, (Product)get("DAGING_KUDA") ));
@@ -54,6 +54,7 @@ public class ResourceFactory {
     }
 
     public Resource get(String key){
+        System.out.println(key);
         Supplier<Resource> s = resourceMap.get(key);
         return s.get();
     }

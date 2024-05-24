@@ -89,6 +89,17 @@ public class Player {
         throw new IllegalStateException("Deck is full");
     }
 
+    public int countFreeSlotFromActiveDeck() {
+        int count = 0;
+        for (int i = 0; i < 6; i++) {
+            if (activeDeck.get(i) != null) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
 
     public void setDeckLeft(int deckLeft){
         this.deckLeft = deckLeft;
