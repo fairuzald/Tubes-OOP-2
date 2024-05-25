@@ -70,6 +70,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        myFieldButton.setDisable(true);
         // Remove all
         for (int i = 0; i < destinationViews.length; i++) {
             destinationViews[i] = new EmptyCard();
@@ -169,14 +170,26 @@ public class MainController {
             int[] gridPosition = convertListIdxToGrid(index);
             int row = gridPosition[0];
             int col = gridPosition[1];
-
             Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
+
+
 
             if (animal instanceof Animal) {
                 try {
                     System.out.println(animal);
                     System.out.println(p);
                     ((Animal) animal).eat(p);
+
+                    int index2 =0;
+
+                    for(int i=0;i<leftDeck.getChildren().size();i++){
+                        if((leftDeck.getChildren().get(i) instanceof ProductCard)){
+                            if(((ProductCard)leftDeck.getChildren().get(i)).getResource().equals(p)){
+                                index2 =i;
+                            }
+                        }
+                    }
+                    state.getCurrentPlayer().getActiveDeck().set(index2,null);
                 } catch (Exception e) {
                     // Display an error message dialog
                     Alert alert = new Alert(AlertType.ERROR);
@@ -184,6 +197,9 @@ public class MainController {
                     alert.setHeaderText("An error occurred while processing the action.");
                     alert.setContentText("Details: " + e.getMessage());
                     alert.showAndWait();
+                }
+                finally {
+                    updateGUI();
                 }
             }
 
@@ -447,6 +463,8 @@ public class MainController {
          * Set Ladang
          * */
         updateLadang(this.state.getCurrentPlayer());
+        myFieldButton.setDisable(true);
+        enemyFieldButton.setDisable(false);
     }
 
     @FXML
@@ -456,6 +474,8 @@ public class MainController {
          * */
         updateLadang(this.state.getNextPlayer());
         ladangDeck.getChildren().forEach((a) -> ((DraggableItem) a).setDragState(false));
+        myFieldButton.setDisable(false);
+        enemyFieldButton.setDisable(true);
     }
 
     @FXML
@@ -604,6 +624,8 @@ public class MainController {
                 ShopController.setShopWindowOpen(true);
 
                 shopStage.setOnCloseRequest(eventClose -> ShopController.setShopWindowOpen(false));
+                myFieldButton.setDisable(true);
+                enemyFieldButton.setDisable(false);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error loading shop.fxml: " + e.getMessage());
@@ -673,7 +695,6 @@ public class MainController {
             Platform.runLater(() -> {
                 shopButton.setDisable(false);
                 loadButton.setDisable(false);
-                myFieldButton.setDisable(false);
                 enemyFieldButton.setDisable(false);
                 saveButton.setDisable(false);
                 pluginButton.setDisable(false);
