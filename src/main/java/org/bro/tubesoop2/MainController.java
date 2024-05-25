@@ -261,7 +261,8 @@ public class MainController {
         CreatureCard.onEnemyDestroy.AddListener(tup->{
 
             Item itm = tup.getFirst();
-            Resource creature = tup.getSecond();
+            Creature creature = (Creature) tup.getSecond();
+
 
             int index = 0;
             for(int i=0;i<this.leftDeck.getChildren().size();i++){
@@ -275,16 +276,20 @@ public class MainController {
 
             state.getCurrentPlayer().getActiveDeck().set(index,null);
 
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 5; j++) {
-                    if (state.getNextPlayer().getLadang().getElement(i, j) == null) continue;
 
-                    if (state.getNextPlayer().getLadang().getElement(i, j).equals(creature)) {
-                        System.out.println("Success destroy");
-                        state.getNextPlayer().getLadang().pop(i, j);
+            if (!itm.hasProtectCard(creature)) {
+                for (int i = 0; i < 4; i++) {
+                    for (int j = 0; j < 5; j++) {
+                        if (state.getNextPlayer().getLadang().getElement(i, j) == null) continue;
+
+                        if (state.getNextPlayer().getLadang().getElement(i, j).equals(creature)) {
+                            state.getNextPlayer().getLadang().pop(i, j);
+                        }
                     }
                 }
             }
+
+
 
             updateActiveDeck(state.getCurrentPlayer());
             updateLadang(state.getNextPlayer());
