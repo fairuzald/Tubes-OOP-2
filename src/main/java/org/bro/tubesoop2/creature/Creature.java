@@ -22,6 +22,10 @@ public abstract class Creature extends Resource {
         return drops;
     }
 
+    public void updateImage() {
+
+    }
+
     public abstract Product harvest() throws IllegalStateException;
 
     public List<Item> getItemsActive() {

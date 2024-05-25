@@ -5,17 +5,16 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.layout.TilePane;
 import org.bro.tubesoop2.action.Action;
 import org.bro.tubesoop2.creature.Creature;
-import org.bro.tubesoop2.item.Accelerate;
-import org.bro.tubesoop2.item.Delay;
-import org.bro.tubesoop2.item.Destroy;
-import org.bro.tubesoop2.item.Item;
+import org.bro.tubesoop2.item.*;
 import org.bro.tubesoop2.plant.Plant;
 import org.bro.tubesoop2.product.Product;
+import org.bro.tubesoop2.resource.Resource;
 
 public class CreatureCard extends Card {
 
     public static Action<Integer> onCreatureCardClicked = new Action<>();
     public static Action<Item> onEnemyClicked = new Action<>();
+    public static Action<Tuple<Item, Resource>> onEnemyDestroy = new Action<>();
 
     public CreatureCard(Creature c) {
         super(c, c instanceof Plant ? "assets/Tanaman/"+c.getName()+".png" : "assets/Animal/"+c.getName()+".png");
@@ -67,6 +66,8 @@ public class CreatureCard extends Card {
                 onItemCancel.Notify("Delay");
             }  else if (((ItemCard) source).getResource() instanceof Destroy) {
                 onItemCancel.Notify("Destroy");
+            } else if (((ItemCard) source).getResource() instanceof InstantHarvest) {
+
             } else {
                 if(getParent() instanceof TilePane){
                     TilePane parentContainer = (TilePane) getParent();
@@ -96,21 +97,20 @@ public class CreatureCard extends Card {
 
     @Override
     public void dropEnemy(Dragboard db, Object src) {
-        System.out.println("drop enemy! something!!!");
         if (src instanceof ItemCard) {
             if ((((ItemCard) src).getResource() instanceof Delay)) {
                 ((Delay) ((ItemCard) src).getResource()).consumedBy((Creature) this.getResource());
-                if(((ItemCard) src).getResource() instanceof Delay){
-                    Item rsc = ((Item)((ItemCard) src).getResource());
-                    onEnemyClicked.Notify(rsc);
-                }
+                Item rsc = ((Item)((ItemCard) src).getResource());
+                onEnemyClicked.Notify(rsc);
+
             }
 
             if ((((ItemCard) src).getResource() instanceof Destroy)) {
                 ((Destroy) ((ItemCard) src).getResource()).consumedBy((Creature) this.getResource());
+                Item rsc = ((Item)((ItemCard) src).getResource());
 
-
-
+                Tuple<Item, Resource> tup = new Tuple<Item, Resource>(rsc, this.getResource());
+                onEnemyDestroy.Notify(tup);
             }
 
 

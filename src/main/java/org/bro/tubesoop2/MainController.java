@@ -258,6 +258,38 @@ public class MainController {
             updateActiveDeck(state.getCurrentPlayer());
         });
 
+        CreatureCard.onEnemyDestroy.AddListener(tup->{
+
+            Item itm = tup.getFirst();
+            Resource creature = tup.getSecond();
+
+            int index = 0;
+            for(int i=0;i<this.leftDeck.getChildren().size();i++){
+                if (leftDeck.getChildren().get(i) instanceof ItemCard){
+                    if(((ItemCard) leftDeck.getChildren().get(i)).getResource().equals(itm)){
+                        index=i;
+                    }
+
+                }
+            }
+
+            state.getCurrentPlayer().getActiveDeck().set(index,null);
+
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 5; j++) {
+                    if (state.getNextPlayer().getLadang().getElement(i, j) == null) continue;
+
+                    if (state.getNextPlayer().getLadang().getElement(i, j).equals(creature)) {
+                        System.out.println("Success destroy");
+                        state.getNextPlayer().getLadang().pop(i, j);
+                    }
+                }
+            }
+
+            updateActiveDeck(state.getCurrentPlayer());
+            updateLadang(state.getNextPlayer());
+        });
+
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
             for (int i = 0; i < length; i++) {
@@ -324,6 +356,8 @@ public class MainController {
                 if(state.getCurrentPlayer().isActiveDeckFull()) throw new IllegalStateException("Active deck is full!");
                 Product product = creature.harvest();
                 state.getCurrentPlayer().addToDeck(product);
+
+
 
                 state.getCurrentPlayer().getLadang().pop(pos[0], pos[1]);
                 updateGUI();

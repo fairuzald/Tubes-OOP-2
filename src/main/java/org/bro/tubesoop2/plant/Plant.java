@@ -34,12 +34,15 @@ public class Plant extends Creature {
 
     public void addAge(int age){
         this.currentAge += age;
+        super.updateImage();
     }
     public void reduceAge(int age){
         this.currentAge -= age;
         if(this.currentAge < 0) this.currentAge = 0;
         System.out.println("Current age is " + currentAge );
     }
+
+    public void updateImage(){}
 
     @Override
     public void consumeItem(Item item) {

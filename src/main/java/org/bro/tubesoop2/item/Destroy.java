@@ -10,6 +10,7 @@ public class Destroy extends Item {
 //    @Override
     public void consumedBy(Creature creature) {
         if(hasProtectCard(creature)) return;
+
         if (creature instanceof Animal) {
 
         } else if (creature instanceof Plant) {
