@@ -23,6 +23,9 @@ public class StateLoader {
     String gameStateFileName;
     StatePlugin plugin;
 
+    List<String> pluginFiles = new ArrayList<String>();
+    ServiceLoader<StatePlugin> serviceLoader;
+
     public StateLoader setPath(String parentFolder, String gameStateFileName, String player1FileName, String player2FileName) {
         this.path = parentFolder;
         this.player1FileName = player1FileName;
@@ -37,35 +40,42 @@ public class StateLoader {
     }
 
 
-    ServiceLoader<StatePlugin> loader;
     public StateLoader setPluginFromJarPath(String jarPath) {
-        ArrayList<String> pluginFiles = new ArrayList<>();
         pluginFiles.add(jarPath);
+        loadPluginService();
+        test();
+        return this;
+    }
 
-        List<URL> urls = pluginFiles.stream().map(each -> {
-            try {
-                return (new File(each)).toURI().toURL();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }).toList();
 
-        URLClassLoader classLoader = new URLClassLoader(urls.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
-        loader = ServiceLoader.load(StatePlugin.class, classLoader);
-        System.out.println(jarPath);
 
-        try{
-            for (StatePlugin plugin : loader) {
-                System.out.println(plugin);
+
+    public void test() {
+        try {
+            System.out.println("test");
+            for(StatePlugin p : serviceLoader) {
+                p.Load(gameStateFileName, player1FileName, player2FileName, null);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("=======");
-            e.printStackTrace();
         }
-
-        return this;
     }
+
+
+    public void loadPluginService() {
+        List<URL> urls = this.pluginFiles.stream().map(each -> {
+            try {
+                System.out.println((new File(each)).toURI().toURL());
+                return (new File(each)).toURI().toURL(); }
+            catch (Exception e) { throw new RuntimeException(e); }
+        }).toList();
+
+        URLClassLoader classLoader = new URLClassLoader(urls.toArray(new URL[0]), ClassLoader.getSystemClassLoader());
+        this.serviceLoader = ServiceLoader.load(StatePlugin.class, classLoader);
+    }
+
+
+
 
     /**
      * Default value is "state/gamestate.txt"
@@ -81,10 +91,7 @@ public class StateLoader {
         String player2Path   = path + "/" + player2FileName;
 
         try {
-            File gameStateFile = new File(gameStatePath);
-            File player1File = new File(player1Path);
-            File player2File = new File(player2Path);
-            plugin.Load(gameStateFile, player1File, player2File, state);
+            plugin.Load(gameStatePath, player1Path, player2Path, state);
         } catch (FileNotFoundException e) {
             System.out.println("Error when reading state/gamestate.txt.");
             System.out.println(e.getMessage());
@@ -103,10 +110,7 @@ public class StateLoader {
         String player2Path   = path + "/" + player2FileName;
 
         try {
-            FileWriter gameStateFile = new FileWriter(gameStatePath);
-            FileWriter player1File = new FileWriter(player1Path);
-            FileWriter player2File = new FileWriter(player2Path);
-            plugin.Save(gameStateFile, player1File, player2File, state);
+            plugin.Save(gameStatePath, player1Path, player2Path, state);
         } catch (FileNotFoundException e) {
             System.out.println("Error when reading state/gamestate.txt.");
             System.out.println(e.getMessage());

@@ -15,8 +15,18 @@ import java.util.Scanner;
 
 public class TextLoader implements StatePlugin {
     GameState state;
+
     @Override
-    public void Load(File gameStateFile, File player1File, File player2File, GameState state) throws Exception {
+    public String getName() {
+        return "txt";
+    }
+
+    @Override
+    public void Load(String gameStatePath, String player1Path, String player2Path, GameState state) throws Exception {
+        File gameStateFile = new File(gameStatePath);
+        File player1File = new File(player1Path);
+        File player2File = new File(player2Path);
+        
         this.state = state;
         try{
             // GameState
@@ -30,7 +40,10 @@ public class TextLoader implements StatePlugin {
     }
 
     @Override
-    public void Save(FileWriter gameStateFile, FileWriter player1File, FileWriter player2File, GameState state) throws Exception {
+    public void Save(String gameStatePath, String player1Path, String player2Path, GameState state) throws Exception {
+        FileWriter gameStateFile = new FileWriter(gameStatePath);
+        FileWriter player1File = new FileWriter(player1Path);
+        FileWriter player2File = new FileWriter(player2Path);
         this.state = state;
         try{
             // GameState
