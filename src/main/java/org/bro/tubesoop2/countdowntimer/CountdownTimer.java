@@ -33,7 +33,7 @@ public class CountdownTimer {
             public void run() {
                 infokan(counter);
                 if (counter > 0) {
-                    System.out.println("Time remaining: " + counter + " seconds");
+                    // System.out.println("Time remaining: " + counter + " seconds");
                     counter-=100;
                 } else {
                     System.out.println("Time's up!");

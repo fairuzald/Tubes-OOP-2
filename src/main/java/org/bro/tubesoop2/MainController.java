@@ -1,13 +1,7 @@
 package org.bro.tubesoop2;
 import javafx.application.Platform;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,6 +49,9 @@ public class MainController {
     StateLoader loader = new StateLoader();
     private int activeDeckNum = 6;
     RandomController randomController = new RandomController();
+
+    @FXML
+    private AnchorPane centerAnchorPane;
 
     @FXML
     private Label player1Name, player2Name, player1Gulden, player2Gulden, activeDeck, turn, timerLabel;
@@ -148,6 +145,7 @@ public class MainController {
                         index3=i;
                     }
                 }
+
             }
             if(indexFrom ==-1){
                 state.getCurrentPlayer().putLadang(rsc, lct);
@@ -198,19 +196,34 @@ public class MainController {
             int[] gridPosition = convertListIdxToGrid(index);
             int row = gridPosition[0];
             int col = gridPosition[1];
-
             Resource creature = state.getCurrentPlayer().getLadang().getElement(row,col);
+
+            int index3=0;
+            for(int i=0;i<leftDeck.getChildren().size();i++){
+                if((leftDeck.getChildren().get(i) instanceof ItemCard)){
+                    if(((ItemCard)leftDeck.getChildren().get(i)).getResource().equals(item)){
+                        index3=i;
+                    }
+                }
+
+            }
+            state.getCurrentPlayer().getActiveDeck().set(index3,null);
+
+
             try{
                 System.out.println("mmmsskkk");
                 item.consumedBy((Creature)creature);
-                // updateGUI();
+//                updateActiveDeck(state.getCurrentPlayer());
             }catch (Exception e) {
+
                 // Display an error message dialog
                 Alert alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("An error occurred while processing the action.");
                 alert.setContentText("Details: " + e.getMessage());
                 alert.showAndWait();
+            }finally {
+                updateGUI();
             }
             
         });
@@ -242,7 +255,6 @@ public class MainController {
 
             updateGUI();
             System.out.println(state.getCurrentPlayer().getLadang().getCountFilled());
-            seranganBeruangHandler(state);
 
             // win check
             Player winningPlayer = state.tryGetWinner();
@@ -252,6 +264,7 @@ public class MainController {
                 alert.setHeaderText(winningPlayer.getName() + " Wins!");
                 alert.showAndWait();
             }
+            seranganBeruangHandler(state);
         });
 
         SaveController.onSaveValid.AddListener(folderDir -> {
@@ -576,42 +589,30 @@ public class MainController {
     }
 
 
-    private void applyRedBorder(ImageView imageView) {
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setHue(1);
-        colorAdjust.setSaturation(1);
-        imageView.setEffect(colorAdjust);
-    }
-
-    private void disableRedBorder(ImageView imageView) {
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setHue(0);
-        colorAdjust.setSaturation(0);
-        imageView.setEffect(colorAdjust);
-    }
 
     @FXML
     void seranganBeruangHandler(GameState state){
         Random random = new Random();
-        if(true){
-            shopButton.setDisable(true);
-            loadButton.setDisable(true);
-            myFieldButton.setDisable(true);
-            enemyFieldButton.setDisable(true);
-            saveButton.setDisable(true);
-            pluginButton.setDisable(true);
-            nextButton.setDisable(true);
+        int ISBERUANGGONNAHAPPEN = random.nextInt(100) + 1;
+        if(ISBERUANGGONNAHAPPEN > 30) return;
 
-            Thread timerThread = new Thread(() -> {
+        shopButton.setDisable(true);
+        loadButton.setDisable(true);
+        myFieldButton.setDisable(true);
+        enemyFieldButton.setDisable(true);
+        saveButton.setDisable(true);
+        pluginButton.setDisable(true);
+        nextButton.setDisable(true);
+        RedBorderController redBorderController = new RedBorderController(centerAnchorPane);
+        redBorderController.initialize();
+
+        Thread timerThread = new Thread(() -> {
             SeranganBeruang sb = new SeranganBeruang();
             List <Integer> affected = sb.generateAffectedIndex();
-            for(int i = 0; i < affected.size(); i++){
-                int idx = affected.get(i);
-                System.out.println(idx);
-                applyRedBorder(destinationViews[idx]);
-            }
-            System.out.println("Affected: " + affected);
-            CountdownTimer countdownTimer = new CountdownTimer(5);
+            redBorderController.setRedBordersVisible(true,affected);
+        
+            int seconds = random.nextInt(31) + 30;
+            CountdownTimer countdownTimer = new CountdownTimer(seconds);
             Platform.runLater(() -> timerLabel.setVisible(true));
             countdownTimer.start();
             while (!countdownTimer.isTimeUp()) {
@@ -634,7 +635,7 @@ public class MainController {
 
                 Platform.runLater(() -> {
                     killCreatureAt(idx);
-                    updateLadang(state.getCurrentPlayer());
+                    updateGUI();
                 });
             }
             Platform.runLater(() -> {
@@ -645,14 +646,17 @@ public class MainController {
                 saveButton.setDisable(false);
                 pluginButton.setDisable(false);
                 nextButton.setDisable(false);
+
+                redBorderController.setRedBordersVisible(false,affected);
             });
 
-           });
+        });
 
 
-           timerThread.start();
-       }
+        timerThread.start();
+    
    }
+
     public void killCreatureAt(int i){
         
         int[] gridPosition = convertListIdxToGrid(i);
@@ -664,7 +668,7 @@ public class MainController {
         for (Item item : creature.getItemsActive()) {
             if (item instanceof Protect) {
                 hasProtectCard = true;
-               
+              
             }
             if(item instanceof Trap){
                 hasTrap = true;
@@ -672,22 +676,28 @@ public class MainController {
         }
 
         if(hasProtectCard){
-            return;
+
         }
         if(hasTrap){
-            state.getCurrentPlayer().addToDeck(state.createResource("BERUANG"));
-//            updateActiveDeck();
+            try{
+                state.getCurrentPlayer().addToDeck(state.createResource("BERUANG"));
+            }catch(Exception e){
+                System.out.println(e);
+            }
+
+        }
+        if(hasProtectCard || hasTrap){
             return;
         }
+
         try{
             state.getCurrentPlayer().getLadang().pop(gridPosition[0], gridPosition[1]);
-            // ladangDeck.getChildren().remove(i);
-            // ladangDeck.getChildren().add(i,destinationViews[i]);
+   
 
         }catch(IllegalStateException e){
-            // System.out.println("failed at" + " " + row + " "+ col) ;
+
         }
     }
 
-//}
+
 }
