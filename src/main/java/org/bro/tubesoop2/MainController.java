@@ -46,7 +46,7 @@ public class MainController {
     GameState state = new GameState();
     StateLoader loader = new StateLoader();
     private int activeDeckNum = 6;
-    RandomController randomController = new RandomController();
+    private Integer deckLeft = 40;
 
     @FXML
     private AnchorPane centerAnchorPane;
@@ -311,6 +311,8 @@ public class MainController {
                 state.getCurrentPlayer().addToDeck(state.createResource(key));
             }
 
+            deckLeft -= length;
+
 
             updateGUI();
 
@@ -398,6 +400,7 @@ public class MainController {
         player2Gulden.setText(state.getPlayer2().getGulden().toString());
         updateActiveDeck(state.getCurrentPlayer());
         updateLadang(state.getCurrentPlayer());
+        activeDeck.setText(deckLeft.toString()+ " /40");
     }
 
 
