@@ -611,7 +611,7 @@ public class MainController {
             List <Integer> affected = sb.generateAffectedIndex();
             redBorderController.setRedBordersVisible(true,affected);
         
-            int seconds = random.nextInt(31) + 30;
+            int seconds = random.nextInt(30) + 31;
             CountdownTimer countdownTimer = new CountdownTimer(seconds);
             Platform.runLater(() -> timerLabel.setVisible(true));
             countdownTimer.start();

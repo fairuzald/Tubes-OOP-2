@@ -15,6 +15,10 @@ import org.bro.tubesoop2.creature.Creature;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 public class DetailController {
 
     @FXML
@@ -70,7 +74,22 @@ public class DetailController {
         editableLabel.setText(label);
 
         ObservableList<String> activeItemsList = FXCollections.observableArrayList(activeItems);
-        String itemsText = String.join(", ", activeItemsList);
+        Map<String, Integer> groupedActiveItems = new HashMap<String, Integer>();
+
+        for (String activeItem : activeItemsList) {
+            if (groupedActiveItems.containsKey(activeItem)) {
+                groupedActiveItems.put(activeItem, groupedActiveItems.get(activeItem) + 1);
+            } else {
+                groupedActiveItems.put(activeItem, 1);
+            }
+        }
+
+        String itemsText = "";
+        for (Map.Entry<String, Integer> entry : groupedActiveItems.entrySet()) {
+            itemsText += entry.getKey() + "(" + entry.getValue() + "), ";
+        }
+
+
         if(itemsText.isEmpty()) itemsText = "Tidak ada";
         activeItemLabel.setText(itemsText);
 
