@@ -3,6 +3,7 @@ module org.bro.tubesoop2 {
     requires javafx.fxml;
     requires java.sql;
     requires java.desktop;
+    requires java.naming;
 
 
     opens org.bro.tubesoop2 to javafx.fxml;
