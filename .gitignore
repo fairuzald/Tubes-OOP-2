@@ -40,3 +40,8 @@ build/
 
 
 src/plugin/jar/*.jar
+
+
+src/plugin/tubesoop2json/.gitignore
+src/plugin/tubesoop2json/target
+# src/plugin/tubesoop2json/out

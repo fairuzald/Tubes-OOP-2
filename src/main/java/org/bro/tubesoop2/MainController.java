@@ -147,7 +147,7 @@ public class MainController {
             if(indexFrom ==-1){
                 state.getCurrentPlayer().putLadang(rsc, lct);
                 state.getCurrentPlayer().getActiveDeck().set(index3,null);
-            }else{
+            }else if(indexFrom >=0){
                 int[] gridPositionFrom = convertListIdxToGrid(indexFrom);
                 int row2 = gridPositionFrom[0];
                 int col2 = gridPositionFrom[1];

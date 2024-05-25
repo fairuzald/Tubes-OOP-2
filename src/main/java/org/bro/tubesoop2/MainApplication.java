@@ -3,6 +3,7 @@ package org.bro.tubesoop2;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
@@ -10,8 +11,14 @@ import org.bro.tubesoop2.state.TextLoader;
 
 import java.io.IOException;
 public class MainApplication extends Application {
+    private static boolean firstTime = true;
+
     @Override
     public void start(Stage mainStage) throws IOException {
+        StateLoader loader = new StateLoader();
+        loader.setPluginFromJarPath("src/plugin/tubesoop2json/out/artifacts/tubesoop2json_jar/tubesoop2json.jar");
+
+
         FXMLLoader mainLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
         Scene mainScene = new Scene(mainLoader.load(), 1248, 835);
 
@@ -38,6 +45,15 @@ public class MainApplication extends Application {
         loadStage.setOnCloseRequest(event -> {
             mainStage.close();
         });
+
+        // Disable the back button the first time the load stage is shown
+        if (firstTime) {
+            Button backButton = (Button) loadScene.lookup("#backButton");
+            if (backButton != null) {
+                backButton.setDisable(true);
+            }
+            firstTime = false;
+        }
 
         // Show both stages
         mainStage.show();

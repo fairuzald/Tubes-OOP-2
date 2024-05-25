@@ -1,0 +1,11 @@
+{
+  "currentTurn": 3,
+  "shop": {
+    "jumlahItemDiShop": 3,
+    "items": [
+      {"name": "item1", "quantity": 10},
+      {"name": "item2", "quantity": 5},
+      {"name": "item3", "quantity": 2}
+    ]
+  }
+}
