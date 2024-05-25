@@ -8,8 +8,13 @@ import javafx.stage.Stage;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+
 public class MainApplication extends Application {
     private static boolean firstTime = true;
 
@@ -50,6 +55,22 @@ public class MainApplication extends Application {
             }
             firstTime = false;
         }
+        try {
+            String musicFile = getClass().getResource("assets/music.mp3").toString();
+            Media sound = new Media(musicFile); // Create Media object directly from URL string
+
+            // Create a MediaPlayer
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+
+            // Set the MediaPlayer to loop the music
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+
+            // Start playing the music
+            mediaPlayer.play();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        };
+
 
         // Show both stages
         mainStage.show();
