@@ -79,6 +79,8 @@ public class SaveController {
 
         toastMessage.setTextFill(Color.GREEN);
         toastMessage.setText("File saved successfully.");
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        stage.close();
         onSaveValid.Notify(fileName);
     }
 

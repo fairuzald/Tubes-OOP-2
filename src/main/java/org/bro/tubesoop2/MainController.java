@@ -81,7 +81,7 @@ public class MainController {
             leftDeck.getChildren().add(sourceViews[i]);
         }
 
-
+        onLoadClick(null);
 
         ShopController.onBuy.AddListener(arrToBuy ->{
             try{
