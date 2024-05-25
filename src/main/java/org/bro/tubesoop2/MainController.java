@@ -276,7 +276,6 @@ public class MainController {
 
 
             updateGUI();
-            System.out.println(state.getCurrentPlayer().getLadang().getCountFilled());
 
             // win check
             Player winningPlayer = state.tryGetWinner();
@@ -556,17 +555,12 @@ public class MainController {
 
         RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().countFreeSlotFromActiveDeck();
 
-        state.getPlayer1().getLadang().forEachActive(l -> {
+        state.getCurrentPlayer().getLadang().forEachActive(l -> {
             Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
             if(c instanceof Plant){
-                ((Plant) c).addAge(1);
-            }
-        });
-
-        state.getPlayer2().getLadang().forEachActive(l -> {
-            Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
-            if(c instanceof Plant){
-                ((Plant) c).addAge(1);
+                ((Plant) c).addAge(2);
+                System.out.println("increase age");
+                System.out.println(((Plant) c).getCurrentAge());
             }
         });
 
