@@ -33,9 +33,7 @@ import org.bro.tubesoop2.item.Protect;
 import org.bro.tubesoop2.item.Trap;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
-import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
-import org.bro.tubesoop2.resource.ResourceFactory;
 import org.bro.tubesoop2.seranganberuang.SeranganBeruang;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
@@ -80,8 +78,6 @@ public class MainController {
             sourceViews[i] = new EmptyCard();
             leftDeck.getChildren().add(sourceViews[i]);
         }
-
-        onLoadClick(null);
 
         ShopController.onBuy.AddListener(arrToBuy ->{
             try{

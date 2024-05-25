@@ -9,20 +9,39 @@ import org.bro.tubesoop2.state.StateLoader;
 import org.bro.tubesoop2.state.TextLoader;
 
 import java.io.IOException;
-
 public class MainApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1248, 835);
+    public void start(Stage mainStage) throws IOException {
+        FXMLLoader mainLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
+        Scene mainScene = new Scene(mainLoader.load(), 1248, 835);
 
-        stage.setTitle("BRO!");
-        stage.setScene(scene);
+        mainStage.setTitle("BRO!");
+        mainStage.setScene(mainScene);
 
-        stage.setMinWidth(1248);
-        stage.setMinHeight(835);
+        mainStage.setMinWidth(1248);
+        mainStage.setMinHeight(835);
 
-        stage.show();
+        // Load the load.fxml
+        FXMLLoader loadLoader = new FXMLLoader(MainApplication.class.getResource("load.fxml"));
+        Scene loadScene = new Scene(loadLoader.load());
+        Stage loadStage = new Stage();
+
+        // Set the owner of the load stage to the main stage
+        loadStage.initOwner(mainStage);
+        loadStage.setScene(loadScene);
+
+        // Set the load stage to always be on top and not resizable
+        loadStage.setAlwaysOnTop(true);
+        loadStage.setResizable(false);
+
+        // Add an event handler to the load stage's close request
+        loadStage.setOnCloseRequest(event -> {
+            mainStage.close();
+        });
+
+        // Show both stages
+        mainStage.show();
+        loadStage.show();
     }
 
     public static void main(String[] args) {
