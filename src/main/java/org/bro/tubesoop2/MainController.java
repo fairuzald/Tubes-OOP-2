@@ -693,8 +693,7 @@ public class MainController {
             List <Integer> affected = sb.generateAffectedIndex();
             redBorderController.setRedBordersVisible(true,affected);
         
-            int seconds = random.nextInt(30) + 31;
-            seconds = 5;
+            int seconds = 5;
             CountdownTimer countdownTimer = new CountdownTimer(seconds);
             Platform.runLater(() -> timerLabel.setVisible(true));
             countdownTimer.start();
@@ -702,7 +701,7 @@ public class MainController {
                 try {
 
                     Thread.sleep(100);
-                    String currtime = Integer.toString(countdownTimer.getTime()/1000) + "," + Integer.toString((countdownTimer.getTime()%1000)/100); ;
+                    String currtime = countdownTimer.getTime() / 1000 + "," + (countdownTimer.getTime() % 1000) / 100; ;
                     Platform.runLater(() -> {timerLabel.setText(currtime);}
                     );
                 } catch (InterruptedException e) {
