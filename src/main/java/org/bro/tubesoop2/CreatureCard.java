@@ -98,15 +98,14 @@ public class CreatureCard extends Card {
         System.out.println("drop enemy! something!!!");
         if (src instanceof ItemCard) {
             if ((((ItemCard) src).getResource() instanceof Delay)) {
-                System.out.println("Delay card is consumed");
                 ((Delay) ((ItemCard) src).getResource()).consumedBy((Creature) this.getResource());
             }
 
             if ((((ItemCard) src).getResource() instanceof Destroy)) {
-                System.out.println("Destroy card is consumed");
                 ((Destroy) ((ItemCard) src).getResource()).consumedBy((Creature) this.getResource());
-
             }
+
+
         }
 
 
