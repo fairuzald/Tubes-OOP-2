@@ -170,14 +170,26 @@ public class MainController {
             int[] gridPosition = convertListIdxToGrid(index);
             int row = gridPosition[0];
             int col = gridPosition[1];
-
             Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
+
+
 
             if (animal instanceof Animal) {
                 try {
                     System.out.println(animal);
                     System.out.println(p);
                     ((Animal) animal).eat(p);
+
+                    int index2 =0;
+
+                    for(int i=0;i<leftDeck.getChildren().size();i++){
+                        if((leftDeck.getChildren().get(i) instanceof ProductCard)){
+                            if(((ProductCard)leftDeck.getChildren().get(i)).getResource().equals(p)){
+                                index2 =i;
+                            }
+                        }
+                    }
+                    state.getCurrentPlayer().getActiveDeck().set(index2,null);
                 } catch (Exception e) {
                     // Display an error message dialog
                     Alert alert = new Alert(AlertType.ERROR);
@@ -185,6 +197,9 @@ public class MainController {
                     alert.setHeaderText("An error occurred while processing the action.");
                     alert.setContentText("Details: " + e.getMessage());
                     alert.showAndWait();
+                }
+                finally {
+                    updateGUI();
                 }
             }
 
