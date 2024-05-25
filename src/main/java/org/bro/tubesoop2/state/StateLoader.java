@@ -47,6 +47,12 @@ public class StateLoader {
         return this;
     }
 
+    public StateLoader addPluginFromJarPath(String jarPath) {
+        pluginFiles.add(jarPath);
+        loadPluginService();
+        return this;
+    }
+
 
 
 
@@ -65,6 +71,8 @@ public class StateLoader {
     public void loadPluginService() {
         List<URL> urls = this.pluginFiles.stream().map(each -> {
             try {
+                System.out.println("each");
+                System.out.println(each);
                 System.out.println((new File(each)).toURI().toURL());
                 return (new File(each)).toURI().toURL(); }
             catch (Exception e) { throw new RuntimeException(e); }

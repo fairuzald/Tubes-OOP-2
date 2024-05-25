@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="tubesoop2xml:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/tubesoop2xml_jar</output-path>
-    <root id="archive" name="tubesoop2json.jar">
-      <element id="module-output" name="tubesoop2json" />
+    <root id="archive" name="tubesoop2xml.jar">
+      <element id="module-output" name="tubesoop2xml" />
     </root>
   </artifact>
 </component>

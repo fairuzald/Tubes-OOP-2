@@ -7,10 +7,14 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.bro.tubesoop2.action.Action;
 
 import java.io.File;
 
 public class PluginController {
+
+    public static Action<String> onPluginSubmit = new Action<>();
+    String currentFilePath;
 
     @FXML
     private Button backButton,pluginButton;
@@ -41,6 +45,7 @@ public class PluginController {
             if (selectedFile != null) {
                 toastMessageFile.setTextFill(Color.GREEN);
                 toastMessageFile.setText("Plugin loaded: " + selectedFile.getName());
+                currentFilePath = selectedFile.getPath();
             } else {
                 toastMessageFile.setTextFill(Color.RED);
                 toastMessageFile.setText("No plugin selected.");
@@ -59,12 +64,16 @@ public class PluginController {
         if ("jar".equalsIgnoreCase(fileExtension)) {
             toastMessage.setTextFill(Color.GREEN);
             toastMessage.setText("File is a valid jar.");
+            System.out.println(selectedFile.getPath());
+            onPluginSubmit.Notify(currentFilePath);
+            PluginController.pluginWindowOpen = false;
         } else {
             toastMessage.setTextFill(Color.RED);
             toastMessage.setText("File is not a jar.");
         }
         Stage stage = (Stage) pluginButton.getScene().getWindow();
         stage.close();
+        System.out.println("close plugin window");
     }
 
     private String getExtension(File file) {

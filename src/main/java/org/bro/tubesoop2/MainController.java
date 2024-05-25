@@ -379,6 +379,11 @@ public class MainController {
                 alert.showAndWait();
             }
         });
+
+        PluginController.onPluginSubmit.AddListener(path -> {
+            loader.addPluginFromJarPath(path);
+            loader.test();
+        });
     }
 
     void updateGUI(){

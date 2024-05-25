@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5cfdc0be-aa4d-4d0f-97a8-8a4ec9fe63ef" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../main/java/org/bro/tubesoop2/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../main/java/org/bro/tubesoop2/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../main/java/org/bro/tubesoop2/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../main/java/org/bro/tubesoop2/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../main/java/org/bro/tubesoop2/PluginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../main/java/org/bro/tubesoop2/PluginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../main/java/org/bro/tubesoop2/state/StateLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../main/java/org/bro/tubesoop2/state/StateLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/.idea/artifacts/tubesoop2xml_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/out/artifacts/tubesoop2xml_jar/tubesoop2xml.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/src/main/java/org/bro/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/tubesoop2xml/src/main/java/org/bro/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/src/main/java/org/bro/tubesoop2/state/GameState.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/src/main/java/org/bro/tubesoop2/state/StatePlugin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/src/main/java/org/bro/tubesoop2/state/XmlLoader.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/src/main/java/org/bro/tubesoop2/state/gamestatejson.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/src/main/java/org/bro/tubesoop2/state/player1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tubesoop2xml/src/main/resources/META-INF/services/org.bro.tubesoop2.state.StatePlugin" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2gxl5XkHuo8Er3akyOKmOkPLAEX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "go.import.settings.migrated": "true",
+    "kotlin-language-version-configured": "true",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.first.attach.projects": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5cfdc0be-aa4d-4d0f-97a8-8a4ec9fe63ef" name="Changes" comment="" />
+      <created>1716646926294</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1716646926294</updated>
+      <workItem from="1716646927434" duration="13000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>

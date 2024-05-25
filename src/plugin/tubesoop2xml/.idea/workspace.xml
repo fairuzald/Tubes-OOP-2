@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="tubesoop2xml:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5e43d71b-ed64-4783-a9c4-fda8b31de9b2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../main/java/org/bro/tubesoop2/MainApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../main/java/org/bro/tubesoop2/MainApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../main/java/org/bro/tubesoop2/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../main/java/org/bro/tubesoop2/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../main/java/org/bro/tubesoop2/PluginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../main/java/org/bro/tubesoop2/PluginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../main/java/org/bro/tubesoop2/state/StateLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../main/java/org/bro/tubesoop2/state/StateLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/tubesoop2xml_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/tubesoop2xml_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/tubesoop2xml_jar/tubesoop2xml.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bro/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/bro/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bro/tubesoop2/state/gamestatejson.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/bro/tubesoop2/state/player1.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/services/org.bro.tubesoop2.state.StatePlugin" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/services/org.bro.tubesoop2.state.StatePlugin" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "DhafinFawwaz"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/fairuzald/Tubes-OOP-2.git",
+    "accountId": "392dbdb3-b848-4568-83e0-c5203eff1db1"
+  }
+}]]></component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="bqgp92tl" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2gxl6yLgBCG7cEYNnZqjq7x1jef" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "kotlin-language-version-configured": "true",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5e43d71b-ed64-4783-a9c4-fda8b31de9b2" name="Changes" comment="" />
+      <created>1716646939954</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1716646939954</updated>
+      <workItem from="1716646941002" duration="133000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>
