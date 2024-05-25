@@ -153,6 +153,9 @@ public class Toko {
         int sold = 0;
         List<Resource> deck = new ArrayList<>(pl.getActiveDeck());
         for (Resource r: deck) {
+            if(r ==null){
+                continue;
+            }
             if(r.getName().equals(rsc.getName())){
                 pl.getActiveDeck().remove(r);
                 sold++;
