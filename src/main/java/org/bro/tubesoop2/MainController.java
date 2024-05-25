@@ -611,6 +611,7 @@ public class MainController {
             alert.setTitle("No new card");
             alert.setContentText("You have 6 active deck!");
             alert.showAndWait();
+            seranganBeruangHandler(state);
             return;
         }
 
@@ -678,10 +679,6 @@ public class MainController {
 
         // Notify player that serangan beruang tidak terjadi.
         if(ISBERUANGGONNAHAPPEN > 30) {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("No attack ?!");
-            alert.setContentText("Serangan beruang tidak terjadi !");
-            alert.showAndWait();
             return;
         }
 
