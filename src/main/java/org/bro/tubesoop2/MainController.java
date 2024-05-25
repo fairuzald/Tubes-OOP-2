@@ -70,6 +70,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        myFieldButton.setDisable(true);
         // Remove all
         for (int i = 0; i < destinationViews.length; i++) {
             destinationViews[i] = new EmptyCard();
@@ -437,6 +438,8 @@ public class MainController {
          * Set Ladang
          * */
         updateLadang(this.state.getCurrentPlayer());
+        myFieldButton.setDisable(true);
+        enemyFieldButton.setDisable(false);
     }
 
     @FXML
@@ -446,6 +449,8 @@ public class MainController {
          * */
         updateLadang(this.state.getNextPlayer());
         ladangDeck.getChildren().forEach((a) -> ((DraggableItem) a).setDragState(false));
+        myFieldButton.setDisable(false);
+        enemyFieldButton.setDisable(true);
     }
 
     @FXML
@@ -581,6 +586,8 @@ public class MainController {
                 ShopController.setShopWindowOpen(true);
 
                 shopStage.setOnCloseRequest(eventClose -> ShopController.setShopWindowOpen(false));
+                myFieldButton.setDisable(true);
+                enemyFieldButton.setDisable(false);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error loading shop.fxml: " + e.getMessage());
@@ -641,7 +648,6 @@ public class MainController {
             Platform.runLater(() -> {
                 shopButton.setDisable(false);
                 loadButton.setDisable(false);
-                myFieldButton.setDisable(false);
                 enemyFieldButton.setDisable(false);
                 saveButton.setDisable(false);
                 pluginButton.setDisable(false);
