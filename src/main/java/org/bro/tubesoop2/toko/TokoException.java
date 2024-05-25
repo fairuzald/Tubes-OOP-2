@@ -17,19 +17,6 @@ class ItemShopNotFoundException extends TokoException {
     }
 }
 
-class ItemShopNotEqualException extends TokoException {
-    @Override
-    public String getMessage() {
-        return "Item shop not equal.";
-    }
-}
-
-class ItemShopEmptyException extends TokoException {
-    @Override
-    public String getMessage() {
-        return "Item shop is empty.";
-    }
-}
 
 class UangTidakCukupShopException extends TokoException {
     @Override
@@ -63,5 +50,12 @@ class PenyimpananTidakCukup extends TokoException {
     @Override
     public String getMessage() {
         return "Insufficient storage.";
+    }
+}
+
+class InvalidKuantitas extends TokoException {
+    @Override
+    public String getMessage() {
+        return "Invalid quantity";
     }
 }

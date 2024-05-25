@@ -107,26 +107,33 @@ public class Toko {
         if (idxItem < 0 || idxItem >= stock.size()) {
             throw new BeliOutOfRange();
         }
+        if(quantity <= 0) {
+            throw new InvalidKuantitas();
+        }
 
         Quantifiable<Resource> itemShop = stock.get(idxItem);
         Integer price = ((Product) itemShop.getValue()).getPrice()*quantity;
 
+        System.out.println("Buying: "+itemShop.getValue().getName()+" Amount: "+quantity);
+        System.out.println("Current Stock: "+itemShop.getQuantity());
+
         if(itemShop.getValue() instanceof Product){
+            if (itemShop.getQuantity() < quantity) {
+                throw new StockTidakCukupShopException();
+            }
 
-        if (itemShop.getQuantity() < quantity) {
-            throw new StockTidakCukupShopException();
+            if(pl.getGulden()<price){
+                throw new Exception("Uang tidak cukup");
+            }
+
+            if (pl.getActiveDeckCount() + quantity > 6) {
+                throw new PenyimpananTidakCukup();
+            }
         }
 
-        if(pl.getGulden()<price){
-            throw new Exception("Uang tidak cukup");
+        for(int i=0;i<quantity;i++){
+            pl.addToDeck(itemShop.getValue());
         }
-
-        if (pl.getActiveDeckCount() + quantity > 6) {
-            throw new PenyimpananTidakCukup();
-        }
-        }
-
-
         itemShop.decrementQuantity(quantity);
         pl.setGulden(pl.getGulden()-price);
     }
@@ -137,6 +144,9 @@ public class Toko {
         int stockCount = getStockCount(pl, rsc);
         if (stockCount - quantity < 0) {
             throw new StockTidakCukupPlayer();
+        }
+        if(quantity <= 0){
+            throw new InvalidKuantitas();
         }
         int price = ((Product) rsc).getPrice()*quantity;
 

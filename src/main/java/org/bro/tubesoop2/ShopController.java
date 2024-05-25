@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.bro.tubesoop2.action.Action;
 import org.bro.tubesoop2.player.Player;
@@ -23,6 +24,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.geometry.Insets;
+
+import javax.naming.spi.StateFactory;
 
 public class ShopController {
     @FXML
@@ -46,6 +49,10 @@ public class ShopController {
     public static Action<List<Tuple<Resource, Integer>>> onSell = new Action<>();
 
     private static GameState state;
+
+    public static List<Quantifiable<Resource>> sell_session;
+
+    public static List<Quantifiable<Resource>> buy_session;
 
     public static void setState(GameState pl) {
         state = pl;
@@ -101,16 +108,27 @@ public class ShopController {
         System.out.println(state.getCurrentPlayer());
         System.out.println(state.getCurrentPlayer().getActiveDeck());
 
-        List<Quantifiable<Resource>> inventory = new ArrayList<>(getInventory(false));
-        for(Quantifiable<Resource> qrsc:inventory){
+        sell_session = new ArrayList<>();
+        for(Quantifiable<Resource> qt: getInventory(true)){
+            Resource r = state.createResource(qt.getValue().getName());
+            Quantifiable<Resource> qts = new Quantifiable<>(r, qt.getQuantity());
+            sell_session.add(qts);
+        }
+        buy_session =  new ArrayList<>();
+        for(Quantifiable<Resource> qt: getTokoStatic().getStock()){
+            Resource r = state.createResource(qt.getValue().getName());
+            Quantifiable<Resource> qts = new Quantifiable<>(r, qt.getQuantity());
+            buy_session.add(qts);
+        }
+
+        for(Quantifiable<Resource> qrsc:sell_session){
             if(qrsc.getValue() instanceof Product){
                 HBox itemBox = createDummyItemBox(qrsc.getValue().getName(),((Product) qrsc.getValue()).getPrice(), qrsc.getQuantity(), "assets/Produk/"+qrsc.getValue().getName()+".png");
                 sellTilePane.getChildren().add(itemBox);
             }
         }
 
-        List<Quantifiable<Resource>> stock_toko = new ArrayList<>(getTokoStatic().getStock());
-        for(Quantifiable<Resource> rsc:stock_toko){
+        for(Quantifiable<Resource> rsc:buy_session){
             if(rsc.getValue() instanceof Product){
                 HBox itemBox = createDummyItemBox(rsc.getValue().getName(),((Product) rsc.getValue()).getPrice(),rsc.getQuantity(), "assets/Produk/"+rsc.getValue().getName()+".png");
                 buyPane.getChildren().add(itemBox);
@@ -135,6 +153,35 @@ public class ShopController {
             HBox itemBox = (HBox) buyPane.getChildren().get(i);
             final int temp = i;
             itemBox.setOnMouseClicked(event -> {
+                promptForQuantity(temp, "buy");
+            });
+        }
+    }
+
+    private void updateSellList(int index, int quantity){
+        Quantifiable<Resource> qrsc = sell_session.get(index);
+        qrsc.decrementQuantity(quantity);
+        HBox itemBox = createDummyItemBox(qrsc.getValue().getName(),((Product) qrsc.getValue()).getPrice(), qrsc.getQuantity(), "assets/Produk/"+qrsc.getValue().getName()+".png");
+        sellTilePane.getChildren().set(index,itemBox);
+
+        for (int i = 0; i < sellTilePane.getChildren().size(); i++) {
+            HBox iBox = (HBox) sellTilePane.getChildren().get(i);
+            final int temp=i;
+            iBox.setOnMouseClicked(event -> {
+                promptForQuantity(temp, "sell");
+            });
+        }
+    }
+
+    private void updateBuyList(int index, int quantity){
+        Quantifiable<Resource> qrsc = buy_session.get(index);
+        qrsc.decrementQuantity(quantity);
+        HBox itemBox = createDummyItemBox(qrsc.getValue().getName(),((Product) qrsc.getValue()).getPrice(),qrsc.getQuantity(), "assets/Produk/"+qrsc.getValue().getName()+".png");
+        buyPane.getChildren().set(index,itemBox);
+        for (int i = 0; i < buyPane.getChildren().size(); i++) {
+            HBox iBox = (HBox) buyPane.getChildren().get(i);
+            final int temp = i;
+            iBox.setOnMouseClicked(event -> {
                 promptForQuantity(temp, "buy");
             });
         }
@@ -182,11 +229,20 @@ public class ShopController {
                         alert.setContentText("Not enough items left!");
                         alert.showAndWait();
                         return null; // Return null to prevent adding invalid quantity
+                    } else if(quantity <= 0){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Quantity must be greater than zero!");
+                        alert.showAndWait();
+                        return null; // Return null to prevent adding invalid quantity
                     } else if(txt.equals("sell")){
                         addToSellList(index,quantity);
+                        updateSellList(index,quantity);
                     }
                     else if(txt.equals("buy")){
                         addToBuyList(index, quantity);
+                        updateBuyList(index,quantity);
                     }
 
                 } catch (NumberFormatException e) {
@@ -255,14 +311,52 @@ public class ShopController {
         return hBox;
     }
 
+    private int getBuyIdx(List<Tuple<Integer,Integer>> lst, Integer idx) throws Exception {
+        for(int i=0;i<lst.size();i++) {
+            if(Objects.equals(lst.get(i).getFirst(), idx)) {
+                return i;
+            }
+        }
+        throw new Exception();
+    }
+
+    private int getSellIdx(List<Tuple<Resource,Integer>> lst, Integer idx) throws Exception {
+        Resource rsc = getInventory(true).get(idx).getValue();
+
+        for(int i=0;i<lst.size();i++) {
+            if(Objects.equals(lst.get(i).getFirst().getName(), rsc.getName())) {
+                return i;
+            }
+        }
+        throw new Exception();
+    }
+
     private void addToBuyList(Integer idx, Integer quantity) {
-        Tuple<Integer, Integer> t = new Tuple<>(idx,quantity);
-        buyList.add(t);
+//        Tuple<Integer, Integer> t = new Tuple<>(idx,quantity);
+//        buyList.add(t);
+        try {
+            int id = getBuyIdx(buyList, idx);
+            int current_quant = buyList.get(id).getSecond();
+            Tuple<Integer, Integer> t = new Tuple<>(idx,quantity+current_quant);
+            buyList.set(id,t);
+
+        } catch (Exception err){
+            Tuple<Integer, Integer> t = new Tuple<>(idx,quantity);
+            buyList.add(t);
+        }
     }
 
     private void addToSellList(Integer idx, Integer quantity) {
-        Tuple<Resource, Integer> t = new Tuple<>(getInventory(true).get(idx).getValue(),quantity);
-        itemToSell.add(t);
+        try {
+            int id = getSellIdx(itemToSell, idx);
+            int current_quant = itemToSell.get(id).getSecond();
+            Tuple<Resource, Integer> t = new Tuple<>(getInventory(true).get(idx).getValue(),quantity+current_quant);
+            itemToSell.set(id,t);
+
+        } catch (Exception err){
+            Tuple<Resource, Integer> t = new Tuple<>(getInventory(true).get(idx).getValue(),quantity);
+            itemToSell.add(t);
+        }
     }
 
     @FXML
