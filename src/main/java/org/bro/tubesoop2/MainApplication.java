@@ -15,6 +15,10 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage mainStage) throws IOException {
+        StateLoader loader = new StateLoader();
+        loader.setPluginFromJarPath("src/plugin/tubesoop2json/out/artifacts/tubesoop2json_jar/tubesoop2json.jar");
+
+
         FXMLLoader mainLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
         Scene mainScene = new Scene(mainLoader.load(), 1248, 835);
 
