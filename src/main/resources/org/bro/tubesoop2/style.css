@@ -44,6 +44,7 @@
 .sm_button{
     -fx-padding: 5px 8px 5px 8px;
     -fx-background-radius: 6px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0); /* Add shadow */
     -fx-text-alignment: center;
 }
 
@@ -51,14 +52,35 @@
     -fx-padding: 8px 10px 8px 10px;
     -fx-background-radius: 8px;
     -fx-text-alignment: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0); /* Add shadow */
+
 }
 
-.lg_button{
+.lg_button {
     -fx-padding: 8px 16px 8px 16px;
     -fx-text-alignment: center;
     -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0); /* Add shadow */
 }
 
+.lg_button:hover {
+    -fx-background-color: #E3FEF7; /* Change background color on hover */
+    -fx-text-fill: #000000;
+    -fx-cursor:pointer;
+
+}
+.base_button:hover {
+    -fx-background-color: #E3FEF7; /* Change background color on hover */
+    -fx-text-fill: #000000;
+    -fx-cursor:pointer;
+}
+
+.sm_button:hover {
+    -fx-background-color: #E3FEF7; /* Change background color on hover */
+    -fx-text-fill: #000000;
+    -fx-cursor:pointer;
+
+}
 .tab{
     -fx-padding: 8px 10px 8px 10px;
     -fx-background-color: #135D66;

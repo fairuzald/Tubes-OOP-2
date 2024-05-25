@@ -5,6 +5,7 @@ module org.bro.tubesoop2 {
     requires java.desktop;
     requires java.naming;
     requires com.fasterxml.jackson.databind;
+    requires javafx.media;
 
 
     opens org.bro.tubesoop2 to javafx.fxml;
