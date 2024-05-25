@@ -9,17 +9,12 @@ import java.util.TimerTask;
 public class CountdownTimer {
     private int counter;
     private final Timer timer;
-    private final List<ITimerSubscriber> subscribers;
 
     public CountdownTimer(int seconds) {
         this.counter = seconds * 1000;
         this.timer = new Timer();
-        this.subscribers = new ArrayList<>();
     }
 
-    public void subscribe(ITimerSubscriber subskrep) {
-        this.subscribers.add(subskrep);
-    }
     public boolean isTimeUp() {
         return counter == 0;
     }
@@ -31,7 +26,6 @@ public class CountdownTimer {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                infokan(counter);
                 if (counter > 0) {
                     // System.out.println("Time remaining: " + counter + " seconds");
                     counter-=100;
@@ -43,12 +37,6 @@ public class CountdownTimer {
         };
 
         timer.scheduleAtFixedRate(task, 0, 100);
-    }
-
-    public void infokan(int counter) {
-        for (ITimerSubscriber subscriber : subscribers) {
-            subscriber.update(counter);
-        }
     }
 
 //    public static void main(String[] args) {

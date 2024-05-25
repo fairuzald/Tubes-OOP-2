@@ -7,8 +7,6 @@ public class Icosihexastring {
     public Icosihexastring(Integer value) {
         this.value = value;
 
-        this.value = value;
-
         String reversed = "";
         reversed += String.valueOf(Character.toChars((value % 26) + 65));
         while (value/26 > 0) {
