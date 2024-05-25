@@ -682,7 +682,7 @@ public class MainController {
         Random random = new Random();
         int ISBERUANGGONNAHAPPEN = random.nextInt(100) + 1;
 
-        // Notify player that serangan beruang tidak terjadi.
+
         if(ISBERUANGGONNAHAPPEN > 30) {
             return;
         }
@@ -701,8 +701,8 @@ public class MainController {
             SeranganBeruang sb = new SeranganBeruang();
             List <Integer> affected = sb.generateAffectedIndex();
             redBorderController.setRedBordersVisible(true,affected);
-        
-            int seconds = 5;
+
+            int seconds = random.nextInt(60 - 30 + 1) + 30;
             CountdownTimer countdownTimer = new CountdownTimer(seconds);
             Platform.runLater(() -> timerLabel.setVisible(true));
             countdownTimer.start();
@@ -721,24 +721,31 @@ public class MainController {
             System.out.println("test");
             System.out.println("Affected: " + affected);
 
-            for(int i = 0; i < affected.size(); i++){
-                int idx = affected.get(i);
+            synchronized (SharedLock.LOCK){
+                try {
+                    SharedLock.LOCK.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                for(int i = 0; i < affected.size(); i++){
+                    int idx = affected.get(i);
 
+                    Platform.runLater(() -> {
+                        killCreatureAt(idx);
+                        updateGUI();
+                    });
+                }
                 Platform.runLater(() -> {
-                    killCreatureAt(idx);
-                    updateGUI();
+                    shopButton.setDisable(false);
+                    loadButton.setDisable(false);
+                    enemyFieldButton.setDisable(false);
+                    saveButton.setDisable(false);
+                    pluginButton.setDisable(false);
+                    nextButton.setDisable(false);
+
+                    redBorderController.setRedBordersVisible(false,affected);
                 });
             }
-            Platform.runLater(() -> {
-                shopButton.setDisable(false);
-                loadButton.setDisable(false);
-                enemyFieldButton.setDisable(false);
-                saveButton.setDisable(false);
-                pluginButton.setDisable(false);
-                nextButton.setDisable(false);
-
-                redBorderController.setRedBordersVisible(false,affected);
-            });
 
         });
 

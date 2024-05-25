@@ -67,10 +67,13 @@ public abstract class DraggableItem extends ImageView {
     }
 
     public void dragOver(DragEvent event) {
-        if (event.getGestureSource() != this && event.getDragboard().hasImage()) {
-            event.acceptTransferModes(TransferMode.MOVE);
+        synchronized (SharedLock.LOCK){
+            if (event.getGestureSource() != this && event.getDragboard().hasImage()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+            SharedLock.LOCK.notifyAll();
         }
-        event.consume();
     }
 
     public void dragDropped(DragEvent event) {
