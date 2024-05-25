@@ -63,6 +63,8 @@ public class PluginController {
             toastMessage.setTextFill(Color.RED);
             toastMessage.setText("File is not a jar.");
         }
+        Stage stage = (Stage) pluginButton.getScene().getWindow();
+        stage.close();
     }
 
     private String getExtension(File file) {

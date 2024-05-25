@@ -38,6 +38,7 @@ public class Plant extends Creature {
     public void reduceAge(int age){
         this.currentAge -= age;
         if(this.currentAge < 0) this.currentAge = 0;
+        System.out.println("Current age is " + currentAge );
     }
 
     @Override

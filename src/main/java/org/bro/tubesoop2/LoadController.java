@@ -75,7 +75,8 @@ public class LoadController {
             toastMessage.setText("Please select folder.");
             return;
         }
-
+        Stage stage = (Stage) loadButton.getScene().getWindow();
+        stage.close();
         toastMessage.setTextFill(Color.GREEN);
         toastMessage.setText("State Loaded successfully.");
         onLoadValid.Notify(fileName);

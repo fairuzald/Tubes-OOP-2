@@ -97,7 +97,7 @@ public class Grid<T> {
         return isFilled.get(l.getRow()).get(l.getCol());
     }
 
-        public int getCountFilled() {
+        public int getCountFilleds() {
             return countFilled;
         }
 
@@ -110,6 +110,7 @@ public class Grid<T> {
                 for (int i = 0; i < elements.size(); i++) {
                     for (int j = 0; j < elements.get(i).size(); j++) {
                         if(isFilled.get(i).get(j)){
+                            System.out.println("hello world inside");
                             callback.accept(new Location(i, j));
                         }
                     }
@@ -117,6 +118,22 @@ public class Grid<T> {
             } catch (Exception e){
 
             }
+        }
+
+        public int getCountFilled() {
+            countFilled = 0;
+            try {
+                for (int i = 0; i < elements.size(); i++) {
+                    for (int j = 0; j < elements.get(i).size(); j++) {
+                        if(isFilled.get(i).get(j)){
+                            countFilled++;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+
+            }
+            return countFilled;
         }
 
         public void forEach(Consumer<Location> callback){

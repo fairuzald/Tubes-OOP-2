@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import org.bro.tubesoop2.action.Action;
+import org.bro.tubesoop2.resource.Resource;
+import org.bro.tubesoop2.resource.ResourceFactory;
+import org.bro.tubesoop2.utils.Utils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -153,12 +156,20 @@ public class RandomController {
 
     private Image getRandomImage() {
         Random random = new Random();
-        int randomIndex = random.nextInt(images.size());
+        ResourceFactory rf = new ResourceFactory();
 
-        Image testImage = images.get(randomIndex);
+        Image img;
+        Resource r;
+        do {
+            int randomIndex = random.nextInt(images.size());
+            img = images.get(randomIndex);
+            String relpath = Utils.getRelativePathFromProject(img.getUrl());
+            String key = Utils.toResourceFactoryKeys(relpath);
 
+            r = rf.get(key);
+        } while (r.getName().equals("BERUANG"));
 
-        return testImage;
+        return img;
     }
 
     private void setImage(ImageView imageView, Image image) {

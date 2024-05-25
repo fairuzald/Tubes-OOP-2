@@ -33,9 +33,7 @@ import org.bro.tubesoop2.item.Protect;
 import org.bro.tubesoop2.item.Trap;
 import org.bro.tubesoop2.player.Player;
 import org.bro.tubesoop2.product.Product;
-import org.bro.tubesoop2.quantifiable.Quantifiable;
 import org.bro.tubesoop2.resource.Resource;
-import org.bro.tubesoop2.resource.ResourceFactory;
 import org.bro.tubesoop2.seranganberuang.SeranganBeruang;
 import org.bro.tubesoop2.state.GameState;
 import org.bro.tubesoop2.state.StateLoader;
@@ -70,6 +68,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        myFieldButton.setDisable(true);
         // Remove all
         for (int i = 0; i < destinationViews.length; i++) {
             destinationViews[i] = new EmptyCard();
@@ -79,8 +78,6 @@ public class MainController {
             sourceViews[i] = new EmptyCard();
             leftDeck.getChildren().add(sourceViews[i]);
         }
-
-
 
         ShopController.onBuy.AddListener(arrToBuy ->{
             try{
@@ -169,14 +166,26 @@ public class MainController {
             int[] gridPosition = convertListIdxToGrid(index);
             int row = gridPosition[0];
             int col = gridPosition[1];
-
             Resource animal = state.getCurrentPlayer().getLadang().getElement(row,col);
+
+
 
             if (animal instanceof Animal) {
                 try {
                     System.out.println(animal);
                     System.out.println(p);
                     ((Animal) animal).eat(p);
+
+                    int index2 =0;
+
+                    for(int i=0;i<leftDeck.getChildren().size();i++){
+                        if((leftDeck.getChildren().get(i) instanceof ProductCard)){
+                            if(((ProductCard)leftDeck.getChildren().get(i)).getResource().equals(p)){
+                                index2 =i;
+                            }
+                        }
+                    }
+                    state.getCurrentPlayer().getActiveDeck().set(index2,null);
                 } catch (Exception e) {
                     // Display an error message dialog
                     Alert alert = new Alert(AlertType.ERROR);
@@ -184,6 +193,9 @@ public class MainController {
                     alert.setHeaderText("An error occurred while processing the action.");
                     alert.setContentText("Details: " + e.getMessage());
                     alert.showAndWait();
+                }
+                finally {
+                    updateGUI();
                 }
             }
 
@@ -228,6 +240,24 @@ public class MainController {
             
         });
 
+        CreatureCard.onEnemyClicked.AddListener(rsc->{
+            int index = 0;
+            for(int i=0;i<this.leftDeck.getChildren().size();i++){
+                if (leftDeck.getChildren().get(i) instanceof ItemCard){
+                    if(((ItemCard) leftDeck.getChildren().get(i)).getResource().equals(rsc)){
+                        index=i;
+                    }
+
+                }
+            }
+
+
+
+
+            state.getCurrentPlayer().getActiveDeck().set(index,null);
+            updateActiveDeck(state.getCurrentPlayer());
+        });
+
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
             for (int i = 0; i < length; i++) {
@@ -239,22 +269,9 @@ public class MainController {
                 System.out.println(key);
                 state.getCurrentPlayer().addToDeck(state.createResource(key));
             }
-            // Increment plant age
-            state.getPlayer1().getLadang().forEachActive(l -> {
-                Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
-                if(c instanceof Plant){
-                    ((Plant) c).addAge(2);
-                }
-            });
-            state.getPlayer2().getLadang().forEachActive(l -> {
-                Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
-                if(c instanceof Plant){
-                    ((Plant) c).addAge(2);
-                }
-            });
+
 
             updateGUI();
-            System.out.println(state.getCurrentPlayer().getLadang().getCountFilled());
 
             // win check
             Player winningPlayer = state.tryGetWinner();
@@ -291,6 +308,10 @@ public class MainController {
         });
 
         CreatureCard.onItemCancel.AddListener(smth -> {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Nerfing ?!");
+            alert.setContentText("Tidak bisa menggunakan item " + smth + " di ladang sendiri.");
+            alert.showAndWait();
             updateGUI();
         });
         
@@ -437,6 +458,8 @@ public class MainController {
          * Set Ladang
          * */
         updateLadang(this.state.getCurrentPlayer());
+        myFieldButton.setDisable(true);
+        enemyFieldButton.setDisable(false);
     }
 
     @FXML
@@ -446,6 +469,8 @@ public class MainController {
          * */
         updateLadang(this.state.getNextPlayer());
         ladangDeck.getChildren().forEach((a) -> ((DraggableItem) a).setDragState(false));
+        myFieldButton.setDisable(false);
+        enemyFieldButton.setDisable(true);
     }
 
     @FXML
@@ -526,6 +551,14 @@ public class MainController {
 
         RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().countFreeSlotFromActiveDeck();
 
+        state.getCurrentPlayer().getLadang().forEachActive(l -> {
+            Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
+            if(c instanceof Plant){
+                ((Plant) c).addAge(2);
+                System.out.println("increase age");
+                System.out.println(((Plant) c).getCurrentAge());
+            }
+        });
 
         if (RandomController.maximumCardsCanBeSelected == 0) {
             Alert alert = new Alert(AlertType.ERROR);
@@ -581,6 +614,8 @@ public class MainController {
                 ShopController.setShopWindowOpen(true);
 
                 shopStage.setOnCloseRequest(eventClose -> ShopController.setShopWindowOpen(false));
+                myFieldButton.setDisable(true);
+                enemyFieldButton.setDisable(false);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error loading shop.fxml: " + e.getMessage());
@@ -594,7 +629,15 @@ public class MainController {
     void seranganBeruangHandler(GameState state){
         Random random = new Random();
         int ISBERUANGGONNAHAPPEN = random.nextInt(100) + 1;
-        if(ISBERUANGGONNAHAPPEN > 30) return;
+
+        // Notify player that serangan beruang tidak terjadi.
+        if(ISBERUANGGONNAHAPPEN > 30) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("No attack ?!");
+            alert.setContentText("Serangan beruang tidak terjadi !");
+            alert.showAndWait();
+            return;
+        }
 
         shopButton.setDisable(true);
         loadButton.setDisable(true);
@@ -611,7 +654,8 @@ public class MainController {
             List <Integer> affected = sb.generateAffectedIndex();
             redBorderController.setRedBordersVisible(true,affected);
         
-            int seconds = random.nextInt(31) + 30;
+            int seconds = random.nextInt(30) + 31;
+            seconds = 5;
             CountdownTimer countdownTimer = new CountdownTimer(seconds);
             Platform.runLater(() -> timerLabel.setVisible(true));
             countdownTimer.start();
@@ -641,7 +685,6 @@ public class MainController {
             Platform.runLater(() -> {
                 shopButton.setDisable(false);
                 loadButton.setDisable(false);
-                myFieldButton.setDisable(false);
                 enemyFieldButton.setDisable(false);
                 saveButton.setDisable(false);
                 pluginButton.setDisable(false);
