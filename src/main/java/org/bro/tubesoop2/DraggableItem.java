@@ -17,6 +17,7 @@ public abstract class DraggableItem extends ImageView {
 
     public DraggableItem(String imagePath) {
         this.isDefaultImage = false;
+        System.out.println(imagePath);
         Image testImage = new Image(getClass().getResourceAsStream(imagePath));
         this.setImage(testImage);
         this.imagePath = imagePath;
@@ -129,4 +130,8 @@ public abstract class DraggableItem extends ImageView {
     }
 
     abstract public void dragDoneAction();
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

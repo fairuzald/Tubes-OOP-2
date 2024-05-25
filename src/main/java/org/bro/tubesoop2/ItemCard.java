@@ -13,7 +13,7 @@ public class ItemCard extends Card {
 
     @Override
     public void dragDoneAction() {
-        System.out.println("ItemCard drag done.");
+        System.out.println("ondropItemCard drag done.");
     }
 
     @Override

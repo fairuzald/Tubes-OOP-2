@@ -28,6 +28,11 @@ public abstract class Animal extends Creature {
         this.weight += weight;
 
     }
+
+    public Integer getWhenCanHarvest() {
+        return weightToHarvest;
+    }
+
     public void reduceWeight(int weight){
         this.weight -= weight;
         if(this.weight < 0) this.weight = 0;

@@ -66,7 +66,7 @@ public class DetailController {
 
         String itemName = creature.getFormattedName();
         String[] activeItems = creature.getItemsActive().stream().map(item -> item.getName()).toArray(String[]::new);
-        String value = Integer.toString(creature.getUmurOrBerat());
+        String value = creature.getUmurOrBerat() >= creature.getWhenCanHarvest() ? "READY TO HARVEST!" :  Integer.toString(creature.getUmurOrBerat());
         String label = creature instanceof Animal ? "Berat" : "Umur";
 
 

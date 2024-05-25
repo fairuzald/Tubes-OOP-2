@@ -15,9 +15,10 @@ public class CreatureCard extends Card {
     public static Action<Integer> onCreatureCardClicked = new Action<>();
     public static Action<Item> onEnemyClicked = new Action<>();
     public static Action<Tuple<Item, Resource>> onEnemyDestroy = new Action<>();
+    public static Action<Integer> onRequestUpdateGUI = new Action<Integer>();
 
     public CreatureCard(Creature c) {
-        super(c, c instanceof Plant ? "assets/Tanaman/"+c.getName()+".png" : "assets/Animal/"+c.getName()+".png");
+        super(c, c instanceof Plant ? ( c.isHarvestable() ? "assets/Produk/"+c.getDrop().getName()+".png" : "assets/Tanaman/" + c.getName() + ".png" ): "assets/Animal/"+c.getName()+".png");
         setOnMouseClicked(e -> {
             if (this.isDragable()) {
                 int locationIndex = ((TilePane) getParent()).getChildren().indexOf(this);
@@ -66,15 +67,21 @@ public class CreatureCard extends Card {
                 onItemCancel.Notify("Delay");
             }  else if (((ItemCard) source).getResource() instanceof Destroy) {
                 onItemCancel.Notify("Destroy");
-            } else if (((ItemCard) source).getResource() instanceof InstantHarvest) {
-
             } else {
                 if(getParent() instanceof TilePane){
                     TilePane parentContainer = (TilePane) getParent();
                     int index = parentContainer.getChildren().indexOf(this);
                     if(((ItemCard) source).getResource() instanceof Item){
-                        System.out.println("MASOK2");
                         onItemGiven.Notify(new Tuple<>(index, (Item) ((ItemCard) source).getResource()));
+
+                        Creature current = (Creature) this.getResource();
+                        if (current.isHarvestable() && current instanceof Plant) {
+                            System.out.println("im here at instant harvest");
+                            Creature ctr = (Creature) this.getResource();
+                            String relpath = "assets/Produk/" + ctr.getDrop().getName() + ".png";
+                            this.setImagePath(relpath);
+                            onRequestUpdateGUI.Notify(1);
+                        }
                     }
                 }
             }

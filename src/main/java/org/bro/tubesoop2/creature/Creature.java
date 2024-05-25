@@ -26,6 +26,10 @@ public abstract class Creature extends Resource {
 
     }
 
+    public boolean  isHarvestable() {
+        return getWhenCanHarvest() <= getUmurOrBerat();
+    }
+
     public abstract Product harvest() throws IllegalStateException;
 
     public List<Item> getItemsActive() {
@@ -41,6 +45,8 @@ public abstract class Creature extends Resource {
     }
 
     public abstract void consumeItem(Item item);
+
+    public abstract Integer getWhenCanHarvest();
 
     public abstract void setUmurOrBerat(int umurOrBerat);
     public abstract int getUmurOrBerat();

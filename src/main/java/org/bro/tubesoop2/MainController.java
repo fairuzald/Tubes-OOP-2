@@ -295,6 +295,10 @@ public class MainController {
             updateLadang(state.getNextPlayer());
         });
 
+        CreatureCard.onRequestUpdateGUI.AddListener(intgr -> {
+            updateLadang(state.getCurrentPlayer());
+        });
+
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
             for (int i = 0; i < length; i++) {

@@ -42,6 +42,10 @@ public class Plant extends Creature {
         System.out.println("Current age is " + currentAge );
     }
 
+    public Integer getWhenCanHarvest() {
+        return durationToHarvest;
+    }
+
     public void updateImage(){}
 
     @Override
