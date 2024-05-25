@@ -228,6 +228,24 @@ public class MainController {
             
         });
 
+        CreatureCard.onEnemyClicked.AddListener(rsc->{
+            int index = 0;
+            for(int i=0;i<this.leftDeck.getChildren().size();i++){
+                if (leftDeck.getChildren().get(i) instanceof ItemCard){
+                    if(((ItemCard) leftDeck.getChildren().get(i)).getResource().equals(rsc)){
+                        index=i;
+                    }
+
+                }
+            }
+
+
+
+
+            state.getCurrentPlayer().getActiveDeck().set(index,null);
+            updateActiveDeck(state.getCurrentPlayer());
+        });
+
         RandomController.onNextDone.AddListener(r -> {
             int length = RandomController.selectedViews.size();
             for (int i = 0; i < length; i++) {
@@ -239,19 +257,7 @@ public class MainController {
                 System.out.println(key);
                 state.getCurrentPlayer().addToDeck(state.createResource(key));
             }
-            // Increment plant age
-            state.getPlayer1().getLadang().forEachActive(l -> {
-                Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
-                if(c instanceof Plant){
-                    ((Plant) c).addAge(2);
-                }
-            });
-            state.getPlayer2().getLadang().forEachActive(l -> {
-                Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
-                if(c instanceof Plant){
-                    ((Plant) c).addAge(2);
-                }
-            });
+
 
             updateGUI();
             System.out.println(state.getCurrentPlayer().getLadang().getCountFilled());
@@ -291,6 +297,10 @@ public class MainController {
         });
 
         CreatureCard.onItemCancel.AddListener(smth -> {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Nerfing ?!");
+            alert.setContentText("Tidak bisa menggunakan item " + smth + " di ladang sendiri.");
+            alert.showAndWait();
             updateGUI();
         });
         
@@ -526,6 +536,19 @@ public class MainController {
 
         RandomController.maximumCardsCanBeSelected = 6 - state.getCurrentPlayer().countFreeSlotFromActiveDeck();
 
+        state.getPlayer1().getLadang().forEachActive(l -> {
+            Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
+            if(c instanceof Plant){
+                ((Plant) c).addAge(1);
+            }
+        });
+
+        state.getPlayer2().getLadang().forEachActive(l -> {
+            Creature c = (Creature) state.getCurrentPlayer().getLadang().getElement(l);
+            if(c instanceof Plant){
+                ((Plant) c).addAge(1);
+            }
+        });
 
         if (RandomController.maximumCardsCanBeSelected == 0) {
             Alert alert = new Alert(AlertType.ERROR);
@@ -594,7 +617,15 @@ public class MainController {
     void seranganBeruangHandler(GameState state){
         Random random = new Random();
         int ISBERUANGGONNAHAPPEN = random.nextInt(100) + 1;
-        if(ISBERUANGGONNAHAPPEN > 30) return;
+
+        // Notify player that serangan beruang tidak terjadi.
+        if(ISBERUANGGONNAHAPPEN > 30) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("No attack ?!");
+            alert.setContentText("Serangan beruang tidak terjadi !");
+            alert.showAndWait();
+            return;
+        }
 
         shopButton.setDisable(true);
         loadButton.setDisable(true);
@@ -612,6 +643,7 @@ public class MainController {
             redBorderController.setRedBordersVisible(true,affected);
         
             int seconds = random.nextInt(30) + 31;
+            seconds = 5;
             CountdownTimer countdownTimer = new CountdownTimer(seconds);
             Platform.runLater(() -> timerLabel.setVisible(true));
             countdownTimer.start();

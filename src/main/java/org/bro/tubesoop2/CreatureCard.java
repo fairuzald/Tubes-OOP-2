@@ -15,7 +15,8 @@ import org.bro.tubesoop2.product.Product;
 public class CreatureCard extends Card {
 
     public static Action<Integer> onCreatureCardClicked = new Action<>();
-    
+    public static Action<Item> onEnemyClicked = new Action<>();
+
     public CreatureCard(Creature c) {
         super(c, c instanceof Plant ? "assets/Tanaman/"+c.getName()+".png" : "assets/Animal/"+c.getName()+".png");
         setOnMouseClicked(e -> {
@@ -28,7 +29,7 @@ public class CreatureCard extends Card {
 
     public static Action<Tuple<Integer, Product>> onMakan = new Action<>();
     public static Action<Tuple<Integer, Item>> onItemGiven = new Action<>();
-    public static Action<Tuple<Integer, Accelerate>> onItemCancel = new Action<>();
+    public static Action<String> onItemCancel = new Action<String>();
 
     @Override
     public void dragDoneAction() {
@@ -63,9 +64,9 @@ public class CreatureCard extends Card {
         else if (source instanceof ItemCard) {
             System.out.println("hello world!");
             if (((ItemCard) source).getResource() instanceof Delay) {
-                onItemCancel.notify();
+                onItemCancel.Notify("Delay");
             }  else if (((ItemCard) source).getResource() instanceof Destroy) {
-                onItemCancel.notify();
+                onItemCancel.Notify("Destroy");
             } else {
                 if(getParent() instanceof TilePane){
                     TilePane parentContainer = (TilePane) getParent();
@@ -99,10 +100,17 @@ public class CreatureCard extends Card {
         if (src instanceof ItemCard) {
             if ((((ItemCard) src).getResource() instanceof Delay)) {
                 ((Delay) ((ItemCard) src).getResource()).consumedBy((Creature) this.getResource());
+                if(((ItemCard) src).getResource() instanceof Delay){
+                    Item rsc = ((Item)((ItemCard) src).getResource());
+                    onEnemyClicked.Notify(rsc);
+                }
             }
 
             if ((((ItemCard) src).getResource() instanceof Destroy)) {
                 ((Destroy) ((ItemCard) src).getResource()).consumedBy((Creature) this.getResource());
+
+
+
             }
 
 
