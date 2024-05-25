@@ -4,6 +4,7 @@ module org.bro.tubesoop2 {
     requires java.sql;
     requires java.desktop;
     requires java.naming;
+    requires com.fasterxml.jackson.databind;
 
 
     opens org.bro.tubesoop2 to javafx.fxml;
